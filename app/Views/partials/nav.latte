@@ -1,11 +1,14 @@
 {default bool $docsMode = false}
 <header class="site-nav">
-    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
-        <a href="/" class="flex items-center gap-2 text-bright font-semibold text-lg no-underline">
-            <img src="/assets/images/logo-icon.svg" alt="CodeQuill" width="24" height="24">
-            <span>{$leafName ?? 'CodeQuill'}</span>
+    <div class="nav-container">
+        <a href="/" class="nav-logo" aria-label="CodeQuill">
+            <img src="/assets/images/logo-full.svg" alt="CodeQuill" class="nav-logo-img">
         </a>
-        <nav class="flex items-center gap-5">
+        <button class="nav-toggle" onclick="toggleNav()" type="button" aria-label="Toggle menu">
+            <svg class="nav-toggle-open" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+            <svg class="nav-toggle-close" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </button>
+        <nav class="nav-links">
             {if $docsMode}
             <button class="search-trigger" onclick="openSearch()" type="button">
                 <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>

@@ -15,5 +15,14 @@
             </ul>
         </div>
         {/foreach}
+        <div class="sidebar-mobile-links">
+            <div class="sidebar-group">
+                <h3 class="sidebar-group-title">Links</h3>
+                <ul class="sidebar-links">
+                    <li><a href="https://app.codequill.xyz" class="sidebar-link" target="_blank" rel="noopener">Launch App</a></li>
+                    <li n:if="($leafGithubUrl ?? '') !== ''"><a href="{$leafGithubUrl}" class="sidebar-link" target="_blank" rel="noopener">GitHub</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
 </aside>

@@ -9,6 +9,7 @@
     {include '../partials/nav.latte', docsMode: true}
 
     <div class="docs-layout">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
         {include '../partials/sidebar.latte'}
         <main class="docs-main">
             {block content}{/block}
