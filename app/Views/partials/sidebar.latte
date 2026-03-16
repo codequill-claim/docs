@@ -1,0 +1,19 @@
+<aside class="docs-sidebar" n:if="isset($sidebar)">
+    <nav class="sidebar-nav">
+        {foreach $sidebar as $group}
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">{$group['title']}</h3>
+            <ul class="sidebar-links">
+                {foreach $group['items'] as $item}
+                <li>
+                    <a href="{$item['url']}"
+                       class="sidebar-link{if ($item['url'] ?? '') === "/docs/{$section}/{$slug}"} active{/if}">
+                        {$item['title']}
+                    </a>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+        {/foreach}
+    </nav>
+</aside>

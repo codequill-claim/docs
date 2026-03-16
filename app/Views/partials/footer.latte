@@ -1,0 +1,9 @@
+<footer class="site-footer">
+    <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted">
+        <span n:if="($leafAuthor ?? '') !== ''">Built by <a n:tag-if="($leafAuthorUrl ?? '') !== ''" href="{$leafAuthorUrl}" class="footer-link" target="_blank" rel="noopener">{$leafAuthor}</a></span>
+        <div class="flex items-center gap-6">
+            <a n:if="($leafGithubUrl ?? '') !== ''" href="{$leafGithubUrl}" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+            <span n:if="($leafLicense ?? '') !== ''">{$leafLicense} License</span>
+        </div>
+    </div>
+</footer>

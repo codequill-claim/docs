@@ -1,0 +1,31 @@
+{layout 'layouts/landing.latte'}
+
+{block head}
+<style>
+    .error-container { min-height: calc(100vh - 4rem - 200px); display: flex; align-items: center; justify-content: center; }
+    .error-code { font-size: 8rem; font-weight: 800; line-height: 1; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .error-title { font-size: 1.5rem; font-weight: 600; color: var(--text-bright); margin-top: 0.5rem; }
+    .error-message { color: var(--text-muted); margin-top: 0.75rem; max-width: 28rem; }
+    .error-links { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .error-link-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; background: var(--accent); color: white; border-radius: 0.5rem; font-weight: 500; font-size: 0.875rem; text-decoration: none; transition: background 0.15s; }
+    .error-link-primary:hover { background: var(--accent-light); }
+    .error-link-secondary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; border: 1px solid var(--border); color: var(--text); border-radius: 0.5rem; font-weight: 500; font-size: 0.875rem; text-decoration: none; transition: border-color 0.15s, color 0.15s; }
+    .error-link-secondary:hover { border-color: var(--border-accent); color: var(--text-bright); }
+</style>
+{/block}
+
+{block content}
+<div class="error-container">
+    <div class="text-center">
+        <div class="error-code">404</div>
+        <h1 class="error-title">Page not found</h1>
+        <p class="error-message">
+            The page you're looking for doesn't exist or has been moved.
+        </p>
+        <div class="error-links">
+            <a href="/docs" class="error-link-primary">Documentation</a>
+            <a href="https://codequill.xyz" class="error-link-secondary">codequill.xyz</a>
+        </div>
+    </div>
+</div>
+{/block}

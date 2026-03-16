@@ -1,0 +1,38 @@
+application:
+  environment: !env APP_ENV, dev
+  debug: !env APP_DEBUG, true
+
+localization:
+  locale: "en"
+  supported_locales:
+    - "en"
+  locale_path: "locale"
+  timezone: "UTC"
+
+render:
+  engine: "latte"
+  directory: "app/Views"
+  cache: "cache/latte"
+  mode: "always"
+
+leaf:
+  name: "CodeQuill"
+  version: "0.8.1"
+  description: "Memory infrastructure for software. Preserve verifiable, immutable evidence of what source code existed at a given point in time."
+  github_url: "https://github.com/ophelios-studio/codequill-contracts"
+  content_path: "content"
+  sections:
+    getting-started: "Getting Started"
+    concepts: "Concepts"
+    releases: "Releases & Governance"
+    web-application: "Web Application"
+    cli-reference: "CLI Reference"
+    ci-cd: "CI/CD Integration"
+    smart-contracts: "Smart Contracts"
+    security: "Security"
+    reference: "Reference"
+  output_path: "dist"
+  base_url: ""
+  author: "Ophelios"
+  author_url: "https://ophelios.com"
+  license: "MIT"

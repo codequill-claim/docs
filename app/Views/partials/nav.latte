@@ -1,0 +1,22 @@
+{default bool $docsMode = false}
+<header class="site-nav">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 text-bright font-semibold text-lg no-underline">
+            <img src="/assets/images/logo-icon.svg" alt="CodeQuill" width="24" height="24">
+            <span>{$leafName ?? 'CodeQuill'}</span>
+        </a>
+        <nav class="flex items-center gap-5">
+            {if $docsMode}
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            {/if}
+            <a href="/docs" class="nav-link">Docs</a>
+            <a href="https://app.codequill.xyz" class="nav-link" target="_blank" rel="noopener">Launch App</a>
+            <a n:if="($leafGithubUrl ?? '') !== ''" href="{$leafGithubUrl}" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+            <span class="version-badge">{$leafVersion ?? ''}</span>
+        </nav>
+    </div>
+</header>

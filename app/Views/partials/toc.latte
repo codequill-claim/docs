@@ -1,0 +1,12 @@
+<aside class="docs-toc" n:if="isset($toc) && count($toc) > 0">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            {foreach $toc as $heading}
+            <li class="toc-item{if ($heading['level'] ?? 2) > 2} toc-item-sub{/if}">
+                <a href="#{$heading['id']}" class="toc-link">{$heading['text']}</a>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+</aside>

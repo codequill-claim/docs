@@ -1,0 +1,53 @@
+{
+    "name": "dadajuice/zephyrus-leaf",
+    "description": "Static content sites powered by Zephyrus. Docs, blogs, landing pages — with live-reload and one-command builds.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Tucker",
+            "email": "david.tucker@ophelios.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../zephyrus2"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.4",
+        "dadajuice/zephyrus2": "@dev",
+        "league/commonmark": "^2.8",
+        "league/config": "^1.2",
+        "ext-intl": "*",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0",
+        "symfony/var-dumper": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Leaf\\": "src/",
+            "App\\Controllers\\": "app/Controllers",
+            "App\\Models\\": "app/Models"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Leaf\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "dev": "php -S localhost:8080 -t public bin/router.php",
+        "build": "php bin/build.php",
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true,
+        "process-timeout": 0
+    }
+}
