@@ -5,7 +5,7 @@ order: 4
 
 # Releases
 
-A release is a named, versioned unit of software that ties together one or more source snapshots into a coherent, governed package. Releases are the coordination layer between raw evidence (snapshots) and downstream processes (attestations, governance, deployment).
+A release is a named, versioned unit of software that binds a single source snapshot to a governed, auditable package. Releases are the coordination layer between raw evidence (snapshots) and downstream processes (attestations, governance, deployment).
 
 ## Why Releases Exist
 

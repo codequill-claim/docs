@@ -26,7 +26,7 @@ CodeQuill provides a set of **primitives** for recording durable, inspectable ev
 
 - **Claims** -- Explicit on-chain records linking a repository to a workspace authority (wallet). Who is allowed to speak for this repository.
 - **Snapshots** -- Deterministic cryptographic fingerprints of a repository's source state at a specific commit. Created locally, never uploaded.
-- **Releases** -- Named, versioned groupings of snapshots with a full governance lifecycle. Draft, publish, accept, revoke, supersede.
+- **Releases** -- Named, versioned references to a single snapshot with a full governance lifecycle. Draft, publish, accept, revoke, supersede.
 - **Attestations** -- Recorded statements that a build artifact claims lineage from a specific published release.
 - **Preservations** -- Encrypted archives of source code tied to published snapshots. Client-side encryption only -- CodeQuill never accesses plaintext.
 - **Proofs** -- Cryptographic Merkle proofs that a specific file was included in a preserved source state.

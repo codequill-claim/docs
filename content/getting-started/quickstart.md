@@ -131,7 +131,7 @@ After completing these steps, you have:
 
 This is the foundation. From here, you can:
 
-- **Create releases** -- Group snapshots into named versions with governance workflows. See [Releases](/docs/concepts/releases).
+- **Create releases** -- Bind a snapshot to a named version with governance workflows. See [Releases](/docs/concepts/releases).
 - **Attest artifacts** -- Link build artifacts to releases, creating a verifiable lineage chain. See [Attestations](/docs/concepts/attestations).
 - **Preserve source** -- Create encrypted archives tied to snapshots for long-term survival. See [Preservations](/docs/concepts/preservations).
 - **Generate proofs** -- Prove that a specific file was included in a snapshot without revealing the full tree. See [Proofs](/docs/concepts/proofs).

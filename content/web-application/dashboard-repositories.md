@@ -88,7 +88,7 @@ A list of encrypted source archives tied to specific snapshots. Each entry shows
 
 #### Releases
 
-The releases sub-page shows the full release lifecycle for the repository. Releases progress through defined states: draft, published, accepted, revoked, or superseded. Each release references one or more snapshots and includes version metadata.
+The releases sub-page shows the full release lifecycle for the repository. Releases progress through defined states: draft, published, accepted, revoked, or superseded. Each release references a single snapshot and includes version metadata.
 
 #### CI/CD
 
