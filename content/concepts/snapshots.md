@@ -42,7 +42,7 @@ File paths in a snapshot are **salted** before hashing. The salt is derived from
 
 - The manifest reveals **file content hashes** but not file paths in plaintext.
 - Path verification requires knowledge of the salt (which requires workspace authority).
-- This allows selective disclosure: you can prove a specific file was included (via [Proofs](/docs/concepts/proofs)) without revealing the full directory structure.
+- This allows selective disclosure: you can prove a specific file was included (via [Proofs](/concepts/proofs)) without revealing the full directory structure.
 
 ## Using the CLI
 
@@ -123,7 +123,7 @@ Snapshots record **what existed**, not **how it was used**:
 
 - They do not prove how the code was built or compiled.
 - They do not guarantee the code is correct, safe, or complete.
-- They do not assert anything about the code's origin or authorship (that is what [Claims](/docs/concepts/claims) are for).
+- They do not assert anything about the code's origin or authorship (that is what [Claims](/concepts/claims) are for).
 - They do not prevent the code from being modified after the snapshot is taken.
 
 A snapshot is a receipt. It says: "This exact file tree existed at this moment, as attested by this authority."

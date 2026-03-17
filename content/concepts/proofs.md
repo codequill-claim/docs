@@ -145,4 +145,4 @@ The `file.path` field is only present if `--disclose` was used during generation
 
 ## Auditor Context
 
-For auditors: a verified proof demonstrates that a file with a specific content hash was included in a snapshot with a specific Merkle root. Combined with the on-chain anchor of that Merkle root, this constitutes evidence that the file existed at the time of anchoring. See [Interpreting Evidence](/docs/reference/interpreting-evidence).
+For auditors: a verified proof demonstrates that a file with a specific content hash was included in a snapshot with a specific Merkle root. Combined with the on-chain anchor of that Merkle root, this constitutes evidence that the file existed at the time of anchoring. See [Interpreting Evidence](/reference/interpreting-evidence).

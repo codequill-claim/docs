@@ -33,7 +33,7 @@ The creation form requires:
 | Snapshot | Yes | The published snapshot to associate with this release. The dropdown shows available snapshots with their commit hashes and publish dates. |
 | Release Name | Yes | A human-readable name for the release (e.g. `v1.2.0`, `2026-03-security-patch`). |
 | Notes | No | Free-text notes describing the release. These are included in the release manifest and stored on IPFS. |
-| DAO-Only Governance | No | When enabled, only the workspace's DAO executor address can accept or reject this release. See [DAO Governance](/docs/releases/dao-governance). |
+| DAO-Only Governance | No | When enabled, only the workspace's DAO executor address can accept or reject this release. See [DAO Governance](/releases/dao-governance). |
 | Supersedes Release | No | If this release replaces a previously revoked release, select the revoked release here. This creates an explicit on-chain link between the old and new release. Only revoked releases appear in this list. |
 
 Draft releases are not yet on-chain. They exist only in the CodeQuill web application and can be freely modified or deleted.
@@ -50,7 +50,7 @@ Once you are satisfied with the release configuration, you proceed to anchoring.
 
 Anchoring a release is the transition from draft to on-chain record. When you anchor a release, the following sequence occurs:
 
-1. **Manifest construction.** The web application builds a release manifest conforming to the `codequill-release:v1` schema. This manifest contains the repository information, release metadata, authority address, source snapshot data, and supersession information. See [Release Manifests](/docs/releases/release-manifests) for the full schema.
+1. **Manifest construction.** The web application builds a release manifest conforming to the `codequill-release:v1` schema. This manifest contains the repository information, release metadata, authority address, source snapshot data, and supersession information. See [Release Manifests](/releases/release-manifests) for the full schema.
 
 2. **IPFS upload.** The manifest is gzip-compressed and uploaded to IPFS via Lighthouse (pinned to Filecoin for long-term persistence). The resulting CID becomes the permanent, content-addressed identifier for this manifest.
 
@@ -78,7 +78,7 @@ The designated governance authority can:
 Who qualifies as the governance authority depends on the release's configuration:
 
 - **Standard governance:** The workspace's governance authority address can accept or reject.
-- **DAO-only governance:** Only the workspace's DAO executor address can accept or reject. The regular governance authority cannot act on DAO-only releases. See [DAO Governance](/docs/releases/dao-governance).
+- **DAO-only governance:** Only the workspace's DAO executor address can accept or reject. The regular governance authority cannot act on DAO-only releases. See [DAO Governance](/releases/dao-governance).
 
 Governance decisions are final. A release that has been accepted cannot later be rejected (though it can be revoked). A rejected release cannot be accepted.
 

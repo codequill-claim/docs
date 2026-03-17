@@ -212,7 +212,7 @@ MD);
 
         $loader = new ContentLoader($this->fixtureDir, $this->parser, $config);
 
-        $this->assertSame('/docs/getting-started/introduction', $loader->getFirstPageUrl());
+        $this->assertSame('/getting-started/introduction', $loader->getFirstPageUrl());
     }
 
     #[Test]
@@ -224,7 +224,7 @@ MD);
         $config = LeafConfig::fromArray([]);
         $loader = new ContentLoader($emptyDir, $this->parser, $config);
 
-        $this->assertSame('/docs/getting-started/introduction', $loader->getFirstPageUrl());
+        $this->assertSame('/getting-started/introduction', $loader->getFirstPageUrl());
 
         rmdir($emptyDir);
     }

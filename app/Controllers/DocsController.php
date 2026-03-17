@@ -23,14 +23,14 @@ final class DocsController extends Controller
     ) {
     }
 
-    #[Get('/docs')]
+    #[Get('/')]
     public function index(): Response
     {
         $url = $this->contentLoader->getFirstPageUrl();
         return Response::redirect($url);
     }
 
-    #[Get('/docs/{section}/{slug}')]
+    #[Get('/{section}/{slug}')]
     public function show(string $section, string $slug): Response
     {
         $page = $this->contentLoader->getPage($section, $slug);
@@ -53,10 +53,18 @@ final class DocsController extends Controller
         ]);
     }
 
-    #[Get('/docs/search.json')]
+    #[Get('/search.json')]
     public function searchIndex(): Response
     {
         $index = $this->searchIndexBuilder->build();
         return Response::json($index);
+    }
+
+    #[Get('/404')]
+    public function notFound(): Response
+    {
+        return $this->render('404', [
+            'title' => 'Page Not Found',
+        ]);
     }
 }

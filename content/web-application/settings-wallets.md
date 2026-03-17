@@ -148,7 +148,7 @@ To set or change the DAO executor:
 2. Enter the executor contract address.
 3. Confirm the change with the authority wallet's signature.
 
-The DAO executor address is recorded on-chain. Once set, the executor can submit transactions for the workspace according to whatever governance process the DAO defines. See the [DAO Governance](/docs/web-application/dao-governance) page for details on governance workflows.
+The DAO executor address is recorded on-chain. Once set, the executor can submit transactions for the workspace according to whatever governance process the DAO defines. See the [DAO Governance](/web-application/dao-governance) page for details on governance workflows.
 
 [Screenshot: DAO executor configuration panel]
 

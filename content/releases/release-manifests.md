@@ -58,7 +58,7 @@ A `codequill-release:v1` manifest contains the following sections:
 | `supersedes.release_id` | string or null | The release ID that this release supersedes, if any. Null if this release does not supersede another. |
 | `supersedes.reason` | string or null | An optional reason for supersession. |
 
-The supersession fields are only populated when the release was created with a supersession target (a previously revoked release). See [Release Lifecycle](/docs/releases/release-lifecycle) for details on supersession.
+The supersession fields are only populated when the release was created with a supersession target (a previously revoked release). See [Release Lifecycle](/releases/release-lifecycle) for details on supersession.
 
 ## Downloading Manifests
 
@@ -130,7 +130,7 @@ This level of verification confirms not just that the release references a valid
 Release manifests deliberately exclude certain information:
 
 - **Source code.** Manifests contain hashes, not file contents. Source code is never stored in or transmitted through the manifest.
-- **Build artifacts.** Manifests describe source state, not compiled output. Artifacts are linked to releases through [Attestations](/docs/concepts/attestations), not manifests.
+- **Build artifacts.** Manifests describe source state, not compiled output. Artifacts are linked to releases through [Attestations](/concepts/attestations), not manifests.
 - **Governance decisions.** The manifest records the state at the time of anchoring. Whether the release was later accepted, rejected, or revoked is recorded on-chain, not in the manifest. The manifest is immutable; governance state changes over time.
 
 A manifest is a snapshot of intent: "This authority released this source state, with this metadata, at this time." Everything that happens after anchoring is recorded elsewhere.

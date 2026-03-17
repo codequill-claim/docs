@@ -62,7 +62,7 @@ A revoked release can be **superseded** by a new release. This creates an explic
 
 Releases can be configured as **DAO-only**. When this flag is set, only the workspace's DAO executor address can accept or reject the release. This enables integration with external governance systems like Aragon, Governor contracts, or multisig wallets.
 
-For detailed information about DAO governance setup, see [DAO Governance](/docs/releases/dao-governance).
+For detailed information about DAO governance setup, see [DAO Governance](/releases/dao-governance).
 
 ## Release Manifests
 
@@ -74,7 +74,7 @@ Each published release has a manifest stored on IPFS. The manifest follows the `
 - Source snapshot data (Merkle root, commit hash, manifest CID)
 - Supersession information (if replacing a revoked release)
 
-For more details, see [Release Manifests](/docs/releases/release-manifests).
+For more details, see [Release Manifests](/releases/release-manifests).
 
 ## CI/CD Integration
 
@@ -83,4 +83,4 @@ When a release is anchored or accepted, CodeQuill can trigger GitHub Actions wor
 1. Release is anchored → GitHub Issue created → CI can build the artifact.
 2. Release is accepted by governance → GitHub Issue created → CI runs attestation → deploys to production.
 
-See [CI/CD Integration](/docs/ci-cd/overview) for the complete workflow.
+See [CI/CD Integration](/ci-cd/overview) for the complete workflow.

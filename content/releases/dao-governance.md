@@ -35,7 +35,7 @@ To remove the DAO executor configuration, clear the address field and save. This
 
 ## Creating a DAO-Only Release
 
-When creating a release (see [Release Lifecycle](/docs/releases/release-lifecycle)), the creation form includes a **DAO-Only Governance** toggle. This corresponds to the `gouvernance_dao_only` flag in the release configuration.
+When creating a release (see [Release Lifecycle](/releases/release-lifecycle)), the creation form includes a **DAO-Only Governance** toggle. This corresponds to the `gouvernance_dao_only` flag in the release configuration.
 
 When this flag is enabled:
 

@@ -17,7 +17,7 @@ CodeQuill attestations record three things:
 2. **What** artifact was referenced (its SHA-256 digest).
 3. **When** the claim was made (on-chain timestamp).
 
-An attestation does not prove the artifact was correctly built from the source. It records the claim that it was. The difference matters -- see [Non-Guarantees](/docs/security/non-guarantees).
+An attestation does not prove the artifact was correctly built from the source. It records the claim that it was. The difference matters -- see [Non-Guarantees](/security/non-guarantees).
 
 ## What an Attestation Contains
 
@@ -114,4 +114,4 @@ Attestations can be revoked if they are found to be incorrect or compromised. Re
 
 ## Auditor Context
 
-For auditors and legal reviewers: an attestation is a **claim**, not a **proof**. It records that a specific party asserted a relationship between an artifact and a source release. Whether that assertion is truthful depends on the integrity of the build process, which is outside CodeQuill's scope. See [Interpreting Evidence](/docs/reference/interpreting-evidence) for guidance.
+For auditors and legal reviewers: an attestation is a **claim**, not a **proof**. It records that a specific party asserted a relationship between an artifact and a source release. Whether that assertion is truthful depends on the integrity of the build process, which is outside CodeQuill's scope. See [Interpreting Evidence](/reference/interpreting-evidence) for guidance.

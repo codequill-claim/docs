@@ -20,7 +20,7 @@ A build output -- a compiled binary, a Docker image, an npm package, a tarball, 
 ---
 
 **Attestation**
-An on-chain record that a specific party asserted a relationship between a build artifact and a published release. An attestation records who made the claim, what artifact was referenced (by SHA-256 digest), and when the claim was made. It is a recorded assertion, not a proof that the artifact was correctly built from the source. See [Attestations](/docs/concepts/attestations).
+An on-chain record that a specific party asserted a relationship between a build artifact and a published release. An attestation records who made the claim, what artifact was referenced (by SHA-256 digest), and when the claim was made. It is a recorded assertion, not a proof that the artifact was correctly built from the source. See [Attestations](/concepts/attestations).
 
 ---
 
@@ -30,7 +30,7 @@ The wallet address that controls a workspace's on-chain identity. The authority 
 ---
 
 **Claim**
-An on-chain evidence record that links a GitHub repository to a workspace authority. A claim establishes who is authorized to speak for a repository within CodeQuill. It does not assert ownership, copyright, or authorship -- it records an association. A repository can only be claimed once. See [Claims](/docs/concepts/claims).
+An on-chain evidence record that links a GitHub repository to a workspace authority. A claim establishes who is authorized to speak for a repository within CodeQuill. It does not assert ownership, copyright, or authorship -- it records an association. A repository can only be claimed once. See [Claims](/concepts/claims).
 
 ---
 
@@ -65,22 +65,22 @@ The root hash of a Merkle tree constructed from a snapshot's file entries. Each 
 ---
 
 **Preservation**
-An encrypted archive of a repository's full source code, tied to a specific published snapshot. Preservations use the `codequill-envelope:v1` encryption scheme (AES-256-GCM with X25519-wrapped DEK) and are stored on IPFS. The plaintext hash is anchored on-chain. Decryption requires the workspace authority's passkey. Preservations are optional and serve long-term evidence durability use cases. See [Preservations](/docs/concepts/preservations).
+An encrypted archive of a repository's full source code, tied to a specific published snapshot. Preservations use the `codequill-envelope:v1` encryption scheme (AES-256-GCM with X25519-wrapped DEK) and are stored on IPFS. The plaintext hash is anchored on-chain. Decryption requires the workspace authority's passkey. Preservations are optional and serve long-term evidence durability use cases. See [Preservations](/concepts/preservations).
 
 ---
 
 **Proof**
-A cryptographic Merkle proof-of-inclusion demonstrating that a specific file was part of a published snapshot. A proof provides the minimal set of sibling hashes needed to reconstruct the Merkle root from a specific leaf. Proof generation requires workspace authority (to resolve salted path hashes); proof verification is public and can be performed offline by anyone. See [Proofs](/docs/concepts/proofs).
+A cryptographic Merkle proof-of-inclusion demonstrating that a specific file was part of a published snapshot. A proof provides the minimal set of sibling hashes needed to reconstruct the Merkle root from a specific leaf. Proof generation requires workspace authority (to resolve salted path hashes); proof verification is public and can be performed offline by anyone. See [Proofs](/concepts/proofs).
 
 ---
 
 **Release**
-A named, versioned designation of a specific snapshot as an official version of the software. Releases add intent to evidence: they represent a deliberate decision that a particular source state should be treated as a version. Releases follow a lifecycle (draft, published, accepted/rejected, revoked, superseded) and are subject to governance. Only accepted releases can be attested. See [Releases](/docs/concepts/releases).
+A named, versioned designation of a specific snapshot as an official version of the software. Releases add intent to evidence: they represent a deliberate decision that a particular source state should be treated as a version. Releases follow a lifecycle (draft, published, accepted/rejected, revoked, superseded) and are subject to governance. Only accepted releases can be attested. See [Releases](/concepts/releases).
 
 ---
 
 **Snapshot**
-A deterministic cryptographic fingerprint of a repository's source code at a specific git commit. The CLI reads every tracked file, computes per-file hashes, builds a Merkle tree, and produces a manifest. The Merkle root is anchored on-chain. No source code leaves the local machine during snapshot creation. Snapshots are the foundational evidence record in CodeQuill -- releases, attestations, and preservations all reference them. See [Snapshots](/docs/concepts/snapshots).
+A deterministic cryptographic fingerprint of a repository's source code at a specific git commit. The CLI reads every tracked file, computes per-file hashes, builds a Merkle tree, and produces a manifest. The Merkle root is anchored on-chain. No source code leaves the local machine during snapshot creation. Snapshots are the foundational evidence record in CodeQuill -- releases, attestations, and preservations all reference them. See [Snapshots](/concepts/snapshots).
 
 ---
 
@@ -90,9 +90,9 @@ A JSON document (following the `codequill-snapshot:v1` schema) that contains the
 ---
 
 **Workspace**
-The top-level organizational unit in CodeQuill. A workspace maps to a GitHub organization or user account and defines the boundary for authority, collaboration, and on-chain identity. All CodeQuill operations -- claims, snapshots, releases, attestations, preservations -- occur within a workspace context. See [Workspaces](/docs/concepts/workspaces).
+The top-level organizational unit in CodeQuill. A workspace maps to a GitHub organization or user account and defines the boundary for authority, collaboration, and on-chain identity. All CodeQuill operations -- claims, snapshots, releases, attestations, preservations -- occur within a workspace context. See [Workspaces](/concepts/workspaces).
 
 ---
 
 **Zero Custody**
-A design property of CodeQuill's encryption model. Zero custody means that CodeQuill never possesses the keys needed to decrypt preserved source code. The decryption key is derived from the user's passkey via the WebAuthn PRF extension and never leaves the user's device. There is no admin backdoor, no key escrow, and no recovery mechanism. If the passkey is lost, the preserved data is unrecoverable. See [Encryption Model](/docs/security/encryption-model).
+A design property of CodeQuill's encryption model. Zero custody means that CodeQuill never possesses the keys needed to decrypt preserved source code. The decryption key is derived from the user's passkey via the WebAuthn PRF extension and never leaves the user's device. There is no admin backdoor, no key escrow, and no recovery mechanism. If the passkey is lost, the preserved data is unrecoverable. See [Encryption Model](/security/encryption-model).

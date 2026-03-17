@@ -76,7 +76,7 @@ MD);
 
         $this->assertSame('Introduction', $entry['title']);
         $this->assertSame('getting-started', $entry['section']);
-        $this->assertSame('/docs/getting-started/introduction', $entry['url']);
+        $this->assertSame('/getting-started/introduction', $entry['url']);
         $this->assertNotEmpty($entry['excerpt']);
         $this->assertIsArray($entry['headings']);
     }

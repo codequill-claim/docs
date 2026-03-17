@@ -104,7 +104,7 @@ The encryption key also plays a role in snapshot privacy. File paths in snapshot
 2. Each file path is hashed as `keccak256(salt || path)` before inclusion in the Merkle tree.
 3. The manifest contains only these salted path hashes, not plaintext paths.
 
-This ensures that snapshot manifests -- which are stored on IPFS and publicly retrievable -- do not reveal the directory structure of the repository. Verifying that a specific file was included in a snapshot requires knowledge of the salt, which in turn requires workspace authority. See [Proofs](/docs/concepts/proofs) for how selective disclosure works.
+This ensures that snapshot manifests -- which are stored on IPFS and publicly retrievable -- do not reveal the directory structure of the repository. Verifying that a specific file was included in a snapshot requires knowledge of the salt, which in turn requires workspace authority. See [Proofs](/concepts/proofs) for how selective disclosure works.
 
 ## Cryptographic Primitives Summary
 

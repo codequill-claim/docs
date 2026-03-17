@@ -47,7 +47,7 @@ Workspaces are configured through the web application at [app.codequill.xyz](htt
 - **Profile** -- Workspace name, default blockchain network, notification preferences.
 - **Wallets** -- Connect wallets via Sign-In with Ethereum (SIWE), manage authority, extend delegations.
 - **Collaborators** -- Invite team members, assign workspace-level roles (owner, admin, member) and repository-level roles (viewer, publisher, attester, maintainer).
-- **DAO Executor** -- Set an external DAO executor address for governance-controlled releases. See [DAO Governance](/docs/releases/dao-governance).
+- **DAO Executor** -- Set an external DAO executor address for governance-controlled releases. See [DAO Governance](/releases/dao-governance).
 - **Encryption** -- Register passkeys for workspace encryption (used for preservations and proofs).
 - **Plan & Quota** -- View your subscription tier and current usage.
 

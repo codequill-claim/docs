@@ -43,7 +43,7 @@ No. CodeQuill does not observe, validate, or constrain build processes. It does 
 
 A CodeQuill snapshot proves what source code existed. A CodeQuill attestation records that someone claimed an artifact was built from a specific release. Whether that claim is truthful depends on the integrity of the build process, which is outside CodeQuill's scope.
 
-For build security, consider reproducible build frameworks, build provenance standards (SLSA), and CI pipeline hardening. CodeQuill provides the source reference that these tools can point to. See [Non-Guarantees](/docs/security/non-guarantees) for a full discussion.
+For build security, consider reproducible build frameworks, build provenance standards (SLSA), and CI pipeline hardening. CodeQuill provides the source reference that these tools can point to. See [Non-Guarantees](/security/non-guarantees) for a full discussion.
 
 ## Do I need reproducible builds to use CodeQuill?
 
@@ -59,7 +59,7 @@ No. Only cryptographic hashes and identifiers are stored on-chain.
 
 Specifically, the blockchain stores: Merkle roots (representing file tree state), manifest CIDs (pointers to IPFS-stored manifests), commit hashes, wallet addresses, timestamps, and governance decisions. No file contents, file paths, or source code are written to the blockchain.
 
-Snapshot manifests -- which contain per-file hashes and salted path hashes, but not file contents -- are stored on IPFS. The actual source code remains on your local machine or in your repository. If you create a [preservation](/docs/concepts/preservations), an encrypted copy of the source archive is stored on IPFS, but it is encrypted with keys that only the workspace authority possesses.
+Snapshot manifests -- which contain per-file hashes and salted path hashes, but not file contents -- are stored on IPFS. The actual source code remains on your local machine or in your repository. If you create a [preservation](/concepts/preservations), an encrypted copy of the source archive is stored on IPFS, but it is encrypted with keys that only the workspace authority possesses.
 
 ## Is preservation mandatory?
 
@@ -90,7 +90,7 @@ A typical CI integration:
 3. When the release is accepted by governance, a GitHub Issue is created by the CodeQuill bot, which can trigger a CI workflow.
 4. The CI workflow builds the artifact and runs `codequill attest` to create an on-chain attestation linking the artifact to the release.
 
-The CLI supports non-interactive operation (`--no-confirm`, `--json`) for CI environments. Authentication in CI uses session tokens obtained through the `codequill auth` flow. See [CI/CD Integration](/docs/ci-cd/overview) for detailed setup instructions.
+The CLI supports non-interactive operation (`--no-confirm`, `--json`) for CI environments. Authentication in CI uses session tokens obtained through the `codequill auth` flow. See [CI/CD Integration](/ci-cd/overview) for detailed setup instructions.
 
 ## Who is CodeQuill for?
 

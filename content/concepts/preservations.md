@@ -36,7 +36,7 @@ Key properties:
 - **No admin backdoor** -- There is no recovery mechanism. If the passkey is lost, the preservation cannot be decrypted.
 - **Snapshot-bound** -- Each preservation is linked to a specific snapshot, with the content root verified before encryption.
 
-For full technical details, see [Encryption Model](/docs/security/encryption-model).
+For full technical details, see [Encryption Model](/security/encryption-model).
 
 ## Using the CLI
 
@@ -113,4 +113,4 @@ The on-chain record proves that an encrypted archive with a specific plaintext h
 
 ## Auditor Context
 
-For auditors: a preservation proves that an encrypted archive was created and stored at a specific time, bound to a specific snapshot. The plaintext hash allows verification that a decrypted archive matches the on-chain record. However, decryption requires the workspace authority's cooperation. See [Interpreting Evidence](/docs/reference/interpreting-evidence).
+For auditors: a preservation proves that an encrypted archive was created and stored at a specific time, bound to a specific snapshot. The plaintext hash allows verification that a decrypted archive matches the on-chain record. However, decryption requires the workspace authority's cooperation. See [Interpreting Evidence](/reference/interpreting-evidence).

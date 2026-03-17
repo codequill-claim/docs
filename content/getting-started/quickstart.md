@@ -131,11 +131,11 @@ After completing these steps, you have:
 
 This is the foundation. From here, you can:
 
-- **Create releases** -- Bind a snapshot to a named version with governance workflows. See [Releases](/docs/concepts/releases).
-- **Attest artifacts** -- Link build artifacts to releases, creating a verifiable lineage chain. See [Attestations](/docs/concepts/attestations).
-- **Preserve source** -- Create encrypted archives tied to snapshots for long-term survival. See [Preservations](/docs/concepts/preservations).
-- **Generate proofs** -- Prove that a specific file was included in a snapshot without revealing the full tree. See [Proofs](/docs/concepts/proofs).
-- **Automate in CI** -- Set up GitHub Actions to snapshot and attest automatically. See [CI/CD Integration](/docs/ci-cd/overview).
+- **Create releases** -- Bind a snapshot to a named version with governance workflows. See [Releases](/concepts/releases).
+- **Attest artifacts** -- Link build artifacts to releases, creating a verifiable lineage chain. See [Attestations](/concepts/attestations).
+- **Preserve source** -- Create encrypted archives tied to snapshots for long-term survival. See [Preservations](/concepts/preservations).
+- **Generate proofs** -- Prove that a specific file was included in a snapshot without revealing the full tree. See [Proofs](/concepts/proofs).
+- **Automate in CI** -- Set up GitHub Actions to snapshot and attest automatically. See [CI/CD Integration](/ci-cd/overview).
 
 ## Mental Model
 

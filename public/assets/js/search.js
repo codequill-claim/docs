@@ -174,7 +174,7 @@
     // ── Helpers ─────────────────────────────────────────────────
     function loadIndex() {
         if (searchIndex) return;
-        fetch('/docs/search.json')
+        fetch('/search.json')
             .then(function (r) { return r.json(); })
             .then(function (data) { searchIndex = data; })
             .catch(function () { searchIndex = []; });

@@ -57,7 +57,7 @@ final class ContentLoader
     public function getPreviousPage(string $section, string $slug): ?array
     {
         $this->ensureLoaded();
-        $url = "/docs/{$section}/{$slug}";
+        $url = "/{$section}/{$slug}";
 
         foreach ($this->flatPages as $i => $page) {
             if ($page['url'] === $url && $i > 0) {
@@ -77,7 +77,7 @@ final class ContentLoader
     public function getNextPage(string $section, string $slug): ?array
     {
         $this->ensureLoaded();
-        $url = "/docs/{$section}/{$slug}";
+        $url = "/{$section}/{$slug}";
 
         foreach ($this->flatPages as $i => $page) {
             if ($page['url'] === $url && isset($this->flatPages[$i + 1])) {
@@ -103,7 +103,7 @@ final class ContentLoader
     public function getFirstPageUrl(): string
     {
         $this->ensureLoaded();
-        return $this->flatPages[0]['url'] ?? '/docs/getting-started/introduction';
+        return $this->flatPages[0]['url'] ?? '/getting-started/introduction';
     }
 
     private function ensureLoaded(): void
@@ -154,7 +154,7 @@ final class ContentLoader
                     'slug' => $slug,
                     'title' => $frontMatter['title'] ?? $this->slugToTitle($slug),
                     'order' => $frontMatter['order'] ?? 99,
-                    'url' => "/docs/{$section}/{$slug}",
+                    'url' => "/{$section}/{$slug}",
                 ];
             }
 

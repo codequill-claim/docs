@@ -60,9 +60,9 @@ This separation ensures that even if CodeQuill's servers were compromised, the e
 
 If you are new to CodeQuill, the recommended path is:
 
-1. Read the [Quickstart](/docs/getting-started/quickstart) to go from zero to a published snapshot.
-2. Explore [Concepts](/docs/concepts/workspaces) to understand the building blocks.
-3. Refer to the [CLI Reference](/docs/cli-reference/authentication) for complete command documentation.
-4. Set up [CI/CD Integration](/docs/ci-cd/overview) for automated evidence production.
+1. Read the [Quickstart](/getting-started/quickstart) to go from zero to a published snapshot.
+2. Explore [Concepts](/concepts/workspaces) to understand the building blocks.
+3. Refer to the [CLI Reference](/cli-reference/authentication) for complete command documentation.
+4. Set up [CI/CD Integration](/ci-cd/overview) for automated evidence production.
 
-If you are evaluating CodeQuill for security or compliance purposes, start with the [Threat Model](/docs/security/threat-model) and [Explicit Non-Guarantees](/docs/security/non-guarantees).
+If you are evaluating CodeQuill for security or compliance purposes, start with the [Threat Model](/security/threat-model) and [Explicit Non-Guarantees](/security/non-guarantees).

@@ -59,7 +59,7 @@ final class SearchIndexBuilder
                 $index[] = [
                     'title' => $title,
                     'section' => $section,
-                    'url' => "/docs/{$section}/{$slug}",
+                    'url' => "/{$section}/{$slug}",
                     'excerpt' => $excerpt,
                     'headings' => $headings,
                 ];

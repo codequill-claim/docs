@@ -41,7 +41,7 @@ CodeQuill's scope is deliberately narrow. It provides the source-centric evidenc
 
 **Platform security.** CodeQuill does not protect GitHub accounts, secure wallet private keys, or harden deployment infrastructure. It operates alongside these systems, not in place of them.
 
-For a complete enumeration of what CodeQuill does not guarantee, see [Non-Guarantees](/docs/security/non-guarantees).
+For a complete enumeration of what CodeQuill does not guarantee, see [Non-Guarantees](/security/non-guarantees).
 
 ## Composability
 
@@ -65,4 +65,4 @@ CodeQuill's architecture separates authority configuration from evidence product
 
 This separation has a specific security property: **even if CodeQuill servers are compromised, the on-chain records remain independently verifiable.** An attacker who gains access to the CodeQuill web application cannot alter records that have already been anchored on the blockchain. They cannot forge Merkle roots, backdate timestamps, or tamper with IPFS manifests that have already been pinned. The worst case is that future operations are disrupted -- past evidence remains intact and verifiable by anyone.
 
-The encryption model reinforces this boundary. CodeQuill never possesses the private key needed to decrypt preservations. The key is derived from the user's passkey via the WebAuthn PRF extension and never leaves the device. Even full server compromise does not expose preserved source code. See [Encryption Model](/docs/security/encryption-model) for details.
+The encryption model reinforces this boundary. CodeQuill never possesses the private key needed to decrypt preservations. The key is derived from the user's passkey via the WebAuthn PRF extension and never leaves the device. Even full server compromise does not expose preserved source code. See [Encryption Model](/security/encryption-model) for details.

@@ -7,7 +7,7 @@
                 {foreach $group['items'] as $item}
                 <li>
                     <a href="{$item['url']}"
-                       class="sidebar-link{if ($item['url'] ?? '') === "/docs/{$section}/{$slug}"} active{/if}">
+                       class="sidebar-link{if ($item['url'] ?? '') === "/{$section}/{$slug}"} active{/if}">
                         {$item['title']}
                     </a>
                 </li>
@@ -15,14 +15,17 @@
             </ul>
         </div>
         {/foreach}
-        <div class="sidebar-mobile-links">
-            <div class="sidebar-group">
-                <h3 class="sidebar-group-title">Links</h3>
-                <ul class="sidebar-links">
-                    <li><a href="https://app.codequill.xyz" class="sidebar-link" target="_blank" rel="noopener">Launch App</a></li>
-                    <li n:if="($leafGithubUrl ?? '') !== ''"><a href="{$leafGithubUrl}" class="sidebar-link" target="_blank" rel="noopener">GitHub</a></li>
-                </ul>
-            </div>
-        </div>
     </nav>
+    <div class="sidebar-footer">
+        <div class="sidebar-mobile-links">
+            <a href="https://app.codequill.xyz" class="sidebar-footer-link" target="_blank" rel="noopener">Launch App</a>
+            <a n:if="($leafGithubUrl ?? '') !== ''" href="{$leafGithubUrl}" class="sidebar-footer-link" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="sidebar-copyright">
+            &copy; {date('Y')} {$leafAuthor ?? 'Ophelios'}. All rights reserved.
+        </div>
+        <div class="sidebar-powered">
+            Powered by <a href="https://github.com/dadajuice/zephyrus-leaf" target="_blank" rel="noopener">Zephyrus Leaf</a>
+        </div>
+    </div>
 </aside>

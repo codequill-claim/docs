@@ -55,7 +55,7 @@ An attestation is an on-chain record that a party asserted a relationship betwee
 ### You May NOT Conclude
 
 - That the assertion is truthful. An attestation records a claim, not a proof. The attesting party may have made an honest mistake, relied on a compromised build system, or acted in bad faith.
-- That the build process was correct. CodeQuill does not observe, validate, or constrain how artifacts are built. See [Non-Guarantees](/docs/security/non-guarantees).
+- That the build process was correct. CodeQuill does not observe, validate, or constrain how artifacts are built. See [Non-Guarantees](/security/non-guarantees).
 - That the attesting party personally performed the build. The attestation records who submitted the claim, not who executed the build process.
 - That the artifact is safe to use. An attestation establishes lineage claims, not security properties.
 
