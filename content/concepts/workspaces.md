@@ -58,7 +58,7 @@ Users can belong to multiple workspaces (one per GitHub organization or user acc
 
 ## Public Workspace Profiles
 
-Every workspace has a public profile page accessible at `app.codequill.xyz/w/{login}`. This page shows:
+By default, every workspace has a public profile page accessible at `app.codequill.xyz/w/{login}`. This page shows:
 
 - Claimed repositories
 - Published snapshots
@@ -66,3 +66,7 @@ Every workspace has a public profile page accessible at `app.codequill.xyz/w/{lo
 - Activity timeline
 
 Public profiles allow anyone to inspect the evidence trail associated with a workspace without needing an account.
+
+### Opting Out
+
+Public profiles are enabled by default, but workspaces can opt out at any time from **Settings**. Organizations that prefer to remain invisible can disable their public profile, and re-enable it whenever they choose. The on-chain evidence records remain independently verifiable regardless of profile visibility -- opting out only hides the workspace from the CodeQuill web interface.
