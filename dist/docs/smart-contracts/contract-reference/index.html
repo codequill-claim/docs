@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: '#08080d',
+                surface: '#11111a',
+                elevated: '#1a1a27',
+                border: '#1e1e2e',
+                'border-accent': 'rgba(139, 92, 246, 0.3)',
+                body: '#d4d4d8',
+                bright: '#fafafa',
+                muted: '#52525b',
+                accent: '#8b5cf6',
+                'accent-light': '#a78bfa',
+                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+    <title>Contract Reference — CodeQuill</title>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 text-bright font-semibold text-lg no-underline">
+            <img src="/assets/images/logo-icon.svg" alt="CodeQuill" width="24" height="24">
+            <span>CodeQuill</span>
+        </a>
+        <nav class="flex items-center gap-5">
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="/docs" class="nav-link">Docs</a>
+            <a href="https://app.codequill.xyz" class="nav-link" target="_blank" rel="noopener">Launch App</a>
+            <a href="https://github.com/ophelios-studio/codequill-contracts" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+            <span class="version-badge">0.8.1</span>
+        </nav>
+    </div>
+</header>
+
+    <div class="docs-layout">
+<aside class="docs-sidebar">
+    <nav class="sidebar-nav">
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Getting Started</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/getting-started/introduction"
+                       class="sidebar-link">
+                        Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/quickstart"
+                       class="sidebar-link">
+                        Quickstart
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/configuration"
+                       class="sidebar-link">
+                        Configuration
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Concepts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/concepts/workspaces"
+                       class="sidebar-link">
+                        Workspaces
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/claims"
+                       class="sidebar-link">
+                        Claims
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/snapshots"
+                       class="sidebar-link">
+                        Snapshots
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/releases"
+                       class="sidebar-link">
+                        Releases
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/attestations"
+                       class="sidebar-link">
+                        Attestations
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/preservations"
+                       class="sidebar-link">
+                        Preservations
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/proofs"
+                       class="sidebar-link">
+                        Proofs
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Releases &amp; Governance</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/releases/release-lifecycle"
+                       class="sidebar-link">
+                        Release Lifecycle
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/releases/dao-governance"
+                       class="sidebar-link">
+                        DAO Governance
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/releases/release-manifests"
+                       class="sidebar-link">
+                        Release Manifests
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Web Application</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/web-application/dashboard-repositories"
+                       class="sidebar-link">
+                        Dashboard &amp; Repositories
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/web-application/settings-wallets"
+                       class="sidebar-link">
+                        Settings &amp; Wallets
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/web-application/subscription-plans"
+                       class="sidebar-link">
+                        Subscription Plans
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CLI Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/cli-reference/authentication"
+                       class="sidebar-link">
+                        Authentication
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/source-commands"
+                       class="sidebar-link">
+                        Source Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/verification-commands"
+                       class="sidebar-link">
+                        Verification Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/utility-commands"
+                       class="sidebar-link">
+                        Utility Commands
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CI/CD Integration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/ci-cd/overview"
+                       class="sidebar-link">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/ci-cd/snapshot-action"
+                       class="sidebar-link">
+                        Snapshot Action
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/ci-cd/attestation-action"
+                       class="sidebar-link">
+                        Attestation Action
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Smart Contracts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/smart-contracts/architecture"
+                       class="sidebar-link">
+                        Architecture
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/smart-contracts/contract-reference"
+                       class="sidebar-link active">
+                        Contract Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Security</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/security/threat-model"
+                       class="sidebar-link">
+                        Threat Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/security/encryption-model"
+                       class="sidebar-link">
+                        Encryption Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/security/non-guarantees"
+                       class="sidebar-link">
+                        Non-Guarantees
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/reference/interpreting-evidence"
+                       class="sidebar-link">
+                        Interpreting Evidence
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/reference/glossary"
+                       class="sidebar-link">
+                        Glossary
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/reference/faq"
+                       class="sidebar-link">
+                        FAQ
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</aside>
+        <main class="docs-main">
+<article class="docs-content">
+    <div class="prose">
+        <h1>Contract Reference</h1>
+<p>This page documents each of the seven CodeQuill smart contracts: their purpose, key functions, and emitted events.</p>
+<p>All state-changing functions that accept user intent have <code>WithSig</code> variants. These variants accept an EIP-712 signature and recover the signer on-chain, allowing a relayer to submit the transaction on the user's behalf.</p>
+<hr />
+<h2 id="codequilldelegation"><a href="#codequilldelegation" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>CodeQuillDelegation</h2>
+<p>Context-scoped delegation system. An owner signs an EIP-712 message granting a relayer (or any delegate) permission to act on their behalf within a specific workspace context. Delegations carry granular scope bitmasks and an expiry timestamp.</p>
+<h3 id="functions"><a href="#functions" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>registerDelegationWithSig()</code></td>
+<td>Registers a new delegation from a signed EIP-712 payload. Records the delegator, delegate, context, scopes, and expiry.</td>
+</tr>
+<tr>
+<td><code>revoke()</code></td>
+<td>Revokes a delegation. Called directly by the delegator.</td>
+</tr>
+<tr>
+<td><code>revokeWithSig()</code></td>
+<td>Revokes a delegation via a signed EIP-712 payload, allowing relayer-mediated revocation.</td>
+</tr>
+<tr>
+<td><code>isAuthorized()</code></td>
+<td>Returns whether a given delegate holds an active, non-expired delegation with the required scope for a specific context.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events"><a href="#events" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Delegated</code></td>
+<td>Emitted when a new delegation is registered.</td>
+</tr>
+<tr>
+<td><code>Revoked</code></td>
+<td>Emitted when a delegation is revoked.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="codequillworkspaceregistry"><a href="#codequillworkspaceregistry" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>CodeQuillWorkspaceRegistry</h2>
+<p>Binds wallet addresses to workspace contexts. Each workspace has a single authority address that controls membership. Members are added or removed by the authority through signed messages.</p>
+<h3 id="functions-1"><a href="#functions-1" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>initAuthority()</code></td>
+<td>Sets the initial authority for a workspace context. Can only be called once per context.</td>
+</tr>
+<tr>
+<td><code>setAuthorityWithSig()</code></td>
+<td>Transfers authority to a new address via a signed EIP-712 payload. Only the current authority can sign this.</td>
+</tr>
+<tr>
+<td><code>setMemberWithSig()</code></td>
+<td>Adds or removes a member from a workspace context via a signed payload from the authority.</td>
+</tr>
+<tr>
+<td><code>leave()</code></td>
+<td>Allows a member to voluntarily leave a workspace context. Called directly by the member.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events-1"><a href="#events-1" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AuthoritySet</code></td>
+<td>Emitted when a workspace authority is initialized or transferred.</td>
+</tr>
+<tr>
+<td><code>MemberSet</code></td>
+<td>Emitted when a member is added to or removed from a workspace.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="codequillrepositoryregistry"><a href="#codequillrepositoryregistry" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>CodeQuillRepositoryRegistry</h2>
+<p>Maps repository identifiers to owner wallet addresses and workspace contexts. A repository must be claimed before it can be referenced by snapshots, releases, or other downstream contracts.</p>
+<p><strong>Depends on:</strong> CodeQuillDelegation, CodeQuillWorkspaceRegistry</p>
+<h3 id="functions-2"><a href="#functions-2" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>claimRepo()</code></td>
+<td>Claims a repository within a workspace context, binding it to the caller's address.</td>
+</tr>
+<tr>
+<td><code>transferRepo()</code></td>
+<td>Transfers ownership of a claimed repository to a different address.</td>
+</tr>
+<tr>
+<td><code>isClaimed()</code></td>
+<td>Returns whether a given repository identifier has been claimed.</td>
+</tr>
+<tr>
+<td><code>repoOwners()</code></td>
+<td>Returns the current owner address for a repository.</td>
+</tr>
+<tr>
+<td><code>getReposByOwner()</code></td>
+<td>Returns all repository identifiers owned by a given address within a context.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events-2"><a href="#events-2" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RepoClaimed</code></td>
+<td>Emitted when a repository is claimed.</td>
+</tr>
+<tr>
+<td><code>RepoTransferred</code></td>
+<td>Emitted when repository ownership is transferred.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="codequillsnapshotregistry"><a href="#codequillsnapshotregistry" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>CodeQuillSnapshotRegistry</h2>
+<p>On-chain snapshot anchoring. Each snapshot records a commit hash, a Merkle root of the repository's file tree, and an IPFS content identifier. Snapshots are the foundational data structure referenced by releases, preservations, and attestations.</p>
+<p><strong>Depends on:</strong> CodeQuillRepositoryRegistry, CodeQuillWorkspaceRegistry, CodeQuillDelegation</p>
+<h3 id="functions-3"><a href="#functions-3" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>createSnapshot()</code></td>
+<td>Anchors a new snapshot for a claimed repository. Records the commit hash, Merkle root, and IPFS CID.</td>
+</tr>
+<tr>
+<td><code>getSnapshotsCount()</code></td>
+<td>Returns the total number of snapshots for a given repository.</td>
+</tr>
+<tr>
+<td><code>getSnapshot()</code></td>
+<td>Retrieves a snapshot by its index within a repository's snapshot list.</td>
+</tr>
+<tr>
+<td><code>getSnapshotByRoot()</code></td>
+<td>Looks up a snapshot by its Merkle root.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events-3"><a href="#events-3" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SnapshotCreated</code></td>
+<td>Emitted when a new snapshot is anchored.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="codequillreleaseregistry"><a href="#codequillreleaseregistry" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>CodeQuillReleaseRegistry</h2>
+<p>Release anchoring with a governance lifecycle. A release references a snapshot and carries a status that can progress through acceptance, rejection, revocation, or supersession. Supports DAO executor addresses for governance-controlled status transitions.</p>
+<p><strong>Depends on:</strong> CodeQuillRepositoryRegistry, CodeQuillWorkspaceRegistry, CodeQuillDelegation, CodeQuillSnapshotRegistry</p>
+<h3 id="functions-4"><a href="#functions-4" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>anchorRelease()</code></td>
+<td>Anchors a new release referencing a specific snapshot.</td>
+</tr>
+<tr>
+<td><code>accept()</code></td>
+<td>Marks a release as accepted.</td>
+</tr>
+<tr>
+<td><code>reject()</code></td>
+<td>Marks a release as rejected.</td>
+</tr>
+<tr>
+<td><code>revokeRelease()</code></td>
+<td>Revokes a previously accepted release.</td>
+</tr>
+<tr>
+<td><code>supersedeRelease()</code></td>
+<td>Marks a release as superseded by a newer release.</td>
+</tr>
+<tr>
+<td><code>setDaoExecutor()</code></td>
+<td>Sets or updates the DAO executor address authorized to perform governance transitions for a context.</td>
+</tr>
+<tr>
+<td><code>getReleaseById()</code></td>
+<td>Retrieves the full release record by its identifier.</td>
+</tr>
+<tr>
+<td><code>getGouvernanceStatus()</code></td>
+<td>Returns the current governance status of a release.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events-4"><a href="#events-4" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ReleaseAnchored</code></td>
+<td>Emitted when a new release is anchored.</td>
+</tr>
+<tr>
+<td><code>ReleaseSuperseded</code></td>
+<td>Emitted when a release is marked as superseded.</td>
+</tr>
+<tr>
+<td><code>ReleaseRevoked</code></td>
+<td>Emitted when a release is revoked.</td>
+</tr>
+<tr>
+<td><code>GouvernanceStatusChanged</code></td>
+<td>Emitted when the governance status of a release changes (accepted, rejected, revoked, or superseded).</td>
+</tr>
+<tr>
+<td><code>DaoExecutorSet</code></td>
+<td>Emitted when a DAO executor address is set or updated.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="codequillpreservationregistry"><a href="#codequillpreservationregistry" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>CodeQuillPreservationRegistry</h2>
+<p>Anchors existence proofs of encrypted source-code archives. Each preservation record is linked to a specific snapshot and contains the metadata needed to verify that an encrypted archive existed at a given point in time.</p>
+<p><strong>Depends on:</strong> CodeQuillRepositoryRegistry, CodeQuillWorkspaceRegistry, CodeQuillDelegation, CodeQuillSnapshotRegistry</p>
+<h3 id="functions-5"><a href="#functions-5" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>anchorPreservation()</code></td>
+<td>Anchors a new preservation record linked to a snapshot.</td>
+</tr>
+<tr>
+<td><code>hasPreservation()</code></td>
+<td>Returns whether a preservation record exists for a given snapshot.</td>
+</tr>
+<tr>
+<td><code>getPreservation()</code></td>
+<td>Retrieves the full preservation record for a given snapshot.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events-5"><a href="#events-5" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PreservationAnchored</code></td>
+<td>Emitted when a new preservation record is anchored.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="codequillattestationregistry"><a href="#codequillattestationregistry" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>CodeQuillAttestationRegistry</h2>
+<p>Records supply-chain attestations containing SHA-256 artifact digests, bound to releases that have reached <code>ACCEPTED</code> status. Attestations provide a verifiable link between a release and the artifacts produced from it.</p>
+<p><strong>Depends on:</strong> CodeQuillWorkspaceRegistry, CodeQuillDelegation, CodeQuillReleaseRegistry</p>
+<h3 id="functions-6"><a href="#functions-6" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>createAttestation()</code></td>
+<td>Creates a new attestation linked to an accepted release. Records the artifact digest and attestation metadata.</td>
+</tr>
+<tr>
+<td><code>revokeAttestation()</code></td>
+<td>Revokes an existing attestation. The attestation data remains on-chain but is marked as revoked.</td>
+</tr>
+<tr>
+<td><code>isRevoked()</code></td>
+<td>Returns whether a specific attestation has been revoked.</td>
+</tr>
+<tr>
+<td><code>getAttestationsCount()</code></td>
+<td>Returns the total number of attestations for a given release.</td>
+</tr>
+<tr>
+<td><code>getAttestation()</code></td>
+<td>Retrieves an attestation by its index within a release's attestation list.</td>
+</tr>
+<tr>
+<td><code>getAttestationByDigest()</code></td>
+<td>Looks up an attestation by its SHA-256 artifact digest.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events-6"><a href="#events-6" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AttestationCreated</code></td>
+<td>Emitted when a new attestation is recorded.</td>
+</tr>
+<tr>
+<td><code>AttestationRevoked</code></td>
+<td>Emitted when an attestation is revoked.</td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+
+    <nav class="docs-pagination">
+        <a href="/docs/smart-contracts/architecture" class="pagination-link pagination-prev">
+            <span class="pagination-label">&larr; Previous</span>
+            <span class="pagination-title">Architecture</span>
+        </a>
+
+        <a href="/docs/security/threat-model" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Threat Model</span>
+        </a>
+    </nav>
+</article>
+        </main>
+<aside class="docs-toc">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            <li class="toc-item">
+                <a href="#codequilldelegation" class="toc-link">CodeQuillDelegation</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#functions" class="toc-link">Functions</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#events" class="toc-link">Events</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequillworkspaceregistry" class="toc-link">CodeQuillWorkspaceRegistry</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#functions-1" class="toc-link">Functions</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#events-1" class="toc-link">Events</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequillrepositoryregistry" class="toc-link">CodeQuillRepositoryRegistry</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#functions-2" class="toc-link">Functions</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#events-2" class="toc-link">Events</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequillsnapshotregistry" class="toc-link">CodeQuillSnapshotRegistry</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#functions-3" class="toc-link">Functions</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#events-3" class="toc-link">Events</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequillreleaseregistry" class="toc-link">CodeQuillReleaseRegistry</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#functions-4" class="toc-link">Functions</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#events-4" class="toc-link">Events</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequillpreservationregistry" class="toc-link">CodeQuillPreservationRegistry</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#functions-5" class="toc-link">Functions</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#events-5" class="toc-link">Events</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequillattestationregistry" class="toc-link">CodeQuillAttestationRegistry</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#functions-6" class="toc-link">Functions</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#events-6" class="toc-link">Events</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+    </div>
+
+<div class="search-overlay" id="search-overlay">
+    <div class="search-dialog" role="dialog" aria-label="Search documentation">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off" autofocus>
+            <kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--text-muted); font-family: var(--font-mono); cursor: pointer;" onclick="closeSearch()">Esc</kbd>
+        </div>
+        <div class="search-results" id="search-results">
+            <div class="search-empty">Type to search the documentation...</div>
+        </div>
+        <div class="search-footer">
+            <span>Navigate with <kbd>&uarr;</kbd> <kbd>&darr;</kbd> keys</span>
+            <span>Press <kbd>Enter</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="/assets/js/copy-code.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Code Quill">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<meta name="description" content="Seven Solidity contracts form a four-tier DAG deployed on EVM-compatible chains. No admin keys, no pause mechanism, fully permissionless.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Architecture — CodeQuill">
+<meta property="og:description" content="Seven Solidity contracts form a four-tier DAG deployed on EVM-compatible chains. No admin keys, no pause mechanism, fully permissionless.">
+<meta property="og:site_name" content="CodeQuill">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Architecture — CodeQuill">
+<meta name="twitter:description" content="Seven Solidity contracts form a four-tier DAG deployed on EVM-compatible chains. No admin keys, no pause mechanism, fully permissionless.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: '#08080d',
+                surface: '#11111a',
+                elevated: '#1a1a27',
+                border: '#1e1e2e',
+                'border-accent': 'rgba(139, 92, 246, 0.3)',
+                body: '#d4d4d8',
+                bright: '#fafafa',
+                muted: '#52525b',
+                accent: '#8b5cf6',
+                'accent-light': '#a78bfa',
+                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+    <title>Architecture — CodeQuill</title>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="nav-container">
+        <div class="nav-left">
+            <button class="nav-toggle" onclick="toggleNav()" type="button" aria-label="Toggle menu">
+                <svg class="nav-toggle-open" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                <svg class="nav-toggle-close" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+            <a href="/" class="nav-logo" aria-label="CodeQuill">
+                <img src="/assets/images/logo-full.svg" alt="CodeQuill" class="nav-logo-img">
+            </a>
+        </div>
+        <nav class="nav-links">
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="https://app.codequill.xyz" class="nav-link" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.497-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"></path></svg>
+                Launch App
+            </a>
+            <a href="https://github.com/codequill-claim" class="nav-link" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                GitHub
+            </a>
+            <span class="version-badge">0.9.1</span>
+        </nav>
+    </div>
+</header>
+
+    <div class="docs-layout">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="docs-sidebar">
+    <nav class="sidebar-nav">
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Getting Started</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/getting-started/introduction"
+                       class="sidebar-link">
+                        Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/quickstart"
+                       class="sidebar-link">
+                        Quickstart
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/configuration"
+                       class="sidebar-link">
+                        Configuration
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Concepts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/concepts/workspaces"
+                       class="sidebar-link">
+                        Workspaces
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/claims"
+                       class="sidebar-link">
+                        Claims
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/snapshots"
+                       class="sidebar-link">
+                        Snapshots
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/releases"
+                       class="sidebar-link">
+                        Releases
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/attestations"
+                       class="sidebar-link">
+                        Attestations
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/preservations"
+                       class="sidebar-link">
+                        Preservations
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/proofs"
+                       class="sidebar-link">
+                        Proofs
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Releases &amp; Governance</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/releases/release-lifecycle"
+                       class="sidebar-link">
+                        Release Lifecycle
+                    </a>
+                </li>
+                <li>
+                    <a href="/releases/dao-governance"
+                       class="sidebar-link">
+                        DAO Governance
+                    </a>
+                </li>
+                <li>
+                    <a href="/releases/release-manifests"
+                       class="sidebar-link">
+                        Release Manifests
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Web Application</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/web-application/dashboard-repositories"
+                       class="sidebar-link">
+                        Dashboard &amp; Repositories
+                    </a>
+                </li>
+                <li>
+                    <a href="/web-application/settings-wallets"
+                       class="sidebar-link">
+                        Settings &amp; Wallets
+                    </a>
+                </li>
+                <li>
+                    <a href="/web-application/subscription-plans"
+                       class="sidebar-link">
+                        Subscription Plans
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CLI Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/cli-reference/authentication"
+                       class="sidebar-link">
+                        Authentication
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/source-commands"
+                       class="sidebar-link">
+                        Source Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/verification-commands"
+                       class="sidebar-link">
+                        Verification Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/utility-commands"
+                       class="sidebar-link">
+                        Utility Commands
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CI/CD Integration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/ci-cd/overview"
+                       class="sidebar-link">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="/ci-cd/snapshot-action"
+                       class="sidebar-link">
+                        Snapshot Action
+                    </a>
+                </li>
+                <li>
+                    <a href="/ci-cd/attestation-action"
+                       class="sidebar-link">
+                        Attestation Action
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Smart Contracts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/smart-contracts/architecture"
+                       class="sidebar-link active">
+                        Architecture
+                    </a>
+                </li>
+                <li>
+                    <a href="/smart-contracts/contract-reference"
+                       class="sidebar-link">
+                        Contract Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Security</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/security/threat-model"
+                       class="sidebar-link">
+                        Threat Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/security/encryption-model"
+                       class="sidebar-link">
+                        Encryption Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/security/non-guarantees"
+                       class="sidebar-link">
+                        Non-Guarantees
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/reference/interpreting-evidence"
+                       class="sidebar-link">
+                        Interpreting Evidence
+                    </a>
+                </li>
+                <li>
+                    <a href="/reference/glossary"
+                       class="sidebar-link">
+                        Glossary
+                    </a>
+                </li>
+                <li>
+                    <a href="/reference/faq"
+                       class="sidebar-link">
+                        FAQ
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="sidebar-mobile-links">
+            <a href="https://app.codequill.xyz" class="sidebar-footer-link" target="_blank" rel="noopener">Launch App</a>
+            <a href="https://github.com/codequill-claim" class="sidebar-footer-link" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="sidebar-copyright">
+            &copy; 2026 Ophelios. All rights reserved.
+        </div>
+        <div class="sidebar-powered">
+            Powered by <a href="https://github.com/dadajuice/zephyrus-leaf" target="_blank" rel="noopener">Zephyrus Leaf</a>
+        </div>
+    </div>
+</aside>
+        <main class="docs-main">
+<article class="docs-content">
+    <div class="prose">
+        <h1>Architecture</h1>
+<p>CodeQuill's on-chain layer consists of seven Solidity contracts deployed on EVM-compatible chains. All contracts target Solidity ^0.8.24 and are compiled with 0.8.28. They are MIT-licensed.</p>
+<p>The development framework is Hardhat with Ignition for deterministic deployment. The sole external dependency is OpenZeppelin Contracts v5.4.0, used for <code>ECDSA</code> signature recovery and <code>EIP712</code> structured-data hashing.</p>
+<h2 id="dependency-dag"><a href="#dependency-dag" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Dependency DAG</h2>
+<p>The contracts form a strict four-tier directed acyclic graph. Each tier depends only on tiers below it; no circular references exist.</p>
+<h3 id="tier-1----identity--access"><a href="#tier-1----identity--access" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Tier 1 -- Identity &amp; Access</h3>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CodeQuillDelegation</code></td>
+<td>Context-scoped delegation with granular permission scopes and expiry</td>
+</tr>
+<tr>
+<td><code>CodeQuillWorkspaceRegistry</code></td>
+<td>Workspace context management and membership</td>
+</tr>
+</tbody>
+</table>
+<p>These contracts have no CodeQuill contract dependencies. They are deployed first and provide the identity and authorization primitives consumed by every tier above.</p>
+<h3 id="tier-2----repository--snapshots"><a href="#tier-2----repository--snapshots" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Tier 2 -- Repository &amp; Snapshots</h3>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Depends on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CodeQuillRepositoryRegistry</code></td>
+<td>Delegation, WorkspaceRegistry</td>
+</tr>
+<tr>
+<td><code>CodeQuillSnapshotRegistry</code></td>
+<td>RepositoryRegistry, WorkspaceRegistry, Delegation</td>
+</tr>
+</tbody>
+</table>
+<p>Tier 2 introduces data registration: binding repositories to owners and anchoring cryptographic snapshots of source code.</p>
+<h3 id="tier-3----releases--preservations"><a href="#tier-3----releases--preservations" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Tier 3 -- Releases &amp; Preservations</h3>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Depends on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CodeQuillReleaseRegistry</code></td>
+<td>RepositoryRegistry, WorkspaceRegistry, Delegation, SnapshotRegistry</td>
+</tr>
+<tr>
+<td><code>CodeQuillPreservationRegistry</code></td>
+<td>RepositoryRegistry, WorkspaceRegistry, Delegation, SnapshotRegistry</td>
+</tr>
+</tbody>
+</table>
+<p>Tier 3 builds on snapshot data to support release lifecycle governance and encrypted archive anchoring.</p>
+<h3 id="tier-4----trust--verification"><a href="#tier-4----trust--verification" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Tier 4 -- Trust &amp; Verification</h3>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Depends on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CodeQuillAttestationRegistry</code></td>
+<td>WorkspaceRegistry, Delegation, ReleaseRegistry</td>
+</tr>
+</tbody>
+</table>
+<p>The attestation registry sits at the top of the dependency graph. It records supply-chain attestations bound to accepted releases.</p>
+<h3 id="deployment-order"><a href="#deployment-order" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Deployment order</h3>
+<p>Contracts are deployed in tier order: Tier 1 first, then Tier 2, Tier 3, and finally Tier 4. Each contract receives the addresses of its dependencies at construction time and stores them as <code>immutable</code> references.</p>
+<h2 id="design-principles"><a href="#design-principles" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Design Principles</h2>
+<h3 id="1-relayer-mediated-transactions"><a href="#1-relayer-mediated-transactions" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>1. Relayer-mediated transactions</h3>
+<p>Users never need to hold ETH or submit transactions directly. Instead, users sign EIP-712 typed data off-chain, and a relayer submits the signed payload on their behalf. Every state-changing function that accepts user intent has a <code>WithSig</code> variant that verifies the recovered signer.</p>
+<h3 id="2-multi-tenant-isolation"><a href="#2-multi-tenant-isolation" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>2. Multi-tenant isolation</h3>
+<p>All operations are scoped to a <code>contextId</code> representing a workspace. A repository claim, snapshot, release, or attestation always belongs to exactly one context. Cross-context references are not possible.</p>
+<h3 id="3-separation-of-concerns"><a href="#3-separation-of-concerns" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>3. Separation of concerns</h3>
+<p>Identity, authorization, data registration, integrity anchoring, and archival preservation are handled by distinct contracts. No single contract accumulates unrelated responsibilities.</p>
+<h3 id="4-immutable-cross-references"><a href="#4-immutable-cross-references" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>4. Immutable cross-references</h3>
+<p>Each contract stores the addresses of its dependencies as Solidity <code>immutable</code> state variables, set once at construction. There are no upgradeable proxies, no admin-controlled address slots, and no registry indirection. The dependency graph is fixed at deployment time.</p>
+<h3 id="5-no-admin-keys"><a href="#5-no-admin-keys" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>5. No admin keys</h3>
+<p>There is no <code>owner</code>, no <code>admin</code> role, no <code>pause</code> function. Once deployed, the contracts are fully permissionless. No privileged address can alter behavior, freeze state, or upgrade logic.</p>
+<h3 id="6-append-only-with-soft-revocation"><a href="#6-append-only-with-soft-revocation" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>6. Append-only with soft revocation</h3>
+<p>Records are append-only. Snapshots, releases, attestations, and preservations can never be deleted from contract storage. Where lifecycle transitions are needed -- revoking a release, superseding it with a newer version, or revoking an attestation -- the contract marks the record's status without removing the underlying data.</p>
+<h2 id="delegation-scopes"><a href="#delegation-scopes" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Delegation Scopes</h2>
+<p>The delegation system uses a bitmask to grant fine-grained permissions. Each scope corresponds to a single bit:</p>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SCOPE_CLAIM</code></td>
+<td><code>1 &lt;&lt; 0</code></td>
+<td>Claim and transfer repositories</td>
+</tr>
+<tr>
+<td><code>SCOPE_SNAPSHOT</code></td>
+<td><code>1 &lt;&lt; 1</code></td>
+<td>Create snapshots</td>
+</tr>
+<tr>
+<td><code>SCOPE_ATTEST</code></td>
+<td><code>1 &lt;&lt; 2</code></td>
+<td>Create and revoke attestations</td>
+</tr>
+<tr>
+<td><code>SCOPE_PRESERVATION</code></td>
+<td><code>1 &lt;&lt; 3</code></td>
+<td>Anchor preservation records</td>
+</tr>
+<tr>
+<td><code>SCOPE_RELEASE</code></td>
+<td><code>1 &lt;&lt; 4</code></td>
+<td>Anchor and manage releases</td>
+</tr>
+<tr>
+<td><code>SCOPE_ALL</code></td>
+<td><code>type(uint256).max</code></td>
+<td>All current and future scopes</td>
+</tr>
+</tbody>
+</table>
+<p>A delegation can combine multiple scopes with bitwise OR. For example, granting snapshot and release permissions uses <code>SCOPE_SNAPSHOT | SCOPE_RELEASE</code>. The <code>SCOPE_ALL</code> value sets every bit, granting unrestricted access within the delegated context.</p>
+
+    </div>
+
+    <nav class="docs-pagination">
+        <a href="/ci-cd/attestation-action" class="pagination-link pagination-prev">
+            <span class="pagination-label">&larr; Previous</span>
+            <span class="pagination-title">Attestation Action</span>
+        </a>
+
+        <a href="/smart-contracts/contract-reference" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Contract Reference</span>
+        </a>
+    </nav>
+</article>
+        </main>
+<aside class="docs-toc">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            <li class="toc-item">
+                <a href="#dependency-dag" class="toc-link">Dependency DAG</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#tier-1----identity--access" class="toc-link">Tier 1 -- Identity &amp; Access</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#tier-2----repository--snapshots" class="toc-link">Tier 2 -- Repository &amp; Snapshots</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#tier-3----releases--preservations" class="toc-link">Tier 3 -- Releases &amp; Preservations</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#tier-4----trust--verification" class="toc-link">Tier 4 -- Trust &amp; Verification</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#deployment-order" class="toc-link">Deployment order</a>
+            </li>
+            <li class="toc-item">
+                <a href="#design-principles" class="toc-link">Design Principles</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#1-relayer-mediated-transactions" class="toc-link">1. Relayer-mediated transactions</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#2-multi-tenant-isolation" class="toc-link">2. Multi-tenant isolation</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#3-separation-of-concerns" class="toc-link">3. Separation of concerns</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#4-immutable-cross-references" class="toc-link">4. Immutable cross-references</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#5-no-admin-keys" class="toc-link">5. No admin keys</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#6-append-only-with-soft-revocation" class="toc-link">6. Append-only with soft revocation</a>
+            </li>
+            <li class="toc-item">
+                <a href="#delegation-scopes" class="toc-link">Delegation Scopes</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+    </div>
+
+<div class="search-overlay" id="search-overlay">
+    <div class="search-dialog" role="dialog" aria-label="Search documentation">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off" autofocus>
+            <kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--text-muted); font-family: var(--font-mono); cursor: pointer;" onclick="closeSearch()">Esc</kbd>
+        </div>
+        <div class="search-results" id="search-results">
+            <div class="search-empty">Type to search the documentation...</div>
+        </div>
+        <div class="search-footer">
+            <span>Navigate with <kbd>&uarr;</kbd> <kbd>&darr;</kbd> keys</span>
+            <span>Press <kbd>Enter</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="/assets/js/copy-code.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/search.js"></script>
+</body>
+</html>

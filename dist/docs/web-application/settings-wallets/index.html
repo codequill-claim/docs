@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: '#08080d',
+                surface: '#11111a',
+                elevated: '#1a1a27',
+                border: '#1e1e2e',
+                'border-accent': 'rgba(139, 92, 246, 0.3)',
+                body: '#d4d4d8',
+                bright: '#fafafa',
+                muted: '#52525b',
+                accent: '#8b5cf6',
+                'accent-light': '#a78bfa',
+                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+    <title>Settings &amp; Wallets — CodeQuill</title>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 text-bright font-semibold text-lg no-underline">
+            <img src="/assets/images/logo-icon.svg" alt="CodeQuill" width="24" height="24">
+            <span>CodeQuill</span>
+        </a>
+        <nav class="flex items-center gap-5">
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="/docs" class="nav-link">Docs</a>
+            <a href="https://app.codequill.xyz" class="nav-link" target="_blank" rel="noopener">Launch App</a>
+            <a href="https://github.com/ophelios-studio/codequill-contracts" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+            <span class="version-badge">0.8.1</span>
+        </nav>
+    </div>
+</header>
+
+    <div class="docs-layout">
+<aside class="docs-sidebar">
+    <nav class="sidebar-nav">
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Getting Started</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/getting-started/introduction"
+                       class="sidebar-link">
+                        Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/quickstart"
+                       class="sidebar-link">
+                        Quickstart
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/configuration"
+                       class="sidebar-link">
+                        Configuration
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Concepts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/concepts/workspaces"
+                       class="sidebar-link">
+                        Workspaces
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/claims"
+                       class="sidebar-link">
+                        Claims
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/snapshots"
+                       class="sidebar-link">
+                        Snapshots
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/releases"
+                       class="sidebar-link">
+                        Releases
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/attestations"
+                       class="sidebar-link">
+                        Attestations
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/preservations"
+                       class="sidebar-link">
+                        Preservations
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/proofs"
+                       class="sidebar-link">
+                        Proofs
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Releases &amp; Governance</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/releases/release-lifecycle"
+                       class="sidebar-link">
+                        Release Lifecycle
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/releases/dao-governance"
+                       class="sidebar-link">
+                        DAO Governance
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/releases/release-manifests"
+                       class="sidebar-link">
+                        Release Manifests
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Web Application</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/web-application/dashboard-repositories"
+                       class="sidebar-link">
+                        Dashboard &amp; Repositories
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/web-application/settings-wallets"
+                       class="sidebar-link active">
+                        Settings &amp; Wallets
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/web-application/subscription-plans"
+                       class="sidebar-link">
+                        Subscription Plans
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CLI Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/cli-reference/authentication"
+                       class="sidebar-link">
+                        Authentication
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/source-commands"
+                       class="sidebar-link">
+                        Source Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/verification-commands"
+                       class="sidebar-link">
+                        Verification Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/utility-commands"
+                       class="sidebar-link">
+                        Utility Commands
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CI/CD Integration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/ci-cd/overview"
+                       class="sidebar-link">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/ci-cd/snapshot-action"
+                       class="sidebar-link">
+                        Snapshot Action
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/ci-cd/attestation-action"
+                       class="sidebar-link">
+                        Attestation Action
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Smart Contracts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/smart-contracts/architecture"
+                       class="sidebar-link">
+                        Architecture
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/smart-contracts/contract-reference"
+                       class="sidebar-link">
+                        Contract Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Security</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/security/threat-model"
+                       class="sidebar-link">
+                        Threat Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/security/encryption-model"
+                       class="sidebar-link">
+                        Encryption Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/security/non-guarantees"
+                       class="sidebar-link">
+                        Non-Guarantees
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/reference/interpreting-evidence"
+                       class="sidebar-link">
+                        Interpreting Evidence
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/reference/glossary"
+                       class="sidebar-link">
+                        Glossary
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/reference/faq"
+                       class="sidebar-link">
+                        FAQ
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</aside>
+        <main class="docs-main">
+<article class="docs-content">
+    <div class="prose">
+        <h1>Settings &amp; Wallets</h1>
+<p>Workspace settings control identity, authorization, collaboration, encryption, and network configuration. This page covers the settings surfaces available at <a href="https://app.codequill.xyz">app.codequill.xyz</a>.</p>
+<h2 id="settings-overview"><a href="#settings-overview" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Settings Overview</h2>
+<p>The settings page is organized into the following sections:</p>
+<ul>
+<li><strong>Profile</strong> -- Workspace display name, avatar, and description.</li>
+<li><strong>Default Chain</strong> -- The Ethereum network used by default for on-chain operations within the workspace.</li>
+<li><strong>Notifications</strong> -- Telegram notification preferences for workspace events (snapshots, attestations, claims, collaborator activity).</li>
+</ul>
+<p>[Screenshot: Settings overview page showing profile, default chain, and notification preferences]</p>
+<h2 id="wallet-management"><a href="#wallet-management" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Wallet Management</h2>
+<p>Wallets are the foundation of on-chain identity in CodeQuill. Every on-chain action -- claiming, snapshotting, attesting, preserving -- is ultimately authorized by a wallet. Wallet management in the web application handles connection, authority initialization, membership, delegation, and identity resolution.</p>
+<h3 id="connecting-a-wallet"><a href="#connecting-a-wallet" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Connecting a Wallet</h3>
+<p>Wallets are connected via <strong>Sign-In with Ethereum (SIWE)</strong>. The flow is:</p>
+<ol>
+<li>Click <strong>Connect Wallet</strong> in the settings panel.</li>
+<li>Select a wallet provider (MetaMask, WalletConnect, or any injected EIP-1193 provider).</li>
+<li>Sign the SIWE message presented by the application.</li>
+<li>The wallet address is verified and saved to the workspace.</li>
+</ol>
+<p>SIWE verification confirms that the user controls the private key for the address. No tokens are transferred and no on-chain transaction occurs during connection itself.</p>
+<h3 id="authority-and-membership"><a href="#authority-and-membership" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Authority and Membership</h3>
+<p>The first wallet connected to a workspace becomes the <strong>on-chain authority</strong>. This address is registered on the <code>CodeQuillWorkspaceRegistry</code> contract as the workspace's root identity. The authority wallet has ultimate control: it can add members, manage claims, and configure governance.</p>
+<p>Subsequent wallets are added as <strong>members</strong>. Adding a member requires a signature from the existing authority wallet using the <strong>EIP-712</strong> typed data standard. The EIP-712 message includes the new member's address and the workspace context, ensuring the authority explicitly consents to each addition.</p>
+<p>[Screenshot: Wallet management panel showing authority wallet and two member wallets]</p>
+<h3 id="delegation-registration"><a href="#delegation-registration" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Delegation Registration</h3>
+<p>After a wallet is connected and its role established (authority or member), a <strong>delegation</strong> is registered. Delegations are scoped, time-limited authorizations that allow the CodeQuill backend to submit transactions on behalf of the wallet within defined boundaries.</p>
+<p>Delegation parameters include:</p>
+<ul>
+<li><strong>Scope</strong> -- Which contract functions the delegation covers (e.g., snapshot registration, attestation publishing).</li>
+<li><strong>Expiry</strong> -- A timestamp after which the delegation is no longer valid.</li>
+<li><strong>Caveats</strong> -- Additional constraints specific to the delegation type.</li>
+</ul>
+<p>Delegations can be revoked at any time from the wallet management panel. Expired delegations must be re-registered.</p>
+<h3 id="ens-resolution"><a href="#ens-resolution" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>ENS Resolution</h3>
+<p>For wallets with registered ENS names, CodeQuill resolves and displays:</p>
+<ul>
+<li><strong>ENS name</strong> -- The primary name associated with the address (e.g., <code>alice.eth</code>).</li>
+<li><strong>ENS avatar</strong> -- The avatar record, if set, displayed alongside the wallet address throughout the interface.</li>
+</ul>
+<p>ENS resolution is performed at connection time and refreshed periodically. It is purely cosmetic -- all on-chain operations reference the raw Ethereum address.</p>
+<h3 id="identicon-generation"><a href="#identicon-generation" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Identicon Generation</h3>
+<p>Wallets without an ENS avatar are assigned a deterministic <strong>identicon</strong> -- a unique visual pattern derived from the wallet address. Identicons provide visual distinction when multiple wallets are connected to a workspace.</p>
+<h2 id="wallet-onboarding-flow"><a href="#wallet-onboarding-flow" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Wallet Onboarding Flow</h2>
+<p>When a user connects their first wallet, a multi-step onboarding sequence ensures all necessary on-chain primitives are established:</p>
+<ol>
+<li><strong>SIWE Verification</strong> -- The wallet signs a SIWE message to prove ownership.</li>
+<li><strong>Save Wallet</strong> -- The verified address is persisted to the workspace record.</li>
+<li><strong>Initialize On-Chain Authority</strong> -- If this is the first wallet, a transaction is submitted to register the workspace authority on-chain. If the workspace already has an authority, the wallet is added as a member (requiring the authority's EIP-712 signature).</li>
+<li><strong>Register Delegation</strong> -- A delegation is created and registered, enabling the wallet to authorize on-chain actions through the CodeQuill backend.</li>
+</ol>
+<p>Each step must complete before the next begins. If any step fails (e.g., the user rejects a signature request), the flow pauses and can be resumed from the point of failure.</p>
+<p>[Screenshot: Wallet onboarding flow at the delegation registration step]</p>
+<h2 id="collaborators"><a href="#collaborators" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Collaborators</h2>
+<p>Workspaces support multiple collaborators with scoped permissions.</p>
+<h3 id="inviting-collaborators"><a href="#inviting-collaborators" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Inviting Collaborators</h3>
+<p>Collaborators are invited by email. The invited user receives a link to join the workspace. Upon accepting, they authenticate via GitHub and are added to the workspace with the assigned role.</p>
+<p>Invitations have an approval flow: the workspace owner or admin sends the invitation, and the recipient must explicitly accept. Pending invitations can be revoked before acceptance.</p>
+<h3 id="workspace-roles"><a href="#workspace-roles" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Workspace Roles</h3>
+<p>Workspace-level roles define broad access:</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Full control over workspace settings, billing, collaborators, and all repositories. One per workspace.</td>
+</tr>
+<tr>
+<td><strong>Admin</strong></td>
+<td>Can manage collaborators, repository settings, and on-chain operations. Cannot modify billing or transfer ownership.</td>
+</tr>
+<tr>
+<td><strong>Member</strong></td>
+<td>Can view repositories and activity. On-chain operation access depends on repository-level roles.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="repository-level-roles"><a href="#repository-level-roles" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Repository-Level Roles</h3>
+<p>Fine-grained access is controlled per repository:</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Viewer</strong></td>
+<td>Read-only access to repository evidence (snapshots, attestations, preservations).</td>
+</tr>
+<tr>
+<td><strong>Publisher</strong></td>
+<td>Can create and publish releases.</td>
+</tr>
+<tr>
+<td><strong>Attester</strong></td>
+<td>Can publish attestations for the repository's releases.</td>
+</tr>
+<tr>
+<td><strong>Maintainer</strong></td>
+<td>Full repository access including claiming, settings, and CI/CD configuration.</td>
+</tr>
+</tbody>
+</table>
+<p>Repository roles are additive. A collaborator with the <strong>Member</strong> workspace role and the <strong>Attester</strong> repository role can view all workspace repositories and publish attestations for the specific repository where the attester role is assigned.</p>
+<p>[Screenshot: Collaborator management page showing invitations and role assignments]</p>
+<h2 id="encryption-settings"><a href="#encryption-settings" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Encryption Settings</h2>
+<p>Preservations and proofs require client-side encryption. CodeQuill never accesses plaintext source code. Encryption is bound to <strong>WebAuthn passkeys</strong> registered to the workspace.</p>
+<h3 id="passkey-registration"><a href="#passkey-registration" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Passkey Registration</h3>
+<p>To enable encryption:</p>
+<ol>
+<li>Navigate to <strong>Settings &gt; Encryption</strong>.</li>
+<li>Click <strong>Register Passkey</strong>.</li>
+<li>Authenticate using a platform authenticator (Touch ID, Windows Hello, or a hardware security key).</li>
+<li>The passkey is registered and associated with the workspace.</li>
+</ol>
+<h3 id="prf-key-derivation"><a href="#prf-key-derivation" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>PRF Key Derivation</h3>
+<p>Encryption keys are derived using the <strong>PRF (Pseudo-Random Function) extension</strong> of WebAuthn. When a preservation or proof operation requires encryption, the passkey is invoked to derive a deterministic key specific to the operation context. This ensures:</p>
+<ul>
+<li>Encryption keys are never stored on CodeQuill servers.</li>
+<li>Key material is bound to the physical authenticator.</li>
+<li>Different operations produce different derived keys.</li>
+</ul>
+<p>If a passkey is lost, encrypted preservations created with that passkey cannot be decrypted. There is no recovery mechanism by design -- CodeQuill does not hold key material.</p>
+<p>[Screenshot: Encryption settings showing registered passkeys]</p>
+<h2 id="dao-executor-configuration"><a href="#dao-executor-configuration" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>DAO Executor Configuration</h2>
+<p>Workspaces that operate under DAO governance can configure a <strong>DAO executor address</strong>. The executor is a smart contract (typically a Gnosis Safe, Governor, or custom multisig) authorized to perform on-chain operations on behalf of the workspace.</p>
+<p>To set or change the DAO executor:</p>
+<ol>
+<li>Navigate to <strong>Settings &gt; Governance</strong>.</li>
+<li>Enter the executor contract address.</li>
+<li>Confirm the change with the authority wallet's signature.</li>
+</ol>
+<p>The DAO executor address is recorded on-chain. Once set, the executor can submit transactions for the workspace according to whatever governance process the DAO defines. See the <a href="/docs/web-application/dao-governance">DAO Governance</a> page for details on governance workflows.</p>
+<p>[Screenshot: DAO executor configuration panel]</p>
+<h2 id="network-switching"><a href="#network-switching" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Network Switching</h2>
+<p>CodeQuill supports multiple Ethereum-compatible networks. The workspace default chain is set in settings and applies to all new on-chain operations unless overridden.</p>
+<h3 id="per-session-chain-selection"><a href="#per-session-chain-selection" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Per-Session Chain Selection</h3>
+<p>Users can switch the active chain for their current session without changing the workspace default. This is useful when reviewing evidence recorded on a different network or when temporarily operating on a testnet.</p>
+<h3 id="workspace-default-chain"><a href="#workspace-default-chain" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Workspace Default Chain</h3>
+<p>The workspace default chain determines which network is used when:</p>
+<ul>
+<li>New claims are registered.</li>
+<li>Snapshots are recorded from the web application.</li>
+<li>Delegations are created.</li>
+<li>Any on-chain operation is initiated without an explicit chain override.</li>
+</ul>
+<p>Changing the workspace default does not affect existing on-chain records. Records on other chains remain accessible and visible in the interface.</p>
+<h2 id="transaction-history"><a href="#transaction-history" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Transaction History</h2>
+<p>The transaction history page displays all on-chain transactions submitted by the workspace, across all chains. Each entry includes:</p>
+<ul>
+<li>Transaction hash (linked to the relevant block explorer)</li>
+<li>Operation type (claim, snapshot, attestation, preservation, release lifecycle)</li>
+<li>Chain and block number</li>
+<li>Submitting wallet</li>
+<li>Timestamp</li>
+<li>Confirmation status</li>
+</ul>
+<p>Transactions can be filtered by operation type, chain, and date range.</p>
+<p>[Screenshot: Transaction history showing recent on-chain operations across multiple chains]</p>
+
+    </div>
+
+    <nav class="docs-pagination">
+        <a href="/docs/web-application/dashboard-repositories" class="pagination-link pagination-prev">
+            <span class="pagination-label">&larr; Previous</span>
+            <span class="pagination-title">Dashboard &amp; Repositories</span>
+        </a>
+
+        <a href="/docs/web-application/subscription-plans" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Subscription Plans</span>
+        </a>
+    </nav>
+</article>
+        </main>
+<aside class="docs-toc">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            <li class="toc-item">
+                <a href="#settings-overview" class="toc-link">Settings Overview</a>
+            </li>
+            <li class="toc-item">
+                <a href="#wallet-management" class="toc-link">Wallet Management</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#connecting-a-wallet" class="toc-link">Connecting a Wallet</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#authority-and-membership" class="toc-link">Authority and Membership</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#delegation-registration" class="toc-link">Delegation Registration</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#ens-resolution" class="toc-link">ENS Resolution</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#identicon-generation" class="toc-link">Identicon Generation</a>
+            </li>
+            <li class="toc-item">
+                <a href="#wallet-onboarding-flow" class="toc-link">Wallet Onboarding Flow</a>
+            </li>
+            <li class="toc-item">
+                <a href="#collaborators" class="toc-link">Collaborators</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#inviting-collaborators" class="toc-link">Inviting Collaborators</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#workspace-roles" class="toc-link">Workspace Roles</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#repository-level-roles" class="toc-link">Repository-Level Roles</a>
+            </li>
+            <li class="toc-item">
+                <a href="#encryption-settings" class="toc-link">Encryption Settings</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#passkey-registration" class="toc-link">Passkey Registration</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#prf-key-derivation" class="toc-link">PRF Key Derivation</a>
+            </li>
+            <li class="toc-item">
+                <a href="#dao-executor-configuration" class="toc-link">DAO Executor Configuration</a>
+            </li>
+            <li class="toc-item">
+                <a href="#network-switching" class="toc-link">Network Switching</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#per-session-chain-selection" class="toc-link">Per-Session Chain Selection</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#workspace-default-chain" class="toc-link">Workspace Default Chain</a>
+            </li>
+            <li class="toc-item">
+                <a href="#transaction-history" class="toc-link">Transaction History</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+    </div>
+
+<div class="search-overlay" id="search-overlay">
+    <div class="search-dialog" role="dialog" aria-label="Search documentation">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off" autofocus>
+            <kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--text-muted); font-family: var(--font-mono); cursor: pointer;" onclick="closeSearch()">Esc</kbd>
+        </div>
+        <div class="search-results" id="search-results">
+            <div class="search-empty">Type to search the documentation...</div>
+        </div>
+        <div class="search-footer">
+            <span>Navigate with <kbd>&uarr;</kbd> <kbd>&darr;</kbd> keys</span>
+            <span>Press <kbd>Enter</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="/assets/js/copy-code.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/search.js"></script>
+</body>
+</html>

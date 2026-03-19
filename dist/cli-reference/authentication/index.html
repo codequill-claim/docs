@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Code Quill">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<meta name="description" content="CLI authentication commands: login with approval phrase flow, check identity with who, and view subscription quotas with quota.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Authentication — CodeQuill">
+<meta property="og:description" content="CLI authentication commands: login with approval phrase flow, check identity with who, and view subscription quotas with quota.">
+<meta property="og:site_name" content="CodeQuill">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Authentication — CodeQuill">
+<meta name="twitter:description" content="CLI authentication commands: login with approval phrase flow, check identity with who, and view subscription quotas with quota.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: '#08080d',
+                surface: '#11111a',
+                elevated: '#1a1a27',
+                border: '#1e1e2e',
+                'border-accent': 'rgba(139, 92, 246, 0.3)',
+                body: '#d4d4d8',
+                bright: '#fafafa',
+                muted: '#52525b',
+                accent: '#8b5cf6',
+                'accent-light': '#a78bfa',
+                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+    <title>Authentication — CodeQuill</title>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="nav-container">
+        <div class="nav-left">
+            <button class="nav-toggle" onclick="toggleNav()" type="button" aria-label="Toggle menu">
+                <svg class="nav-toggle-open" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                <svg class="nav-toggle-close" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+            <a href="/" class="nav-logo" aria-label="CodeQuill">
+                <img src="/assets/images/logo-full.svg" alt="CodeQuill" class="nav-logo-img">
+            </a>
+        </div>
+        <nav class="nav-links">
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="https://app.codequill.xyz" class="nav-link" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.497-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"></path></svg>
+                Launch App
+            </a>
+            <a href="https://github.com/codequill-claim" class="nav-link" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                GitHub
+            </a>
+            <span class="version-badge">0.9.1</span>
+        </nav>
+    </div>
+</header>
+
+    <div class="docs-layout">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="docs-sidebar">
+    <nav class="sidebar-nav">
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Getting Started</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/getting-started/introduction"
+                       class="sidebar-link">
+                        Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/quickstart"
+                       class="sidebar-link">
+                        Quickstart
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/configuration"
+                       class="sidebar-link">
+                        Configuration
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Concepts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/concepts/workspaces"
+                       class="sidebar-link">
+                        Workspaces
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/claims"
+                       class="sidebar-link">
+                        Claims
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/snapshots"
+                       class="sidebar-link">
+                        Snapshots
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/releases"
+                       class="sidebar-link">
+                        Releases
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/attestations"
+                       class="sidebar-link">
+                        Attestations
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/preservations"
+                       class="sidebar-link">
+                        Preservations
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/proofs"
+                       class="sidebar-link">
+                        Proofs
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Releases &amp; Governance</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/releases/release-lifecycle"
+                       class="sidebar-link">
+                        Release Lifecycle
+                    </a>
+                </li>
+                <li>
+                    <a href="/releases/dao-governance"
+                       class="sidebar-link">
+                        DAO Governance
+                    </a>
+                </li>
+                <li>
+                    <a href="/releases/release-manifests"
+                       class="sidebar-link">
+                        Release Manifests
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Web Application</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/web-application/dashboard-repositories"
+                       class="sidebar-link">
+                        Dashboard &amp; Repositories
+                    </a>
+                </li>
+                <li>
+                    <a href="/web-application/settings-wallets"
+                       class="sidebar-link">
+                        Settings &amp; Wallets
+                    </a>
+                </li>
+                <li>
+                    <a href="/web-application/subscription-plans"
+                       class="sidebar-link">
+                        Subscription Plans
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CLI Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/cli-reference/authentication"
+                       class="sidebar-link active">
+                        Authentication
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/source-commands"
+                       class="sidebar-link">
+                        Source Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/verification-commands"
+                       class="sidebar-link">
+                        Verification Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/utility-commands"
+                       class="sidebar-link">
+                        Utility Commands
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CI/CD Integration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/ci-cd/overview"
+                       class="sidebar-link">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="/ci-cd/snapshot-action"
+                       class="sidebar-link">
+                        Snapshot Action
+                    </a>
+                </li>
+                <li>
+                    <a href="/ci-cd/attestation-action"
+                       class="sidebar-link">
+                        Attestation Action
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Smart Contracts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/smart-contracts/architecture"
+                       class="sidebar-link">
+                        Architecture
+                    </a>
+                </li>
+                <li>
+                    <a href="/smart-contracts/contract-reference"
+                       class="sidebar-link">
+                        Contract Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Security</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/security/threat-model"
+                       class="sidebar-link">
+                        Threat Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/security/encryption-model"
+                       class="sidebar-link">
+                        Encryption Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/security/non-guarantees"
+                       class="sidebar-link">
+                        Non-Guarantees
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/reference/interpreting-evidence"
+                       class="sidebar-link">
+                        Interpreting Evidence
+                    </a>
+                </li>
+                <li>
+                    <a href="/reference/glossary"
+                       class="sidebar-link">
+                        Glossary
+                    </a>
+                </li>
+                <li>
+                    <a href="/reference/faq"
+                       class="sidebar-link">
+                        FAQ
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="sidebar-mobile-links">
+            <a href="https://app.codequill.xyz" class="sidebar-footer-link" target="_blank" rel="noopener">Launch App</a>
+            <a href="https://github.com/codequill-claim" class="sidebar-footer-link" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="sidebar-copyright">
+            &copy; 2026 Ophelios. All rights reserved.
+        </div>
+        <div class="sidebar-powered">
+            Powered by <a href="https://github.com/dadajuice/zephyrus-leaf" target="_blank" rel="noopener">Zephyrus Leaf</a>
+        </div>
+    </div>
+</aside>
+        <main class="docs-main">
+<article class="docs-content">
+    <div class="prose">
+        <h1>Authentication</h1>
+<p>These commands manage CLI authentication and display information about the current session and workspace.</p>
+<hr />
+<h2 id="codequill-login"><a href="#codequill-login" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>codequill login</h2>
+<p>Authenticate the CLI using the approval phrase flow. This initiates a device-code authentication exchange between the CLI and the CodeQuill web application.</p>
+<h3 id="syntax"><a href="#syntax" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Syntax</h3>
+<pre><code class="language-bash">codequill login
+</code></pre>
+<h3 id="options"><a href="#options" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Options</h3>
+<p>This command has no options.</p>
+<h3 id="how-it-works"><a href="#how-it-works" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>How It Works</h3>
+<ol>
+<li>The CLI sends a <code>POST</code> request to <code>/v1/cli/auth/init</code>, which returns a login URL and a unique approval phrase.</li>
+<li>The CLI displays the URL and the approval phrase in your terminal.</li>
+<li>You open the URL in a browser where you are already signed in to the CodeQuill web application.</li>
+<li>You verify that the approval phrase shown in the browser matches the one displayed by the CLI.</li>
+<li>You approve the login request in the browser.</li>
+<li>Meanwhile, the CLI polls <code>/v1/cli/auth/token</code> approximately every 5 seconds, waiting for the approval.</li>
+<li>Once approved, the CLI receives an access token and a refresh token, which it saves locally.</li>
+<li>If no approval is received within <strong>3 minutes</strong>, the login attempt times out.</li>
+</ol>
+<p>Tokens are stored at <code>~/.config/codequill/config.json</code> and refresh automatically during subsequent CLI operations.</p>
+<h3 id="example"><a href="#example" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example</h3>
+<pre><code class="language-bash">codequill login
+</code></pre>
+<pre><code>Login URL: https://app.codequill.xyz/cli/auth?code=abc123
+Approval phrase: amber-castle-fox
+
+Waiting for approval...
+
+Authenticated successfully.
+</code></pre>
+<h3 id="notes"><a href="#notes" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Notes</h3>
+<ul>
+<li>You must be signed in to the CodeQuill web application before opening the login URL.</li>
+<li>The approval phrase is a human-readable phrase designed to prevent phishing. Always confirm that the phrase in your browser matches the phrase in your terminal before approving.</li>
+<li>If the 3-minute timeout elapses, run <code>codequill login</code> again to start a new session.</li>
+</ul>
+<hr />
+<h2 id="codequill-who"><a href="#codequill-who" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>codequill who</h2>
+<p>Display the currently authenticated user. This is useful for verifying which account the CLI is operating under, especially when working across multiple workspaces or machines.</p>
+<h3 id="syntax-1"><a href="#syntax-1" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Syntax</h3>
+<pre><code class="language-bash">codequill who
+</code></pre>
+<h3 id="options-1"><a href="#options-1" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Options</h3>
+<p>This command has no options.</p>
+<h3 id="example-1"><a href="#example-1" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example</h3>
+<pre><code class="language-bash">codequill who
+</code></pre>
+<pre><code>Logged in as: dtucker
+Workspace: my-org
+</code></pre>
+<h3 id="notes-1"><a href="#notes-1" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Notes</h3>
+<ul>
+<li>If no user is authenticated, the command will indicate that no session is active.</li>
+<li>This command contacts the CodeQuill backend to resolve the current token into user and workspace information.</li>
+</ul>
+<hr />
+<h2 id="codequill-quota"><a href="#codequill-quota" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>codequill quota</h2>
+<p>Display the subscription plan and quota usage for the current workspace. This includes limits and current consumption for snapshots, attestations, preservations, and other metered resources.</p>
+<h3 id="syntax-2"><a href="#syntax-2" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Syntax</h3>
+<pre><code class="language-bash">codequill quota [options]
+</code></pre>
+<h3 id="options-2"><a href="#options-2" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--json</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Output machine-readable JSON instead of the default human-readable table</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-2"><a href="#example-2" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example</h3>
+<pre><code class="language-bash">codequill quota
+</code></pre>
+<pre><code>Workspace: my-org
+Plan: Pro
+
+Snapshots:    42 / 500
+Attestations: 12 / 100
+Preservations: 3 / 50
+</code></pre>
+<h4 id="json-output"><a href="#json-output" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>JSON output</h4>
+<pre><code class="language-bash">codequill quota --json
+</code></pre>
+<pre><code class="language-json">{
+  &quot;workspace&quot;: &quot;my-org&quot;,
+  &quot;plan&quot;: &quot;pro&quot;,
+  &quot;usage&quot;: {
+    &quot;snapshots&quot;: { &quot;used&quot;: 42, &quot;limit&quot;: 500 },
+    &quot;attestations&quot;: { &quot;used&quot;: 12, &quot;limit&quot;: 100 },
+    &quot;preservations&quot;: { &quot;used&quot;: 3, &quot;limit&quot;: 50 }
+  }
+}
+</code></pre>
+<h3 id="notes-2"><a href="#notes-2" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Notes</h3>
+<ul>
+<li>This command must be run inside a git repository with a GitHub remote origin. The CLI uses the remote to resolve the workspace.</li>
+<li>The <code>--json</code> flag is useful for scripting and CI pipelines where you need to programmatically check whether quota is available before performing an operation.</li>
+</ul>
+
+    </div>
+
+    <nav class="docs-pagination">
+        <a href="/web-application/subscription-plans" class="pagination-link pagination-prev">
+            <span class="pagination-label">&larr; Previous</span>
+            <span class="pagination-title">Subscription Plans</span>
+        </a>
+
+        <a href="/cli-reference/source-commands" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Source Commands</span>
+        </a>
+    </nav>
+</article>
+        </main>
+<aside class="docs-toc">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            <li class="toc-item">
+                <a href="#codequill-login" class="toc-link">codequill login</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#syntax" class="toc-link">Syntax</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#options" class="toc-link">Options</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#how-it-works" class="toc-link">How It Works</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#notes" class="toc-link">Notes</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequill-who" class="toc-link">codequill who</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#syntax-1" class="toc-link">Syntax</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#options-1" class="toc-link">Options</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example-1" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#notes-1" class="toc-link">Notes</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequill-quota" class="toc-link">codequill quota</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#syntax-2" class="toc-link">Syntax</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#options-2" class="toc-link">Options</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example-2" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#json-output" class="toc-link">JSON output</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#notes-2" class="toc-link">Notes</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+    </div>
+
+<div class="search-overlay" id="search-overlay">
+    <div class="search-dialog" role="dialog" aria-label="Search documentation">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off" autofocus>
+            <kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--text-muted); font-family: var(--font-mono); cursor: pointer;" onclick="closeSearch()">Esc</kbd>
+        </div>
+        <div class="search-results" id="search-results">
+            <div class="search-empty">Type to search the documentation...</div>
+        </div>
+        <div class="search-footer">
+            <span>Navigate with <kbd>&uarr;</kbd> <kbd>&darr;</kbd> keys</span>
+            <span>Press <kbd>Enter</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="/assets/js/copy-code.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/search.js"></script>
+</body>
+</html>

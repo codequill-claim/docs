@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: '#08080d',
+                surface: '#11111a',
+                elevated: '#1a1a27',
+                border: '#1e1e2e',
+                'border-accent': 'rgba(139, 92, 246, 0.3)',
+                body: '#d4d4d8',
+                bright: '#fafafa',
+                muted: '#52525b',
+                accent: '#8b5cf6',
+                'accent-light': '#a78bfa',
+                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+    <title>Attestation Action — CodeQuill</title>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 text-bright font-semibold text-lg no-underline">
+            <img src="/assets/images/logo-icon.svg" alt="CodeQuill" width="24" height="24">
+            <span>CodeQuill</span>
+        </a>
+        <nav class="flex items-center gap-5">
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="/docs" class="nav-link">Docs</a>
+            <a href="https://app.codequill.xyz" class="nav-link" target="_blank" rel="noopener">Launch App</a>
+            <a href="https://github.com/ophelios-studio/codequill-contracts" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+            <span class="version-badge">0.8.1</span>
+        </nav>
+    </div>
+</header>
+
+    <div class="docs-layout">
+<aside class="docs-sidebar">
+    <nav class="sidebar-nav">
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Getting Started</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/getting-started/introduction"
+                       class="sidebar-link">
+                        Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/quickstart"
+                       class="sidebar-link">
+                        Quickstart
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/configuration"
+                       class="sidebar-link">
+                        Configuration
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Concepts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/concepts/workspaces"
+                       class="sidebar-link">
+                        Workspaces
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/claims"
+                       class="sidebar-link">
+                        Claims
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/snapshots"
+                       class="sidebar-link">
+                        Snapshots
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/releases"
+                       class="sidebar-link">
+                        Releases
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/attestations"
+                       class="sidebar-link">
+                        Attestations
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/preservations"
+                       class="sidebar-link">
+                        Preservations
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/proofs"
+                       class="sidebar-link">
+                        Proofs
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Releases &amp; Governance</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/releases/release-lifecycle"
+                       class="sidebar-link">
+                        Release Lifecycle
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/releases/dao-governance"
+                       class="sidebar-link">
+                        DAO Governance
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/releases/release-manifests"
+                       class="sidebar-link">
+                        Release Manifests
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Web Application</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/web-application/dashboard-repositories"
+                       class="sidebar-link">
+                        Dashboard &amp; Repositories
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/web-application/settings-wallets"
+                       class="sidebar-link">
+                        Settings &amp; Wallets
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/web-application/subscription-plans"
+                       class="sidebar-link">
+                        Subscription Plans
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CLI Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/cli-reference/authentication"
+                       class="sidebar-link">
+                        Authentication
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/source-commands"
+                       class="sidebar-link">
+                        Source Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/verification-commands"
+                       class="sidebar-link">
+                        Verification Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/utility-commands"
+                       class="sidebar-link">
+                        Utility Commands
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CI/CD Integration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/ci-cd/overview"
+                       class="sidebar-link">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/ci-cd/snapshot-action"
+                       class="sidebar-link">
+                        Snapshot Action
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/ci-cd/attestation-action"
+                       class="sidebar-link active">
+                        Attestation Action
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Smart Contracts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/smart-contracts/architecture"
+                       class="sidebar-link">
+                        Architecture
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/smart-contracts/contract-reference"
+                       class="sidebar-link">
+                        Contract Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Security</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/security/threat-model"
+                       class="sidebar-link">
+                        Threat Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/security/encryption-model"
+                       class="sidebar-link">
+                        Encryption Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/security/non-guarantees"
+                       class="sidebar-link">
+                        Non-Guarantees
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/reference/interpreting-evidence"
+                       class="sidebar-link">
+                        Interpreting Evidence
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/reference/glossary"
+                       class="sidebar-link">
+                        Glossary
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/reference/faq"
+                       class="sidebar-link">
+                        FAQ
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</aside>
+        <main class="docs-main">
+<article class="docs-content">
+    <div class="prose">
+        <h1>Attestation Action</h1>
+<p>The Attestation Action handles attestation for release events triggered by GitHub Issues. It is published as <code>codequill-claim/actions-attest@v1</code> and runs on Node 20. It requires the <code>GITHUB_TOKEN</code> environment variable for issue management (commenting, closing).</p>
+<h2 id="purpose"><a href="#purpose" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Purpose</h2>
+<p>This action is the second phase of the CI/CD pipeline. It listens for GitHub Issues created by the CodeQuill bot, verifies their authenticity, and -- when a release is approved -- runs <code>codequill attest</code> to record that a build artifact claims lineage from a specific published release.</p>
+<h2 id="inputs"><a href="#inputs" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Inputs</h2>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>token</code></td>
+<td>Yes</td>
+<td>—</td>
+<td>CodeQuill repo-scoped bearer token.</td>
+</tr>
+<tr>
+<td><code>github_id</code></td>
+<td>Yes</td>
+<td>—</td>
+<td>GitHub repository numeric ID.</td>
+</tr>
+<tr>
+<td><code>hmac_secret</code></td>
+<td>No</td>
+<td><code>&quot;&quot;</code></td>
+<td>Shared secret for HMAC-SHA256 verification. Strongly recommended.</td>
+</tr>
+<tr>
+<td><code>build_path</code></td>
+<td>No</td>
+<td><code>&quot;&quot;</code></td>
+<td>Path to build artifact to attest.</td>
+</tr>
+<tr>
+<td><code>release_id</code></td>
+<td>No</td>
+<td><code>&quot;&quot;</code></td>
+<td>Release ID. Extracted from the issue body if not provided.</td>
+</tr>
+<tr>
+<td><code>event_type</code></td>
+<td>No</td>
+<td><code>&quot;&quot;</code></td>
+<td>Override event type (<code>release_anchored</code> or <code>release_approved</code>).</td>
+</tr>
+<tr>
+<td><code>api_base_url</code></td>
+<td>No</td>
+<td><code>&quot;&quot;</code></td>
+<td>Override API base URL.</td>
+</tr>
+<tr>
+<td><code>cli_version</code></td>
+<td>No</td>
+<td><code>&quot;&quot;</code></td>
+<td>Specific npm version for the <code>codequill</code> CLI.</td>
+</tr>
+<tr>
+<td><code>working_directory</code></td>
+<td>No</td>
+<td><code>&quot;.&quot;</code></td>
+<td>Working directory.</td>
+</tr>
+<tr>
+<td><code>extra_args</code></td>
+<td>No</td>
+<td><code>&quot;&quot;</code></td>
+<td>Extra arguments.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="outputs"><a href="#outputs" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Outputs</h2>
+<table>
+<thead>
+<tr>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>event_type</code></td>
+<td>Detected event type (<code>release_anchored</code> or <code>release_approved</code>).</td>
+</tr>
+<tr>
+<td><code>release_id</code></td>
+<td>Extracted release ID.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="execution-flow"><a href="#execution-flow" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Execution Flow</h2>
+<h3 id="1-issue-verification"><a href="#1-issue-verification" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>1. Issue Verification</h3>
+<p>When the triggering GitHub event is <code>issues</code>, the action performs three verification checks:</p>
+<ol>
+<li>
+<p><strong>Bot identity</strong> — Verifies that the issue was created by <code>codequill-authorship[bot]</code> (exact login match). If the issue author is any other user or bot, the action exits.</p>
+</li>
+<li>
+<p><strong>Label verification</strong> — Verifies that the issue carries the <code>codequill:release</code> label.</p>
+</li>
+<li>
+<p><strong>Payload parsing</strong> — Parses the issue body as JSON. The body contains an object with two fields: <code>payload</code> (the event data) and <code>signature</code> (the HMAC-SHA256 digest).</p>
+</li>
+<li>
+<p><strong>HMAC verification</strong> — If <code>hmac_secret</code> is provided, the action computes the HMAC-SHA256 of the <code>payload</code> field using the shared secret and compares it against the <code>signature</code> field. If verification fails, the action exits with an error.</p>
+</li>
+</ol>
+<h3 id="2-set-outputs"><a href="#2-set-outputs" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>2. Set Outputs</h3>
+<p>The action sets two outputs from the parsed payload:</p>
+<ul>
+<li><code>event_type</code> — either <code>release_anchored</code> or <code>release_approved</code>.</li>
+<li><code>release_id</code> — the unique identifier of the release.</li>
+</ul>
+<p>These outputs are available to subsequent workflow steps for conditional logic.</p>
+<h3 id="3-handle-releaseanchored"><a href="#3-handle-releaseanchored" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>3. Handle <code>release_anchored</code></h3>
+<p>If the event type is <code>release_anchored</code>, the action:</p>
+<ol>
+<li>Logs the event details.</li>
+<li>Comments on the issue with a success message.</li>
+<li>Closes the issue.</li>
+<li>Returns early. No attestation is performed.</li>
+</ol>
+<p>This event is informational -- it confirms that a release was created and anchored on-chain. Downstream steps can read the <code>event_type</code> output to trigger notifications or other non-attestation workflows.</p>
+<h3 id="4-handle-releaseapproved"><a href="#4-handle-releaseapproved" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>4. Handle <code>release_approved</code></h3>
+<p>If the event type is <code>release_approved</code>, the action:</p>
+<ol>
+<li>Validates that <code>build_path</code> is provided and points to an existing file.</li>
+<li>Validates that <code>release_id</code> is available (from the issue body or the input).</li>
+<li>Installs the <code>codequill</code> CLI (same logic as the Snapshot Action).</li>
+<li>Runs <code>codequill attest &lt;build_path&gt; &lt;release_id&gt; --no-confirm --json --no-wait</code>.</li>
+<li>Parses the JSON output to extract <code>tx_hash</code>.</li>
+<li>Runs <code>codequill wait &lt;tx_hash&gt;</code> to block until confirmation.</li>
+</ol>
+<h3 id="5-issue-lifecycle"><a href="#5-issue-lifecycle" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>5. Issue Lifecycle</h3>
+<ul>
+<li><strong>On success</strong> — The action comments on the issue with a success message and closes it.</li>
+<li><strong>On failure</strong> — The action comments on the issue with the error details but does <strong>not</strong> close it. The issue remains open for investigation.</li>
+</ul>
+<h2 id="workflow-example"><a href="#workflow-example" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Workflow Example</h2>
+<p>A complete workflow that responds to CodeQuill bot issues:</p>
+<pre><code class="language-yaml">name: CodeQuill Attestation
+
+on:
+  issues:
+    types:
+      - labeled
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  attest:
+    runs-on: ubuntu-latest
+    if: &gt;-
+      github.event.issue.user.login == 'codequill-authorship[bot]'
+      &amp;&amp; github.event.label.name == 'codequill:release'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build project
+        run: npm ci &amp;&amp; npm run build
+
+      - name: Attest build artifact
+        uses: codequill-claim/actions-attest@v1
+        with:
+          token: ${{ secrets.CODEQUILL_TOKEN }}
+          github_id: ${{ github.repository_id }}
+          hmac_secret: ${{ secrets.CODEQUILL_HMAC_SECRET }}
+          build_path: &quot;./dist/output.tar.gz&quot;
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+</code></pre>
+<p>The <code>if</code> condition on the job is critical. It ensures the workflow only runs for issues created by the CodeQuill bot with the correct label. Without this condition, every issue event on the repository would trigger the workflow.</p>
+<h2 id="advanced-example-attestation-with-deployment"><a href="#advanced-example-attestation-with-deployment" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Advanced Example: Attestation with Deployment</h2>
+<p>This workflow demonstrates how to combine attestation with conditional deployment based on the <code>event_type</code> output. The build runs for all events, but deployment only proceeds when the release is approved:</p>
+<pre><code class="language-yaml">name: CodeQuill Attest and Deploy
+
+on:
+  issues:
+    types:
+      - labeled
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  attest-and-deploy:
+    runs-on: ubuntu-latest
+    if: &gt;-
+      github.event.issue.user.login == 'codequill-authorship[bot]'
+      &amp;&amp; github.event.label.name == 'codequill:release'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build project
+        run: npm ci &amp;&amp; npm run build
+
+      - name: Attest build artifact
+        id: attest
+        uses: codequill-claim/actions-attest@v1
+        with:
+          token: ${{ secrets.CODEQUILL_TOKEN }}
+          github_id: ${{ github.repository_id }}
+          hmac_secret: ${{ secrets.CODEQUILL_HMAC_SECRET }}
+          build_path: &quot;./dist/output.tar.gz&quot;
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to production
+        if: steps.attest.outputs.event_type == 'release_approved'
+        run: |
+          echo &quot;Deploying release ${{ steps.attest.outputs.release_id }}&quot;
+          # Replace with your deployment commands
+          ./scripts/deploy.sh --artifact ./dist/output.tar.gz
+</code></pre>
+<p>In this workflow:</p>
+<ol>
+<li>The <strong>build step</strong> runs unconditionally. Both <code>release_anchored</code> and <code>release_approved</code> events trigger a build.</li>
+<li>The <strong>attest step</strong> handles both event types internally. For <code>release_anchored</code>, it closes the issue and sets the outputs without performing attestation. For <code>release_approved</code>, it attests the build artifact.</li>
+<li>The <strong>deploy step</strong> uses a conditional (<code>if: steps.attest.outputs.event_type == 'release_approved'</code>) to run only when the release was approved by governance. Anchored events produce no deployment.</li>
+</ol>
+<p>This pattern ensures that your CI pipeline validates the build for every release event (catching build failures early) while restricting production deployment to explicitly approved releases.</p>
+
+    </div>
+
+    <nav class="docs-pagination">
+        <a href="/docs/ci-cd/snapshot-action" class="pagination-link pagination-prev">
+            <span class="pagination-label">&larr; Previous</span>
+            <span class="pagination-title">Snapshot Action</span>
+        </a>
+
+        <a href="/docs/smart-contracts/architecture" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Architecture</span>
+        </a>
+    </nav>
+</article>
+        </main>
+<aside class="docs-toc">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            <li class="toc-item">
+                <a href="#purpose" class="toc-link">Purpose</a>
+            </li>
+            <li class="toc-item">
+                <a href="#inputs" class="toc-link">Inputs</a>
+            </li>
+            <li class="toc-item">
+                <a href="#outputs" class="toc-link">Outputs</a>
+            </li>
+            <li class="toc-item">
+                <a href="#execution-flow" class="toc-link">Execution Flow</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#1-issue-verification" class="toc-link">1. Issue Verification</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#2-set-outputs" class="toc-link">2. Set Outputs</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#3-handle-releaseanchored" class="toc-link">3. Handle release_anchored</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#4-handle-releaseapproved" class="toc-link">4. Handle release_approved</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#5-issue-lifecycle" class="toc-link">5. Issue Lifecycle</a>
+            </li>
+            <li class="toc-item">
+                <a href="#workflow-example" class="toc-link">Workflow Example</a>
+            </li>
+            <li class="toc-item">
+                <a href="#advanced-example-attestation-with-deployment" class="toc-link">Advanced Example: Attestation with Deployment</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+    </div>
+
+<div class="search-overlay" id="search-overlay">
+    <div class="search-dialog" role="dialog" aria-label="Search documentation">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off" autofocus>
+            <kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--text-muted); font-family: var(--font-mono); cursor: pointer;" onclick="closeSearch()">Esc</kbd>
+        </div>
+        <div class="search-results" id="search-results">
+            <div class="search-empty">Type to search the documentation...</div>
+        </div>
+        <div class="search-footer">
+            <span>Navigate with <kbd>&uarr;</kbd> <kbd>&darr;</kbd> keys</span>
+            <span>Press <kbd>Enter</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="/assets/js/copy-code.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Code Quill">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<meta name="description" content="CLI commands for source evidence: claim repositories, create snapshots, publish to IPFS and on-chain, pull manifests, and view history.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Source Commands — CodeQuill">
+<meta property="og:description" content="CLI commands for source evidence: claim repositories, create snapshots, publish to IPFS and on-chain, pull manifests, and view history.">
+<meta property="og:site_name" content="CodeQuill">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Source Commands — CodeQuill">
+<meta name="twitter:description" content="CLI commands for source evidence: claim repositories, create snapshots, publish to IPFS and on-chain, pull manifests, and view history.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: '#08080d',
+                surface: '#11111a',
+                elevated: '#1a1a27',
+                border: '#1e1e2e',
+                'border-accent': 'rgba(139, 92, 246, 0.3)',
+                body: '#d4d4d8',
+                bright: '#fafafa',
+                muted: '#52525b',
+                accent: '#8b5cf6',
+                'accent-light': '#a78bfa',
+                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+    <title>Source Commands — CodeQuill</title>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="nav-container">
+        <div class="nav-left">
+            <button class="nav-toggle" onclick="toggleNav()" type="button" aria-label="Toggle menu">
+                <svg class="nav-toggle-open" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                <svg class="nav-toggle-close" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+            <a href="/" class="nav-logo" aria-label="CodeQuill">
+                <img src="/assets/images/logo-full.svg" alt="CodeQuill" class="nav-logo-img">
+            </a>
+        </div>
+        <nav class="nav-links">
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="https://app.codequill.xyz" class="nav-link" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.497-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"></path></svg>
+                Launch App
+            </a>
+            <a href="https://github.com/codequill-claim" class="nav-link" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                GitHub
+            </a>
+            <span class="version-badge">0.9.1</span>
+        </nav>
+    </div>
+</header>
+
+    <div class="docs-layout">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="docs-sidebar">
+    <nav class="sidebar-nav">
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Getting Started</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/getting-started/introduction"
+                       class="sidebar-link">
+                        Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/quickstart"
+                       class="sidebar-link">
+                        Quickstart
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/configuration"
+                       class="sidebar-link">
+                        Configuration
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Concepts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/concepts/workspaces"
+                       class="sidebar-link">
+                        Workspaces
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/claims"
+                       class="sidebar-link">
+                        Claims
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/snapshots"
+                       class="sidebar-link">
+                        Snapshots
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/releases"
+                       class="sidebar-link">
+                        Releases
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/attestations"
+                       class="sidebar-link">
+                        Attestations
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/preservations"
+                       class="sidebar-link">
+                        Preservations
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/proofs"
+                       class="sidebar-link">
+                        Proofs
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Releases &amp; Governance</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/releases/release-lifecycle"
+                       class="sidebar-link">
+                        Release Lifecycle
+                    </a>
+                </li>
+                <li>
+                    <a href="/releases/dao-governance"
+                       class="sidebar-link">
+                        DAO Governance
+                    </a>
+                </li>
+                <li>
+                    <a href="/releases/release-manifests"
+                       class="sidebar-link">
+                        Release Manifests
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Web Application</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/web-application/dashboard-repositories"
+                       class="sidebar-link">
+                        Dashboard &amp; Repositories
+                    </a>
+                </li>
+                <li>
+                    <a href="/web-application/settings-wallets"
+                       class="sidebar-link">
+                        Settings &amp; Wallets
+                    </a>
+                </li>
+                <li>
+                    <a href="/web-application/subscription-plans"
+                       class="sidebar-link">
+                        Subscription Plans
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CLI Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/cli-reference/authentication"
+                       class="sidebar-link">
+                        Authentication
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/source-commands"
+                       class="sidebar-link active">
+                        Source Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/verification-commands"
+                       class="sidebar-link">
+                        Verification Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/utility-commands"
+                       class="sidebar-link">
+                        Utility Commands
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CI/CD Integration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/ci-cd/overview"
+                       class="sidebar-link">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="/ci-cd/snapshot-action"
+                       class="sidebar-link">
+                        Snapshot Action
+                    </a>
+                </li>
+                <li>
+                    <a href="/ci-cd/attestation-action"
+                       class="sidebar-link">
+                        Attestation Action
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Smart Contracts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/smart-contracts/architecture"
+                       class="sidebar-link">
+                        Architecture
+                    </a>
+                </li>
+                <li>
+                    <a href="/smart-contracts/contract-reference"
+                       class="sidebar-link">
+                        Contract Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Security</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/security/threat-model"
+                       class="sidebar-link">
+                        Threat Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/security/encryption-model"
+                       class="sidebar-link">
+                        Encryption Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/security/non-guarantees"
+                       class="sidebar-link">
+                        Non-Guarantees
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/reference/interpreting-evidence"
+                       class="sidebar-link">
+                        Interpreting Evidence
+                    </a>
+                </li>
+                <li>
+                    <a href="/reference/glossary"
+                       class="sidebar-link">
+                        Glossary
+                    </a>
+                </li>
+                <li>
+                    <a href="/reference/faq"
+                       class="sidebar-link">
+                        FAQ
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="sidebar-mobile-links">
+            <a href="https://app.codequill.xyz" class="sidebar-footer-link" target="_blank" rel="noopener">Launch App</a>
+            <a href="https://github.com/codequill-claim" class="sidebar-footer-link" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="sidebar-copyright">
+            &copy; 2026 Ophelios. All rights reserved.
+        </div>
+        <div class="sidebar-powered">
+            Powered by <a href="https://github.com/dadajuice/zephyrus-leaf" target="_blank" rel="noopener">Zephyrus Leaf</a>
+        </div>
+    </div>
+</aside>
+        <main class="docs-main">
+<article class="docs-content">
+    <div class="prose">
+        <h1>Source Commands</h1>
+<p>These commands manage the core source-code lifecycle: claiming repository authorship, creating snapshots, publishing them on-chain, and inspecting history.</p>
+<hr />
+<h2 id="codequill-claim"><a href="#codequill-claim" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>codequill claim</h2>
+<p>Claim authorship of the current git repository. This records an on-chain evidence statement linking your workspace authority to the repository. The transaction is gasless and relayed through the CodeQuill infrastructure.</p>
+<h3 id="syntax"><a href="#syntax" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Syntax</h3>
+<pre><code class="language-bash">codequill claim [options]
+</code></pre>
+<h3 id="options"><a href="#options" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--no-confirm</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Skip the interactive confirmation prompt</td>
+</tr>
+<tr>
+<td><code>--confirmations &lt;n&gt;</code></td>
+<td>integer</td>
+<td><code>1</code></td>
+<td>Number of on-chain confirmations to wait for</td>
+</tr>
+<tr>
+<td><code>--timeout &lt;ms&gt;</code></td>
+<td>integer</td>
+<td><code>300000</code></td>
+<td>Maximum time in milliseconds to wait for confirmation</td>
+</tr>
+<tr>
+<td><code>--no-wait</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Submit the transaction and return immediately without waiting for confirmation</td>
+</tr>
+<tr>
+<td><code>--json</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Output the result in machine-readable JSON</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example"><a href="#example" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example</h3>
+<pre><code class="language-bash">codequill claim
+</code></pre>
+<pre><code>Claiming repository: my-org/my-project
+Workspace: my-org
+Chain: Ethereum
+
+Proceed? (y/N) y
+
+Transaction submitted: 0xabc123...
+Waiting for confirmation...
+Claimed successfully.
+</code></pre>
+<h4 id="non-interactive-usage"><a href="#non-interactive-usage" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Non-interactive usage</h4>
+<pre><code class="language-bash">codequill claim --no-confirm --json
+</code></pre>
+<h3 id="notes"><a href="#notes" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Notes</h3>
+<ul>
+<li>The CLI auto-detects the repository from the git remote origin.</li>
+<li>A repository can only be claimed once. If it is already claimed by another workspace, the command will fail.</li>
+<li>The claim transaction is gasless -- it is relayed through CodeQuill's infrastructure, so you do not need ETH in your wallet to claim.</li>
+<li>Use <code>--no-confirm</code> and <code>--json</code> together for CI/CD pipelines where no interactive prompt is available.</li>
+</ul>
+<hr />
+<h2 id="codequill-snapshot"><a href="#codequill-snapshot" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>codequill snapshot</h2>
+<p>Create a local snapshot manifest for the current repository. A snapshot produces a deterministic Merkle root over all tracked files at a given commit. No data is uploaded; everything runs locally.</p>
+<h3 id="syntax-1"><a href="#syntax-1" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Syntax</h3>
+<pre><code class="language-bash">codequill snapshot [options]
+</code></pre>
+<h3 id="options-1"><a href="#options-1" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--commit &lt;hash&gt;</code></td>
+<td>string</td>
+<td><code>HEAD</code></td>
+<td>Git commit hash to snapshot</td>
+</tr>
+<tr>
+<td><code>--concurrency &lt;n&gt;</code></td>
+<td>integer</td>
+<td><code>8</code></td>
+<td>Number of concurrent file-hashing workers</td>
+</tr>
+<tr>
+<td><code>--salt &lt;saltHex&gt;</code></td>
+<td>string</td>
+<td><em>(none)</em></td>
+<td>A 64-character hex string used as the salt for hashing. If not provided, one is generated automatically.</td>
+</tr>
+<tr>
+<td><code>--print-salt</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Print the salt value used for the snapshot to stdout</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-1"><a href="#example-1" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example</h3>
+<pre><code class="language-bash">codequill snapshot
+</code></pre>
+<pre><code>Snapshotting commit a1b2c3d...
+Hashing 312 files (concurrency: 8)...
+Merkle root: 0x789abc...
+
+Manifest written to .codequill/snapshots/a1b2c3d.json
+</code></pre>
+<h4 id="snapshot-a-specific-commit-with-a-custom-salt"><a href="#snapshot-a-specific-commit-with-a-custom-salt" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Snapshot a specific commit with a custom salt</h4>
+<pre><code class="language-bash">codequill snapshot --commit 9f3e2a1 --salt a1b2c3d4e5f6...0000 --print-salt
+</code></pre>
+<h3 id="notes-1"><a href="#notes-1" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Notes</h3>
+<ul>
+<li>The snapshot reads every tracked file in the repository at the specified commit, hashes each file individually, and constructs a Merkle tree.</li>
+<li>The resulting manifest is written to <code>.codequill/snapshots/</code> and contains file hashes and the tree structure -- not the file contents themselves.</li>
+<li>The <code>--salt</code> option accepts exactly 64 hexadecimal characters. This salt is incorporated into the leaf hashes, making the Merkle root unpredictable to anyone who does not know the salt. If omitted, a random salt is generated.</li>
+<li>Use <code>--print-salt</code> to display the generated or provided salt. This is important if you plan to generate proofs later, as the salt is required for proof construction.</li>
+<li>The <code>--concurrency</code> option controls parallelism during file hashing. Increase it on machines with fast I/O; decrease it if you encounter resource limits.</li>
+</ul>
+<hr />
+<h2 id="codequill-publish"><a href="#codequill-publish" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>codequill publish</h2>
+<p>Publish a local snapshot manifest to IPFS and anchor the Merkle root on-chain. This creates a durable, timestamped, and independently verifiable evidence record for the source state at a given commit.</p>
+<h3 id="syntax-2"><a href="#syntax-2" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Syntax</h3>
+<pre><code class="language-bash">codequill publish [commit] [options]
+</code></pre>
+<h3 id="arguments"><a href="#arguments" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Arguments</h3>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>commit</code></td>
+<td>no</td>
+<td><code>HEAD</code></td>
+<td>The git commit hash to publish. If a snapshot manifest already exists for this commit, it is used directly. Otherwise, a snapshot is created first.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="options-2"><a href="#options-2" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--no-confirm</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Skip the interactive confirmation prompt</td>
+</tr>
+<tr>
+<td><code>--confirmations &lt;n&gt;</code></td>
+<td>integer</td>
+<td><code>1</code></td>
+<td>Number of on-chain confirmations to wait for</td>
+</tr>
+<tr>
+<td><code>--timeout &lt;ms&gt;</code></td>
+<td>integer</td>
+<td><code>300000</code></td>
+<td>Maximum time in milliseconds to wait for confirmation</td>
+</tr>
+<tr>
+<td><code>--no-wait</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Submit the transaction and return immediately without waiting for confirmation</td>
+</tr>
+<tr>
+<td><code>--json</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Output the result in machine-readable JSON</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-2"><a href="#example-2" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example</h3>
+<pre><code class="language-bash">codequill publish
+</code></pre>
+<pre><code>Publishing snapshot for commit a1b2c3d...
+Uploading manifest to IPFS...
+Anchoring on-chain...
+
+Transaction submitted: 0xdef456...
+Waiting for confirmation...
+
+Published successfully.
+  Snapshot ID: snap_abc123
+  Merkle Root: 0x789...
+  Manifest CID: bafybeig...
+  Explorer: https://sepolia.etherscan.io/tx/0xdef456...
+</code></pre>
+<h4 id="publish-a-specific-commit-non-interactively"><a href="#publish-a-specific-commit-non-interactively" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Publish a specific commit non-interactively</h4>
+<pre><code class="language-bash">codequill publish 9f3e2a1 --no-confirm --json
+</code></pre>
+<h3 id="notes-2"><a href="#notes-2" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Notes</h3>
+<ul>
+<li>If no local snapshot exists for the target commit, the CLI creates one automatically before uploading.</li>
+<li>The manifest is uploaded to IPFS via Lighthouse for decentralized, content-addressed storage.</li>
+<li>The Merkle root is then recorded on the CodeQuill smart contract, creating an immutable on-chain timestamp.</li>
+<li>Use <code>--no-wait</code> if you want to submit the transaction and handle confirmation tracking separately (e.g. with <code>codequill wait</code>).</li>
+</ul>
+<hr />
+<h2 id="codequill-pull"><a href="#codequill-pull" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>codequill pull</h2>
+<p>Download all published snapshot manifests for the current repository into the local <code>.codequill/snapshots</code> directory. This synchronizes your local snapshot index with the records stored on IPFS and the backend.</p>
+<h3 id="syntax-3"><a href="#syntax-3" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Syntax</h3>
+<pre><code class="language-bash">codequill pull
+</code></pre>
+<h3 id="options-3"><a href="#options-3" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Options</h3>
+<p>This command has no options.</p>
+<h3 id="example-3"><a href="#example-3" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example</h3>
+<pre><code class="language-bash">codequill pull
+</code></pre>
+<pre><code>Fetching snapshot index...
+Downloading 7 manifests...
+  snap_abc123 -&gt; .codequill/snapshots/a1b2c3d.json
+  snap_def456 -&gt; .codequill/snapshots/e4f5a6b.json
+  ...
+
+Pull complete. 7 manifests synced.
+</code></pre>
+<h3 id="notes-3"><a href="#notes-3" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Notes</h3>
+<ul>
+<li>This command requires authentication and a network connection.</li>
+<li>Manifests are stored locally so that subsequent commands like <code>codequill log</code> and <code>codequill prove</code> can operate without network access.</li>
+<li>If a manifest already exists locally and matches the remote version, it is skipped.</li>
+</ul>
+<hr />
+<h2 id="codequill-log"><a href="#codequill-log" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>codequill log</h2>
+<p>Display the snapshot history for the current repository. Each entry shows the snapshot ID, commit hash, Merkle root, and publication timestamp.</p>
+<h3 id="syntax-4"><a href="#syntax-4" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Syntax</h3>
+<pre><code class="language-bash">codequill log [options]
+</code></pre>
+<h3 id="options-4"><a href="#options-4" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--limit &lt;n&gt;</code></td>
+<td>integer</td>
+<td><em>(none)</em></td>
+<td>Maximum number of rows to display</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-4"><a href="#example-4" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example</h3>
+<pre><code class="language-bash">codequill log
+</code></pre>
+<pre><code>SNAPSHOT ID    COMMIT    MERKLE ROOT         PUBLISHED
+snap_abc123    a1b2c3d   0x789abc...def0    2025-01-15T10:32:00Z
+snap_def456    e4f5a6b   0x456def...1234    2025-01-14T08:15:00Z
+snap_ghi789    c7d8e9f   0x123ghi...5678    2025-01-12T14:48:00Z
+</code></pre>
+<h4 id="limit-output-to-the-5-most-recent-snapshots"><a href="#limit-output-to-the-5-most-recent-snapshots" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Limit output to the 5 most recent snapshots</h4>
+<pre><code class="language-bash">codequill log --limit 5
+</code></pre>
+<h3 id="notes-4"><a href="#notes-4" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Notes</h3>
+<ul>
+<li>This command works offline using the local snapshot index in <code>.codequill/snapshots/</code>. Run <code>codequill pull</code> first to ensure your local index is up to date.</li>
+<li>If you are logged in and have network connectivity, the CLI enriches local data with additional information from the backend (such as publication timestamps and on-chain confirmation status).</li>
+<li>If no snapshots have been published for the repository, the output will be empty.</li>
+</ul>
+<hr />
+<h2 id="codequill-status"><a href="#codequill-status" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>codequill status</h2>
+<p>Show the CodeQuill status for the current repository. This provides an overview of the repository's claim state, most recent snapshot, and publication status.</p>
+<h3 id="syntax-5"><a href="#syntax-5" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Syntax</h3>
+<pre><code class="language-bash">codequill status
+</code></pre>
+<h3 id="options-5"><a href="#options-5" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Options</h3>
+<p>This command has no options.</p>
+<h3 id="example-5"><a href="#example-5" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example</h3>
+<pre><code class="language-bash">codequill status
+</code></pre>
+<pre><code>Repository: my-org/my-project
+Claimed: yes
+Latest snapshot: snap_abc123 (a1b2c3d)
+Published: yes
+Last published: 2025-01-15T10:32:00Z
+</code></pre>
+<h3 id="notes-5"><a href="#notes-5" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Notes</h3>
+<ul>
+<li>This command must be run inside a git repository with a GitHub remote origin.</li>
+<li>It reads both local state (<code>.codequill/</code> directory) and remote state (if authenticated) to present a complete picture.</li>
+<li>If the repository has not been claimed, the command will indicate that and suggest running <code>codequill claim</code>.</li>
+</ul>
+
+    </div>
+
+    <nav class="docs-pagination">
+        <a href="/cli-reference/authentication" class="pagination-link pagination-prev">
+            <span class="pagination-label">&larr; Previous</span>
+            <span class="pagination-title">Authentication</span>
+        </a>
+
+        <a href="/cli-reference/verification-commands" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Verification Commands</span>
+        </a>
+    </nav>
+</article>
+        </main>
+<aside class="docs-toc">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            <li class="toc-item">
+                <a href="#codequill-claim" class="toc-link">codequill claim</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#syntax" class="toc-link">Syntax</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#options" class="toc-link">Options</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#non-interactive-usage" class="toc-link">Non-interactive usage</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#notes" class="toc-link">Notes</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequill-snapshot" class="toc-link">codequill snapshot</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#syntax-1" class="toc-link">Syntax</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#options-1" class="toc-link">Options</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example-1" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#snapshot-a-specific-commit-with-a-custom-salt" class="toc-link">Snapshot a specific commit with a custom salt</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#notes-1" class="toc-link">Notes</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequill-publish" class="toc-link">codequill publish</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#syntax-2" class="toc-link">Syntax</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#arguments" class="toc-link">Arguments</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#options-2" class="toc-link">Options</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example-2" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#publish-a-specific-commit-non-interactively" class="toc-link">Publish a specific commit non-interactively</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#notes-2" class="toc-link">Notes</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequill-pull" class="toc-link">codequill pull</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#syntax-3" class="toc-link">Syntax</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#options-3" class="toc-link">Options</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example-3" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#notes-3" class="toc-link">Notes</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequill-log" class="toc-link">codequill log</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#syntax-4" class="toc-link">Syntax</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#options-4" class="toc-link">Options</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example-4" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#limit-output-to-the-5-most-recent-snapshots" class="toc-link">Limit output to the 5 most recent snapshots</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#notes-4" class="toc-link">Notes</a>
+            </li>
+            <li class="toc-item">
+                <a href="#codequill-status" class="toc-link">codequill status</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#syntax-5" class="toc-link">Syntax</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#options-5" class="toc-link">Options</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example-5" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#notes-5" class="toc-link">Notes</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+    </div>
+
+<div class="search-overlay" id="search-overlay">
+    <div class="search-dialog" role="dialog" aria-label="Search documentation">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off" autofocus>
+            <kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--text-muted); font-family: var(--font-mono); cursor: pointer;" onclick="closeSearch()">Esc</kbd>
+        </div>
+        <div class="search-results" id="search-results">
+            <div class="search-empty">Type to search the documentation...</div>
+        </div>
+        <div class="search-footer">
+            <span>Navigate with <kbd>&uarr;</kbd> <kbd>&darr;</kbd> keys</span>
+            <span>Press <kbd>Enter</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="/assets/js/copy-code.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/search.js"></script>
+</body>
+</html>

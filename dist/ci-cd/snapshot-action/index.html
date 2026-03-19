@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Code Quill">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<meta name="description" content="The Snapshot Action automates codequill snapshot and publish in GitHub Actions. Configure inputs, workflow YAML, and optional preservation.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Snapshot Action — CodeQuill">
+<meta property="og:description" content="The Snapshot Action automates codequill snapshot and publish in GitHub Actions. Configure inputs, workflow YAML, and optional preservation.">
+<meta property="og:site_name" content="CodeQuill">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Snapshot Action — CodeQuill">
+<meta name="twitter:description" content="The Snapshot Action automates codequill snapshot and publish in GitHub Actions. Configure inputs, workflow YAML, and optional preservation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: '#08080d',
+                surface: '#11111a',
+                elevated: '#1a1a27',
+                border: '#1e1e2e',
+                'border-accent': 'rgba(139, 92, 246, 0.3)',
+                body: '#d4d4d8',
+                bright: '#fafafa',
+                muted: '#52525b',
+                accent: '#8b5cf6',
+                'accent-light': '#a78bfa',
+                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+    <title>Snapshot Action — CodeQuill</title>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="nav-container">
+        <div class="nav-left">
+            <button class="nav-toggle" onclick="toggleNav()" type="button" aria-label="Toggle menu">
+                <svg class="nav-toggle-open" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                <svg class="nav-toggle-close" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+            <a href="/" class="nav-logo" aria-label="CodeQuill">
+                <img src="/assets/images/logo-full.svg" alt="CodeQuill" class="nav-logo-img">
+            </a>
+        </div>
+        <nav class="nav-links">
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="https://app.codequill.xyz" class="nav-link" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.497-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"></path></svg>
+                Launch App
+            </a>
+            <a href="https://github.com/codequill-claim" class="nav-link" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                GitHub
+            </a>
+            <span class="version-badge">0.9.1</span>
+        </nav>
+    </div>
+</header>
+
+    <div class="docs-layout">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="docs-sidebar">
+    <nav class="sidebar-nav">
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Getting Started</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/getting-started/introduction"
+                       class="sidebar-link">
+                        Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/quickstart"
+                       class="sidebar-link">
+                        Quickstart
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/configuration"
+                       class="sidebar-link">
+                        Configuration
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Concepts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/concepts/workspaces"
+                       class="sidebar-link">
+                        Workspaces
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/claims"
+                       class="sidebar-link">
+                        Claims
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/snapshots"
+                       class="sidebar-link">
+                        Snapshots
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/releases"
+                       class="sidebar-link">
+                        Releases
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/attestations"
+                       class="sidebar-link">
+                        Attestations
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/preservations"
+                       class="sidebar-link">
+                        Preservations
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/proofs"
+                       class="sidebar-link">
+                        Proofs
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Releases &amp; Governance</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/releases/release-lifecycle"
+                       class="sidebar-link">
+                        Release Lifecycle
+                    </a>
+                </li>
+                <li>
+                    <a href="/releases/dao-governance"
+                       class="sidebar-link">
+                        DAO Governance
+                    </a>
+                </li>
+                <li>
+                    <a href="/releases/release-manifests"
+                       class="sidebar-link">
+                        Release Manifests
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Web Application</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/web-application/dashboard-repositories"
+                       class="sidebar-link">
+                        Dashboard &amp; Repositories
+                    </a>
+                </li>
+                <li>
+                    <a href="/web-application/settings-wallets"
+                       class="sidebar-link">
+                        Settings &amp; Wallets
+                    </a>
+                </li>
+                <li>
+                    <a href="/web-application/subscription-plans"
+                       class="sidebar-link">
+                        Subscription Plans
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CLI Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/cli-reference/authentication"
+                       class="sidebar-link">
+                        Authentication
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/source-commands"
+                       class="sidebar-link">
+                        Source Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/verification-commands"
+                       class="sidebar-link">
+                        Verification Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/utility-commands"
+                       class="sidebar-link">
+                        Utility Commands
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CI/CD Integration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/ci-cd/overview"
+                       class="sidebar-link">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="/ci-cd/snapshot-action"
+                       class="sidebar-link active">
+                        Snapshot Action
+                    </a>
+                </li>
+                <li>
+                    <a href="/ci-cd/attestation-action"
+                       class="sidebar-link">
+                        Attestation Action
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Smart Contracts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/smart-contracts/architecture"
+                       class="sidebar-link">
+                        Architecture
+                    </a>
+                </li>
+                <li>
+                    <a href="/smart-contracts/contract-reference"
+                       class="sidebar-link">
+                        Contract Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Security</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/security/threat-model"
+                       class="sidebar-link">
+                        Threat Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/security/encryption-model"
+                       class="sidebar-link">
+                        Encryption Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/security/non-guarantees"
+                       class="sidebar-link">
+                        Non-Guarantees
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/reference/interpreting-evidence"
+                       class="sidebar-link">
+                        Interpreting Evidence
+                    </a>
+                </li>
+                <li>
+                    <a href="/reference/glossary"
+                       class="sidebar-link">
+                        Glossary
+                    </a>
+                </li>
+                <li>
+                    <a href="/reference/faq"
+                       class="sidebar-link">
+                        FAQ
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="sidebar-mobile-links">
+            <a href="https://app.codequill.xyz" class="sidebar-footer-link" target="_blank" rel="noopener">Launch App</a>
+            <a href="https://github.com/codequill-claim" class="sidebar-footer-link" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="sidebar-copyright">
+            &copy; 2026 Ophelios. All rights reserved.
+        </div>
+        <div class="sidebar-powered">
+            Powered by <a href="https://github.com/dadajuice/zephyrus-leaf" target="_blank" rel="noopener">Zephyrus Leaf</a>
+        </div>
+    </div>
+</aside>
+        <main class="docs-main">
+<article class="docs-content">
+    <div class="prose">
+        <h1>Snapshot Action</h1>
+<p>The Snapshot Action automates the <code>codequill snapshot</code> and <code>codequill publish</code> commands within a GitHub Actions workflow. It is published as <code>ophelios-studio/codequill-action-publish@v1</code> and runs on Node 20.</p>
+<h2 id="purpose"><a href="#purpose" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Purpose</h2>
+<p>This action eliminates manual CLI invocations for the snapshot-and-publish phase of the pipeline. On every push to your target branch, it computes a deterministic Merkle root of the repository, publishes the manifest to IPFS, anchors the snapshot on-chain, and optionally creates an encrypted preservation archive.</p>
+<h2 id="inputs"><a href="#inputs" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Inputs</h2>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>token</code></td>
+<td>Yes</td>
+<td>—</td>
+<td>CodeQuill repo-scoped bearer token.</td>
+</tr>
+<tr>
+<td><code>github_id</code></td>
+<td>Yes</td>
+<td>—</td>
+<td>GitHub repository numeric ID. Use <code>github.repository_id</code>.</td>
+</tr>
+<tr>
+<td><code>api_base_url</code></td>
+<td>No</td>
+<td><code>&quot;&quot;</code></td>
+<td>Override CodeQuill API base URL.</td>
+</tr>
+<tr>
+<td><code>cli_version</code></td>
+<td>No</td>
+<td><code>&quot;&quot;</code></td>
+<td>Specific npm version for the <code>codequill</code> CLI.</td>
+</tr>
+<tr>
+<td><code>working_directory</code></td>
+<td>No</td>
+<td><code>&quot;.&quot;</code></td>
+<td>Working directory for commands.</td>
+</tr>
+<tr>
+<td><code>extra_args</code></td>
+<td>No</td>
+<td><code>&quot;&quot;</code></td>
+<td>Extra arguments appended to commands.</td>
+</tr>
+<tr>
+<td><code>preserve</code></td>
+<td>No</td>
+<td><code>&quot;false&quot;</code></td>
+<td>Whether to preserve code after publish.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="outputs"><a href="#outputs" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Outputs</h2>
+<p>No outputs are defined. The action succeeds or fails based on the outcome of the CLI commands.</p>
+<h2 id="execution-flow"><a href="#execution-flow" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Execution Flow</h2>
+<p>The action performs the following steps in sequence:</p>
+<h3 id="1-install-cli"><a href="#1-install-cli" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>1. Install CLI</h3>
+<p>Installs the <code>codequill</code> CLI globally via npm. If <code>cli_version</code> is specified, it installs that exact version (<code>npm i -g codequill@&lt;version&gt;</code>). Otherwise, it installs the latest release (<code>npm i -g codequill</code>).</p>
+<h3 id="2-set-environment-variables"><a href="#2-set-environment-variables" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>2. Set Environment Variables</h3>
+<p>Exports the following environment variables for the CLI:</p>
+<ul>
+<li><code>CODEQUILL_TOKEN</code> — from the <code>token</code> input.</li>
+<li><code>CODEQUILL_GITHUB_ID</code> — from the <code>github_id</code> input.</li>
+<li><code>CODEQUILL_API_BASE_URL</code> — from the <code>api_base_url</code> input, if provided.</li>
+</ul>
+<h3 id="3-snapshot"><a href="#3-snapshot" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>3. Snapshot</h3>
+<p>Runs <code>codequill snapshot</code> in the configured working directory. This computes the Merkle root of the repository at the current commit and writes the manifest to <code>.codequill/snapshots/</code>.</p>
+<h3 id="4-publish"><a href="#4-publish" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>4. Publish</h3>
+<p>Runs <code>codequill publish --no-confirm --json --no-wait</code>. The <code>--json</code> flag causes the CLI to emit structured output, which the action parses to extract <code>tx_hash</code> and <code>snapshot_id</code>.</p>
+<h3 id="5-wait"><a href="#5-wait" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>5. Wait</h3>
+<p>Runs <code>codequill wait &lt;tx_hash&gt;</code> to block until the on-chain transaction is confirmed. This ensures the snapshot is fully anchored before the action completes.</p>
+<h3 id="6-preserve-optional"><a href="#6-preserve-optional" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>6. Preserve (Optional)</h3>
+<p>If <code>preserve</code> is set to <code>&quot;true&quot;</code>:</p>
+<ol>
+<li>Runs <code>codequill preserve &lt;snapshot_id&gt; --no-confirm --json --no-wait</code> to create an encrypted archive of the source code.</li>
+<li>Parses the JSON output to extract the preservation transaction hash.</li>
+<li>Runs <code>codequill wait &lt;preserve_tx_hash&gt;</code> to block until the preservation transaction is confirmed.</li>
+</ol>
+<h2 id="workflow-example"><a href="#workflow-example" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Workflow Example</h2>
+<p>A complete, copy-pasteable workflow that runs on every push to <code>main</code>:</p>
+<pre><code class="language-yaml">name: CodeQuill Snapshot &amp; Publish
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Snapshot and publish
+        uses: ophelios-studio/codequill-action-publish@v1
+        with:
+          token: ${{ secrets.CODEQUILL_TOKEN }}
+          github_id: ${{ github.repository_id }}
+          preserve: &quot;true&quot;
+</code></pre>
+<h3 id="without-preservation"><a href="#without-preservation" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Without Preservation</h3>
+<p>If you do not need encrypted source archives, omit the <code>preserve</code> input (it defaults to <code>&quot;false&quot;</code>):</p>
+<pre><code class="language-yaml">      - name: Snapshot and publish
+        uses: ophelios-studio/codequill-action-publish@v1
+        with:
+          token: ${{ secrets.CODEQUILL_TOKEN }}
+          github_id: ${{ github.repository_id }}
+</code></pre>
+<h3 id="with-custom-cli-version"><a href="#with-custom-cli-version" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>With Custom CLI Version</h3>
+<p>To pin a specific CLI version for reproducibility:</p>
+<pre><code class="language-yaml">      - name: Snapshot and publish
+        uses: ophelios-studio/codequill-action-publish@v1
+        with:
+          token: ${{ secrets.CODEQUILL_TOKEN }}
+          github_id: ${{ github.repository_id }}
+          cli_version: &quot;0.8.2&quot;
+</code></pre>
+
+    </div>
+
+    <nav class="docs-pagination">
+        <a href="/ci-cd/overview" class="pagination-link pagination-prev">
+            <span class="pagination-label">&larr; Previous</span>
+            <span class="pagination-title">Overview</span>
+        </a>
+
+        <a href="/ci-cd/attestation-action" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Attestation Action</span>
+        </a>
+    </nav>
+</article>
+        </main>
+<aside class="docs-toc">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            <li class="toc-item">
+                <a href="#purpose" class="toc-link">Purpose</a>
+            </li>
+            <li class="toc-item">
+                <a href="#inputs" class="toc-link">Inputs</a>
+            </li>
+            <li class="toc-item">
+                <a href="#outputs" class="toc-link">Outputs</a>
+            </li>
+            <li class="toc-item">
+                <a href="#execution-flow" class="toc-link">Execution Flow</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#1-install-cli" class="toc-link">1. Install CLI</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#2-set-environment-variables" class="toc-link">2. Set Environment Variables</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#3-snapshot" class="toc-link">3. Snapshot</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#4-publish" class="toc-link">4. Publish</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#5-wait" class="toc-link">5. Wait</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#6-preserve-optional" class="toc-link">6. Preserve (Optional)</a>
+            </li>
+            <li class="toc-item">
+                <a href="#workflow-example" class="toc-link">Workflow Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#without-preservation" class="toc-link">Without Preservation</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#with-custom-cli-version" class="toc-link">With Custom CLI Version</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+    </div>
+
+<div class="search-overlay" id="search-overlay">
+    <div class="search-dialog" role="dialog" aria-label="Search documentation">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off" autofocus>
+            <kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--text-muted); font-family: var(--font-mono); cursor: pointer;" onclick="closeSearch()">Esc</kbd>
+        </div>
+        <div class="search-results" id="search-results">
+            <div class="search-empty">Type to search the documentation...</div>
+        </div>
+        <div class="search-footer">
+            <span>Navigate with <kbd>&uarr;</kbd> <kbd>&darr;</kbd> keys</span>
+            <span>Press <kbd>Enter</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="/assets/js/copy-code.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: '#08080d',
+                surface: '#11111a',
+                elevated: '#1a1a27',
+                border: '#1e1e2e',
+                'border-accent': 'rgba(139, 92, 246, 0.3)',
+                body: '#d4d4d8',
+                bright: '#fafafa',
+                muted: '#52525b',
+                accent: '#8b5cf6',
+                'accent-light': '#a78bfa',
+                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+    <title>Preservations — CodeQuill</title>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 text-bright font-semibold text-lg no-underline">
+            <img src="/assets/images/logo-icon.svg" alt="CodeQuill" width="24" height="24">
+            <span>CodeQuill</span>
+        </a>
+        <nav class="flex items-center gap-5">
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="/docs" class="nav-link">Docs</a>
+            <a href="https://app.codequill.xyz" class="nav-link" target="_blank" rel="noopener">Launch App</a>
+            <a href="https://github.com/ophelios-studio/codequill-contracts" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+            <span class="version-badge">0.8.1</span>
+        </nav>
+    </div>
+</header>
+
+    <div class="docs-layout">
+<aside class="docs-sidebar">
+    <nav class="sidebar-nav">
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Getting Started</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/getting-started/introduction"
+                       class="sidebar-link">
+                        Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/quickstart"
+                       class="sidebar-link">
+                        Quickstart
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/getting-started/configuration"
+                       class="sidebar-link">
+                        Configuration
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Concepts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/concepts/workspaces"
+                       class="sidebar-link">
+                        Workspaces
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/claims"
+                       class="sidebar-link">
+                        Claims
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/snapshots"
+                       class="sidebar-link">
+                        Snapshots
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/releases"
+                       class="sidebar-link">
+                        Releases
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/attestations"
+                       class="sidebar-link">
+                        Attestations
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/preservations"
+                       class="sidebar-link active">
+                        Preservations
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/concepts/proofs"
+                       class="sidebar-link">
+                        Proofs
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Releases &amp; Governance</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/releases/release-lifecycle"
+                       class="sidebar-link">
+                        Release Lifecycle
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/releases/dao-governance"
+                       class="sidebar-link">
+                        DAO Governance
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/releases/release-manifests"
+                       class="sidebar-link">
+                        Release Manifests
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Web Application</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/web-application/dashboard-repositories"
+                       class="sidebar-link">
+                        Dashboard &amp; Repositories
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/web-application/settings-wallets"
+                       class="sidebar-link">
+                        Settings &amp; Wallets
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/web-application/subscription-plans"
+                       class="sidebar-link">
+                        Subscription Plans
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CLI Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/cli-reference/authentication"
+                       class="sidebar-link">
+                        Authentication
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/source-commands"
+                       class="sidebar-link">
+                        Source Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/verification-commands"
+                       class="sidebar-link">
+                        Verification Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/cli-reference/utility-commands"
+                       class="sidebar-link">
+                        Utility Commands
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CI/CD Integration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/ci-cd/overview"
+                       class="sidebar-link">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/ci-cd/snapshot-action"
+                       class="sidebar-link">
+                        Snapshot Action
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/ci-cd/attestation-action"
+                       class="sidebar-link">
+                        Attestation Action
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Smart Contracts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/smart-contracts/architecture"
+                       class="sidebar-link">
+                        Architecture
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/smart-contracts/contract-reference"
+                       class="sidebar-link">
+                        Contract Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Security</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/security/threat-model"
+                       class="sidebar-link">
+                        Threat Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/security/encryption-model"
+                       class="sidebar-link">
+                        Encryption Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/security/non-guarantees"
+                       class="sidebar-link">
+                        Non-Guarantees
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/docs/reference/interpreting-evidence"
+                       class="sidebar-link">
+                        Interpreting Evidence
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/reference/glossary"
+                       class="sidebar-link">
+                        Glossary
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs/reference/faq"
+                       class="sidebar-link">
+                        FAQ
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</aside>
+        <main class="docs-main">
+<article class="docs-content">
+    <div class="prose">
+        <h1>Preservations</h1>
+<p>A preservation is an encrypted archive of a repository's full source code, tied to a specific published snapshot. It enables long-term source survival without requiring trust in any custodian -- not even CodeQuill.</p>
+<h2 id="why-preservations-exist"><a href="#why-preservations-exist" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Why Preservations Exist</h2>
+<p>Snapshots record <strong>hashes</strong> of source files, not the files themselves. This is by design: the snapshot proves what existed without requiring disclosure. But there are scenarios where having the actual source code available decades later matters: legal discovery, audit obligations, disaster recovery, or historical research.</p>
+<p>Preservations solve this by encrypting the full source archive and storing it on decentralized storage (IPFS via Lighthouse). The encryption uses keys that only the workspace authority can access, ensuring zero-custody: CodeQuill never sees the plaintext.</p>
+<p>The term &quot;preservation&quot; is deliberate. This is not a backup in the traditional sense (you control your own backups). It is a <strong>durable, encrypted evidence artifact</strong> tied to a cryptographic proof of existence.</p>
+<h2 id="encryption-model"><a href="#encryption-model" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Encryption Model</h2>
+<p>Preservations use the <code>codequill-envelope:v1</code> encryption scheme:</p>
+<ol>
+<li>The CLI creates a deterministic <code>git archive</code> of the commit (tar + gzip).</li>
+<li>A SHA-256 hash of the plaintext archive is computed.</li>
+<li>A random <strong>Data Encryption Key (DEK)</strong> and <strong>IV</strong> are generated.</li>
+<li>The archive is encrypted with <strong>AES-256-GCM</strong> using the DEK and IV.</li>
+<li>The DEK is wrapped using an <strong>X25519 sealed box</strong> (libsodium <code>crypto_box_seal</code>) to the workspace's public encryption key.</li>
+<li>The encrypted payload, wrapped DEK, and IV are uploaded to decentralized storage.</li>
+<li>The SHA-256 of the plaintext archive (computed before encryption) is anchored on-chain.</li>
+</ol>
+<p>To decrypt, the workspace authority uses their passkey to derive the X25519 private key, unwrap the DEK, and decrypt the archive.</p>
+<p>Key properties:</p>
+<ul>
+<li><strong>Zero-custody</strong> -- CodeQuill never possesses the decryption key.</li>
+<li><strong>Passkey-bound</strong> -- The encryption key is derived from a WebAuthn passkey using the PRF extension.</li>
+<li><strong>No admin backdoor</strong> -- There is no recovery mechanism. If the passkey is lost, the preservation cannot be decrypted.</li>
+<li><strong>Snapshot-bound</strong> -- Each preservation is linked to a specific snapshot, with the content root verified before encryption.</li>
+</ul>
+<p>For full technical details, see <a href="/docs/security/encryption-model">Encryption Model</a>.</p>
+<h2 id="using-the-cli"><a href="#using-the-cli" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Using the CLI</h2>
+<h3 id="create-a-preservation"><a href="#create-a-preservation" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Create a Preservation</h3>
+<pre><code class="language-bash">codequill preserve &lt;snapshot-id&gt;
+</code></pre>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;snapshot-id&gt;</code></td>
+<td>Yes</td>
+<td>The ID of a published snapshot to preserve</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--no-confirm</code></td>
+<td>boolean</td>
+<td>false</td>
+<td>Skip confirmation prompt</td>
+</tr>
+<tr>
+<td><code>--confirmations &lt;n&gt;</code></td>
+<td>integer</td>
+<td>1</td>
+<td>On-chain confirmations to wait for</td>
+</tr>
+<tr>
+<td><code>--timeout &lt;ms&gt;</code></td>
+<td>integer</td>
+<td>300000</td>
+<td>Timeout for confirmation</td>
+</tr>
+<tr>
+<td><code>--no-wait</code></td>
+<td>boolean</td>
+<td>false</td>
+<td>Submit and return immediately</td>
+</tr>
+<tr>
+<td><code>--json</code></td>
+<td>boolean</td>
+<td>false</td>
+<td>Output in JSON format</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prerequisites"><a href="#prerequisites" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Prerequisites</h3>
+<p>Before creating a preservation:</p>
+<ol>
+<li>The snapshot must be <strong>published</strong> and anchored on-chain.</li>
+<li>Your local repository must match the snapshot's content root (the CLI verifies this before proceeding).</li>
+<li>Your workspace must have encryption set up (passkey registered).</li>
+</ol>
+<h3 id="example"><a href="#example" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example</h3>
+<pre><code class="language-bash">codequill preserve snap_abc123
+</code></pre>
+<p>The CLI will:</p>
+<ol>
+<li>Fetch the published snapshot information.</li>
+<li>Verify your local repository matches the snapshot.</li>
+<li>Create a deterministic archive via <code>git archive</code>.</li>
+<li>Encrypt the archive with your workspace's encryption key.</li>
+<li>Upload to decentralized storage.</li>
+<li>Anchor the archive hash on-chain.</li>
+</ol>
+<pre><code>Preserving snapshot snap_abc123...
+Verifying content root...
+Creating archive...
+Encrypting (AES-256-GCM)...
+Uploading to IPFS...
+Anchoring on-chain...
+
+Transaction submitted: 0xabc123...
+Waiting for confirmation...
+
+Preservation complete.
+</code></pre>
+<h2 id="on-chain-record"><a href="#on-chain-record" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>On-Chain Record</h2>
+<p>The <code>CodeQuillPreservationRegistry</code> smart contract stores:</p>
+<ul>
+<li><strong>Snapshot Merkle Root</strong> -- Links the preservation to a specific snapshot.</li>
+<li><strong>Archive SHA-256</strong> -- Hash of the plaintext archive (before encryption), proving content integrity.</li>
+<li><strong>Metadata SHA-256</strong> -- Hash of the preservation metadata.</li>
+<li><strong>Preservation CID</strong> -- IPFS CID of the encrypted payload.</li>
+<li><strong>Author and timestamp</strong>.</li>
+</ul>
+<p>The on-chain record proves that an encrypted archive with a specific plaintext hash was stored at a specific time. It does not reveal the archive contents.</p>
+<h2 id="auditor-context"><a href="#auditor-context" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Auditor Context</h2>
+<p>For auditors: a preservation proves that an encrypted archive was created and stored at a specific time, bound to a specific snapshot. The plaintext hash allows verification that a decrypted archive matches the on-chain record. However, decryption requires the workspace authority's cooperation. See <a href="/docs/reference/interpreting-evidence">Interpreting Evidence</a>.</p>
+
+    </div>
+
+    <nav class="docs-pagination">
+        <a href="/docs/concepts/attestations" class="pagination-link pagination-prev">
+            <span class="pagination-label">&larr; Previous</span>
+            <span class="pagination-title">Attestations</span>
+        </a>
+
+        <a href="/docs/concepts/proofs" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Proofs</span>
+        </a>
+    </nav>
+</article>
+        </main>
+<aside class="docs-toc">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            <li class="toc-item">
+                <a href="#why-preservations-exist" class="toc-link">Why Preservations Exist</a>
+            </li>
+            <li class="toc-item">
+                <a href="#encryption-model" class="toc-link">Encryption Model</a>
+            </li>
+            <li class="toc-item">
+                <a href="#using-the-cli" class="toc-link">Using the CLI</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#create-a-preservation" class="toc-link">Create a Preservation</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#prerequisites" class="toc-link">Prerequisites</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item">
+                <a href="#on-chain-record" class="toc-link">On-Chain Record</a>
+            </li>
+            <li class="toc-item">
+                <a href="#auditor-context" class="toc-link">Auditor Context</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+    </div>
+
+<div class="search-overlay" id="search-overlay">
+    <div class="search-dialog" role="dialog" aria-label="Search documentation">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off" autofocus>
+            <kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--text-muted); font-family: var(--font-mono); cursor: pointer;" onclick="closeSearch()">Esc</kbd>
+        </div>
+        <div class="search-results" id="search-results">
+            <div class="search-empty">Type to search the documentation...</div>
+        </div>
+        <div class="search-footer">
+            <span>Navigate with <kbd>&uarr;</kbd> <kbd>&darr;</kbd> keys</span>
+            <span>Press <kbd>Enter</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="/assets/js/copy-code.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/search.js"></script>
+</body>
+</html>
