@@ -39,11 +39,14 @@ The result is a durable, timestamped record: "This Merkle root, representing thi
 
 ## Privacy Model
 
-File paths in a snapshot are **salted** before hashing. The salt is derived from the workspace's encryption key, which means:
+File paths in a snapshot are **salted** before hashing. The salt is derived from the workspace's encryption key, which itself is bound to a registered **passkey** (WebAuthn). This means snapshot creation requires passkey-based encryption to be set up in the workspace -- the same encryption infrastructure used for preservations and proofs.
+
+Because the salt is passkey-derived:
 
 - The manifest reveals **file content hashes** but not file paths in plaintext.
-- Path verification requires knowledge of the salt (which requires workspace authority).
+- Path verification requires knowledge of the salt (which requires workspace authority and passkey access).
 - This allows selective disclosure: you can prove a specific file was included (via [Proofs](/concepts/proofs)) without revealing the full directory structure.
+- Even if a manifest is intercepted, the directory structure remains private without the salt.
 
 ## Using the CLI
 
