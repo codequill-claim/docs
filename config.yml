@@ -17,9 +17,9 @@ render:
 
 leaf:
   name: "CodeQuill"
-  version: "0.8.1"
+  version: "0.9.1"
   description: "Memory infrastructure for software. Preserve verifiable, immutable evidence of what source code existed at a given point in time."
-  github_url: "https://github.com/ophelios-studio/codequill-contracts"
+  github_url: "https://github.com/codequill-claim"
   content_path: "content"
   sections:
     getting-started: "Getting Started"
