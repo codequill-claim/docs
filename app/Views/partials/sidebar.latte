@@ -7,7 +7,7 @@
                 {foreach $group['items'] as $item}
                 <li>
                     <a href="{$item['url']}"
-                       class="sidebar-link{if ($item['url'] ?? '') === "/{$section}/{$slug}"} active{/if}">
+                       class="sidebar-link{if ($item['url'] ?? '') === "{$leafBaseUrl}/{$section}/{$slug}"} active{/if}">
                         {$item['title']}
                     </a>
                 </li>

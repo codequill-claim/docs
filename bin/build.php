@@ -75,6 +75,7 @@ echo "Generating search index..." . PHP_EOL;
 $searchIndexBuilder = new SearchIndexBuilder(
     $contentDir,
     new MarkdownParser(),
+    $leafConfig->baseUrl,
 );
 $index = $searchIndexBuilder->build();
 $searchJsonPath = $outputDir . '/search.json';

@@ -174,7 +174,8 @@
     // ── Helpers ─────────────────────────────────────────────────
     function loadIndex() {
         if (searchIndex) return;
-        fetch('/search.json')
+        var baseUrl = (document.querySelector('meta[name="leaf-base-url"]') || {}).content || '';
+        fetch(baseUrl + '/search.json')
             .then(function (r) { return r.json(); })
             .then(function (data) { searchIndex = data; })
             .catch(function () { searchIndex = []; });

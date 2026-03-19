@@ -55,7 +55,7 @@ final class DocsController extends Controller
             'pageDescription' => $description,
             'section' => $section,
             'slug' => $slug,
-            'content' => $page->html,
+            'content' => $this->prefixInternalLinks($page->html),
             'sidebar' => $this->contentLoader->getSidebar(),
             'toc' => $page->toc,
             'prevPage' => $this->contentLoader->getPreviousPage($section, $slug),
@@ -68,6 +68,23 @@ final class DocsController extends Controller
     {
         $index = $this->searchIndexBuilder->build();
         return Response::json($index);
+    }
+
+    /**
+     * Prefix internal links in rendered HTML with the configured base URL.
+     */
+    private function prefixInternalLinks(string $html): string
+    {
+        $baseUrl = rtrim($this->leafConfig->baseUrl, '/');
+        if ($baseUrl === '') {
+            return $html;
+        }
+        // Prefix href="/..." links (internal doc links, not external or anchor-only)
+        return preg_replace(
+            '#href="(/(?!/)[^"]*)"#',
+            'href="' . $baseUrl . '$1"',
+            $html,
+        );
     }
 
     #[Get('/404')]

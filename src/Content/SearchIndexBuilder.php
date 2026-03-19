@@ -12,6 +12,7 @@ final class SearchIndexBuilder
     public function __construct(
         private readonly string $contentDirectory,
         private readonly MarkdownParser $parser,
+        private readonly string $baseUrl = '',
     ) {
     }
 
@@ -59,7 +60,7 @@ final class SearchIndexBuilder
                 $index[] = [
                     'title' => $title,
                     'section' => $section,
-                    'url' => "/{$section}/{$slug}",
+                    'url' => rtrim($this->baseUrl, '/') . "/{$section}/{$slug}",
                     'excerpt' => $excerpt,
                     'headings' => $headings,
                 ];
