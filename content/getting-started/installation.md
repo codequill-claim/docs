@@ -1,5 +1,6 @@
 ---
 title: Installation
+description: "Install the CodeQuill CLI via npm, configure environment variables, and set up authentication for local and CI environments."
 order: 3
 ---
 

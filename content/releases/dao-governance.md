@@ -1,5 +1,6 @@
 ---
 title: DAO Governance
+description: "Configure a DAO executor to require governance approval for releases. Integrate with Aragon, Governor contracts, or multisig wallets."
 order: 2
 ---
 

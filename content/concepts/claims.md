@@ -1,5 +1,6 @@
 ---
 title: Claims
+description: "A claim is an on-chain record linking a GitHub repository to a workspace authority. Learn how to claim repos and what claims represent."
 order: 2
 ---
 

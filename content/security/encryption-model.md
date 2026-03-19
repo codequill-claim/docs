@@ -1,5 +1,6 @@
 ---
 title: Encryption Model
+description: "Zero-custody encryption using WebAuthn passkey PRF, AES-256-GCM, and X25519 sealed boxes. CodeQuill never possesses decryption keys."
 order: 2
 ---
 

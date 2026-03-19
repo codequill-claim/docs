@@ -1,5 +1,6 @@
 ---
 title: Utility Commands
+description: "CLI utility commands: wait for on-chain transaction confirmations and explore the philosophy behind CodeQuill with the why command."
 order: 4
 ---
 

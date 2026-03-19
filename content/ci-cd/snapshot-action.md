@@ -1,5 +1,6 @@
 ---
 title: Snapshot Action
+description: "The Snapshot Action automates codequill snapshot and publish in GitHub Actions. Configure inputs, workflow YAML, and optional preservation."
 order: 2
 ---
 

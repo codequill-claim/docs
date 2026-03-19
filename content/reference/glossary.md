@@ -1,5 +1,6 @@
 ---
 title: Glossary
+description: "Definitions of key CodeQuill terms: anchoring, attestation, authority, claim, delegation, evidence infrastructure, snapshot, workspace, and more."
 order: 2
 ---
 

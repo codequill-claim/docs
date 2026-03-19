@@ -1,5 +1,6 @@
 ---
 title: Release Manifests
+description: "Release manifests are structured documents stored on IPFS that contain all metadata for a published release. Learn the schema and verification process."
 order: 3
 ---
 

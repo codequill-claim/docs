@@ -1,5 +1,6 @@
 ---
 title: Overview
+description: "CodeQuill provides two GitHub Actions for CI/CD: automated snapshots on push and attestations triggered by governance-approved releases."
 order: 1
 ---
 

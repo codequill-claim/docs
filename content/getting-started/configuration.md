@@ -1,5 +1,6 @@
 ---
 title: Configuration
+description: "Configure the CodeQuill CLI with launcher settings, authentication tokens, and local repository data in the .codequill directory."
 order: 4
 ---
 

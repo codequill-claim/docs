@@ -1,5 +1,6 @@
 ---
 title: Non-Guarantees
+description: "Five things CodeQuill explicitly does not guarantee: build causality, build correctness, reproducible builds, supply-chain security, and code quality."
 order: 3
 ---
 

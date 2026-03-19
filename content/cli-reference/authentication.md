@@ -1,5 +1,6 @@
 ---
 title: Authentication
+description: "CLI authentication commands: login with approval phrase flow, check identity with who, and view subscription quotas with quota."
 order: 1
 ---
 

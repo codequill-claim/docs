@@ -1,5 +1,6 @@
 ---
 title: Quickstart
+description: "Go from zero to a published, on-chain source snapshot in minutes. Sign in, install the CLI, claim a repository, and publish."
 order: 2
 ---
 

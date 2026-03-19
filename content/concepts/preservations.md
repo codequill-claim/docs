@@ -1,5 +1,6 @@
 ---
 title: Preservations
+description: "Preservations are encrypted, zero-custody archives of source code tied to published snapshots for long-term survival and recovery."
 order: 6
 ---
 

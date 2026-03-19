@@ -1,5 +1,6 @@
 ---
 title: Attestations
+description: "Attestations record that a build artifact claims lineage from a specific release. Learn how to create and verify artifact-to-source links."
 order: 5
 ---
 

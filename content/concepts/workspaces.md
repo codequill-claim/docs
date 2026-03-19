@@ -1,5 +1,6 @@
 ---
 title: Workspaces
+description: "Workspaces are the top-level organizational unit in CodeQuill, binding wallets, collaborators, and repositories under a single on-chain identity."
 order: 1
 ---
 

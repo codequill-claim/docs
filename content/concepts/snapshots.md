@@ -1,5 +1,6 @@
 ---
 title: Snapshots
+description: "Snapshots are deterministic cryptographic fingerprints of your source code at a specific commit. Learn how they work and how to publish them."
 order: 3
 ---
 

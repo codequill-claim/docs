@@ -1,5 +1,6 @@
 ---
 title: Dashboard & Repositories
+description: "Manage repositories, view activity timelines, track snapshots, and configure CI/CD integration from the CodeQuill web dashboard."
 order: 1
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: FAQ
+description: "Frequently asked questions about CodeQuill: what problem it solves, how it compares to Sigstore, whether it guarantees build security, and more."
 order: 3
 ---
 

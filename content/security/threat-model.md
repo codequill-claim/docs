@@ -1,5 +1,6 @@
 ---
 title: Threat Model
+description: "CodeQuill operates under hostile assumptions about CI systems, platforms, and registries. Learn what it preserves and what it does not solve."
 order: 1
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: Subscription Plans
+description: "CodeQuill offers four subscription tiers from free Starter to Organization plans with varying quotas for claims, snapshots, and attestations."
 order: 3
 ---
 

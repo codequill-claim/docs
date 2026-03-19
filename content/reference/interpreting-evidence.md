@@ -1,5 +1,6 @@
 ---
 title: Interpreting Evidence
+description: "A guide for developers, auditors, and legal reviewers on what conclusions can and cannot be drawn from CodeQuill evidence records."
 order: 1
 ---
 

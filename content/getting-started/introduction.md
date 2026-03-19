@@ -1,5 +1,6 @@
 ---
 title: Introduction
+description: "CodeQuill is memory infrastructure for software. Learn what it does, how it works, and why evidence preservation matters."
 order: 1
 ---
 

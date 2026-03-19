@@ -1,5 +1,6 @@
 ---
 title: Settings & Wallets
+description: "Connect wallets via SIWE, manage collaborators, configure encryption with passkeys, set DAO executors, and manage workspace settings."
 order: 2
 ---
 

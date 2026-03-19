@@ -1,5 +1,6 @@
 ---
 title: Proofs
+description: "Merkle proofs-of-inclusion demonstrate that a specific file was part of a published snapshot without revealing the full file tree."
 order: 7
 ---
 

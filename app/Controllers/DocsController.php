@@ -41,8 +41,18 @@ final class DocsController extends Controller
             ], 404);
         }
 
+        $description = $page->meta('description', '');
+        if ($description === '') {
+            $plaintext = strip_tags($page->html);
+            $plaintext = preg_replace('/\s+/', ' ', trim($plaintext));
+            $description = mb_strlen($plaintext) > 160
+                ? mb_substr($plaintext, 0, 157) . '...'
+                : $plaintext;
+        }
+
         return $this->render('docs/page', [
             'title' => $page->meta('title', ucfirst(str_replace('-', ' ', $slug))),
+            'pageDescription' => $description,
             'section' => $section,
             'slug' => $slug,
             'content' => $page->html,

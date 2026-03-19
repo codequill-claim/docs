@@ -1,5 +1,6 @@
 ---
 title: Source Commands
+description: "CLI commands for source evidence: claim repositories, create snapshots, publish to IPFS and on-chain, pull manifests, and view history."
 order: 2
 ---
 

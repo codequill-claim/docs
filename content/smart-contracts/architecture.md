@@ -1,5 +1,6 @@
 ---
 title: Architecture
+description: "Seven Solidity contracts form a four-tier DAG deployed on EVM-compatible chains. No admin keys, no pause mechanism, fully permissionless."
 order: 1
 ---
 

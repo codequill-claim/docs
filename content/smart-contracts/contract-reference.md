@@ -1,5 +1,6 @@
 ---
 title: Contract Reference
+description: "Complete reference for all seven CodeQuill smart contracts: functions, events, delegation scopes, and cross-contract dependencies."
 order: 2
 ---
 

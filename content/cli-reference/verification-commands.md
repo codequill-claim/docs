@@ -1,5 +1,6 @@
 ---
 title: Verification Commands
+description: "CLI commands for verification: attest build artifacts, generate Merkle proofs-of-inclusion, verify proofs offline, and preserve source code."
 order: 3
 ---
 

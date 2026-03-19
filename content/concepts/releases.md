@@ -1,5 +1,6 @@
 ---
 title: Releases
+description: "Releases bind a single snapshot to a named, versioned package with governance lifecycle. Draft, publish, accept, revoke, and supersede."
 order: 4
 ---
 

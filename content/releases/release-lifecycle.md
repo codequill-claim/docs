@@ -1,5 +1,6 @@
 ---
 title: Release Lifecycle
+description: "Understand the full release lifecycle in CodeQuill: draft creation, on-chain anchoring, governance approval, revocation, and supersession."
 order: 1
 ---
 

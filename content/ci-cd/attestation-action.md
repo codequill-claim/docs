@@ -1,5 +1,6 @@
 ---
 title: Attestation Action
+description: "The Attestation Action handles release events from GitHub Issues, verifies bot identity and HMAC signatures, and runs codequill attest."
 order: 3
 ---
 
