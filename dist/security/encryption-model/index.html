@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="leaf-base-url" content="">
-<link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96">
-<link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg">
-<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+<meta name="leaf-base-url" content="/docs">
+<link rel="icon" type="image/png" href="/docs/assets/images/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/docs/assets/images/favicon/favicon.svg">
+<link rel="shortcut icon" href="/docs/assets/images/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/docs/assets/images/favicon/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-title" content="Code Quill">
-<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<link rel="manifest" href="/docs/assets/images/favicon/site.webmanifest">
 <meta name="description" content="Zero-custody encryption using WebAuthn passkey PRF, AES-256-GCM, and X25519 sealed boxes. CodeQuill never possesses decryption keys.">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="article">
@@ -49,7 +49,7 @@ tailwind.config = {
 }
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-<link rel="stylesheet" href="/assets/css/app.css">
+<link rel="stylesheet" href="/docs/assets/css/app.css">
     <title>Encryption Model — CodeQuill</title>
 </head>
 <body class="bg-deep text-body antialiased font-body">
@@ -60,8 +60,8 @@ tailwind.config = {
                 <svg class="nav-toggle-open" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
                 <svg class="nav-toggle-close" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </button>
-            <a href="/" class="nav-logo" aria-label="CodeQuill">
-                <img src="/assets/images/logo-full.svg" alt="CodeQuill" class="nav-logo-img">
+            <a href="/docs/" class="nav-logo" aria-label="CodeQuill">
+                <img src="/docs/assets/images/logo-full.svg" alt="CodeQuill" class="nav-logo-img">
             </a>
         </div>
         <nav class="nav-links">
@@ -91,25 +91,25 @@ tailwind.config = {
             <h3 class="sidebar-group-title">Getting Started</h3>
             <ul class="sidebar-links">
                 <li>
-                    <a href="/getting-started/introduction"
+                    <a href="/docs/getting-started/introduction"
                        class="sidebar-link">
                         Introduction
                     </a>
                 </li>
                 <li>
-                    <a href="/getting-started/quickstart"
+                    <a href="/docs/getting-started/quickstart"
                        class="sidebar-link">
                         Quickstart
                     </a>
                 </li>
                 <li>
-                    <a href="/getting-started/installation"
+                    <a href="/docs/getting-started/installation"
                        class="sidebar-link">
                         Installation
                     </a>
                 </li>
                 <li>
-                    <a href="/getting-started/configuration"
+                    <a href="/docs/getting-started/configuration"
                        class="sidebar-link">
                         Configuration
                     </a>
@@ -120,43 +120,43 @@ tailwind.config = {
             <h3 class="sidebar-group-title">Concepts</h3>
             <ul class="sidebar-links">
                 <li>
-                    <a href="/concepts/workspaces"
+                    <a href="/docs/concepts/workspaces"
                        class="sidebar-link">
                         Workspaces
                     </a>
                 </li>
                 <li>
-                    <a href="/concepts/claims"
+                    <a href="/docs/concepts/claims"
                        class="sidebar-link">
                         Claims
                     </a>
                 </li>
                 <li>
-                    <a href="/concepts/snapshots"
+                    <a href="/docs/concepts/snapshots"
                        class="sidebar-link">
                         Snapshots
                     </a>
                 </li>
                 <li>
-                    <a href="/concepts/releases"
+                    <a href="/docs/concepts/releases"
                        class="sidebar-link">
                         Releases
                     </a>
                 </li>
                 <li>
-                    <a href="/concepts/attestations"
+                    <a href="/docs/concepts/attestations"
                        class="sidebar-link">
                         Attestations
                     </a>
                 </li>
                 <li>
-                    <a href="/concepts/preservations"
+                    <a href="/docs/concepts/preservations"
                        class="sidebar-link">
                         Preservations
                     </a>
                 </li>
                 <li>
-                    <a href="/concepts/proofs"
+                    <a href="/docs/concepts/proofs"
                        class="sidebar-link">
                         Proofs
                     </a>
@@ -167,19 +167,19 @@ tailwind.config = {
             <h3 class="sidebar-group-title">Releases &amp; Governance</h3>
             <ul class="sidebar-links">
                 <li>
-                    <a href="/releases/release-lifecycle"
+                    <a href="/docs/releases/release-lifecycle"
                        class="sidebar-link">
                         Release Lifecycle
                     </a>
                 </li>
                 <li>
-                    <a href="/releases/dao-governance"
+                    <a href="/docs/releases/dao-governance"
                        class="sidebar-link">
                         DAO Governance
                     </a>
                 </li>
                 <li>
-                    <a href="/releases/release-manifests"
+                    <a href="/docs/releases/release-manifests"
                        class="sidebar-link">
                         Release Manifests
                     </a>
@@ -190,19 +190,19 @@ tailwind.config = {
             <h3 class="sidebar-group-title">Web Application</h3>
             <ul class="sidebar-links">
                 <li>
-                    <a href="/web-application/dashboard-repositories"
+                    <a href="/docs/web-application/dashboard-repositories"
                        class="sidebar-link">
                         Dashboard &amp; Repositories
                     </a>
                 </li>
                 <li>
-                    <a href="/web-application/settings-wallets"
+                    <a href="/docs/web-application/settings-wallets"
                        class="sidebar-link">
                         Settings &amp; Wallets
                     </a>
                 </li>
                 <li>
-                    <a href="/web-application/subscription-plans"
+                    <a href="/docs/web-application/subscription-plans"
                        class="sidebar-link">
                         Subscription Plans
                     </a>
@@ -213,25 +213,25 @@ tailwind.config = {
             <h3 class="sidebar-group-title">CLI Reference</h3>
             <ul class="sidebar-links">
                 <li>
-                    <a href="/cli-reference/authentication"
+                    <a href="/docs/cli-reference/authentication"
                        class="sidebar-link">
                         Authentication
                     </a>
                 </li>
                 <li>
-                    <a href="/cli-reference/source-commands"
+                    <a href="/docs/cli-reference/source-commands"
                        class="sidebar-link">
                         Source Commands
                     </a>
                 </li>
                 <li>
-                    <a href="/cli-reference/verification-commands"
+                    <a href="/docs/cli-reference/verification-commands"
                        class="sidebar-link">
                         Verification Commands
                     </a>
                 </li>
                 <li>
-                    <a href="/cli-reference/utility-commands"
+                    <a href="/docs/cli-reference/utility-commands"
                        class="sidebar-link">
                         Utility Commands
                     </a>
@@ -242,19 +242,19 @@ tailwind.config = {
             <h3 class="sidebar-group-title">CI/CD Integration</h3>
             <ul class="sidebar-links">
                 <li>
-                    <a href="/ci-cd/overview"
+                    <a href="/docs/ci-cd/overview"
                        class="sidebar-link">
                         Overview
                     </a>
                 </li>
                 <li>
-                    <a href="/ci-cd/snapshot-action"
+                    <a href="/docs/ci-cd/snapshot-action"
                        class="sidebar-link">
                         Snapshot Action
                     </a>
                 </li>
                 <li>
-                    <a href="/ci-cd/attestation-action"
+                    <a href="/docs/ci-cd/attestation-action"
                        class="sidebar-link">
                         Attestation Action
                     </a>
@@ -265,13 +265,13 @@ tailwind.config = {
             <h3 class="sidebar-group-title">Smart Contracts</h3>
             <ul class="sidebar-links">
                 <li>
-                    <a href="/smart-contracts/architecture"
+                    <a href="/docs/smart-contracts/architecture"
                        class="sidebar-link">
                         Architecture
                     </a>
                 </li>
                 <li>
-                    <a href="/smart-contracts/contract-reference"
+                    <a href="/docs/smart-contracts/contract-reference"
                        class="sidebar-link">
                         Contract Reference
                     </a>
@@ -282,19 +282,19 @@ tailwind.config = {
             <h3 class="sidebar-group-title">Security</h3>
             <ul class="sidebar-links">
                 <li>
-                    <a href="/security/threat-model"
+                    <a href="/docs/security/threat-model"
                        class="sidebar-link">
                         Threat Model
                     </a>
                 </li>
                 <li>
-                    <a href="/security/encryption-model"
+                    <a href="/docs/security/encryption-model"
                        class="sidebar-link active">
                         Encryption Model
                     </a>
                 </li>
                 <li>
-                    <a href="/security/non-guarantees"
+                    <a href="/docs/security/non-guarantees"
                        class="sidebar-link">
                         Non-Guarantees
                     </a>
@@ -305,19 +305,19 @@ tailwind.config = {
             <h3 class="sidebar-group-title">Reference</h3>
             <ul class="sidebar-links">
                 <li>
-                    <a href="/reference/interpreting-evidence"
+                    <a href="/docs/reference/interpreting-evidence"
                        class="sidebar-link">
                         Interpreting Evidence
                     </a>
                 </li>
                 <li>
-                    <a href="/reference/glossary"
+                    <a href="/docs/reference/glossary"
                        class="sidebar-link">
                         Glossary
                     </a>
                 </li>
                 <li>
-                    <a href="/reference/faq"
+                    <a href="/docs/reference/faq"
                        class="sidebar-link">
                         FAQ
                     </a>
@@ -439,7 +439,7 @@ X25519 Key Pair
 <li>Each file path is hashed as <code>keccak256(salt || path)</code> before inclusion in the Merkle tree.</li>
 <li>The manifest contains only these salted path hashes, not plaintext paths.</li>
 </ol>
-<p>This ensures that snapshot manifests -- which are stored on IPFS and publicly retrievable -- do not reveal the directory structure of the repository. Verifying that a specific file was included in a snapshot requires knowledge of the salt, which in turn requires workspace authority. See <a href="/concepts/proofs">Proofs</a> for how selective disclosure works.</p>
+<p>This ensures that snapshot manifests -- which are stored on IPFS and publicly retrievable -- do not reveal the directory structure of the repository. Verifying that a specific file was included in a snapshot requires knowledge of the salt, which in turn requires workspace authority. See <a href="/docs/concepts/proofs">Proofs</a> for how selective disclosure works.</p>
 <h2 id="cryptographic-primitives-summary"><a href="#cryptographic-primitives-summary" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Cryptographic Primitives Summary</h2>
 <table>
 <thead>
@@ -491,12 +491,12 @@ X25519 Key Pair
     </div>
 
     <nav class="docs-pagination">
-        <a href="/security/threat-model" class="pagination-link pagination-prev">
+        <a href="/docs/security/threat-model" class="pagination-link pagination-prev">
             <span class="pagination-label">&larr; Previous</span>
             <span class="pagination-title">Threat Model</span>
         </a>
 
-        <a href="/security/non-guarantees" class="pagination-link pagination-next">
+        <a href="/docs/security/non-guarantees" class="pagination-link pagination-next">
             <span class="pagination-label">Next &rarr;</span>
             <span class="pagination-title">Non-Guarantees</span>
         </a>
@@ -568,8 +568,8 @@ X25519 Key Pair
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
-    <script src="/assets/js/copy-code.js"></script>
-    <script src="/assets/js/sidebar.js"></script>
-    <script src="/assets/js/search.js"></script>
+    <script src="/docs/assets/js/copy-code.js"></script>
+    <script src="/docs/assets/js/sidebar.js"></script>
+    <script src="/docs/assets/js/search.js"></script>
 </body>
 </html>
