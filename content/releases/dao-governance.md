@@ -14,7 +14,7 @@ This enables governance pipelines where release acceptance is contingent on coll
 
 The DAO executor address is configured at the workspace level. Navigate to **Settings > DAO** in the web application.
 
-[Screenshot: DAO executor configuration page showing the executor address field, current on-chain value, and Save button]
+![DAO Configuration](/assets/images/screens/dao-configuration.png)
 
 Enter the Ethereum address of the DAO executor contract. This is the address that will be authorized to accept or reject DAO-only releases on behalf of the workspace.
 
