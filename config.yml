@@ -32,7 +32,7 @@ leaf:
     security: "Security"
     reference: "Reference"
   output_path: "dist"
-  base_url: "/docs"
+  base_url: "/"
   author: "Ophelios"
   author_url: "https://ophelios.com"
   license: "MIT"

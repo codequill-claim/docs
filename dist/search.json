@@ -2,7 +2,7 @@
     {
         "title": "Attestation Action",
         "section": "ci-cd",
-        "url": "\/docs\/ci-cd\/attestation-action",
+        "url": "\/ci-cd\/attestation-action",
         "excerpt": "Attestation Action The Attestation Action handles attestation for release events triggered by GitHub Issues. It is published as codequill-claim\/actions-attest@v1 and runs on Node 20. It requires the GITHUB_TOKEN environment variable for issue management (commenting, closing). #Purpose This action is...",
         "headings": [
             "Purpose",
@@ -21,7 +21,7 @@
     {
         "title": "Overview",
         "section": "ci-cd",
-        "url": "\/docs\/ci-cd\/overview",
+        "url": "\/ci-cd\/overview",
         "excerpt": "CI\/CD Integration CodeQuill provides two GitHub Actions that automate the evidence pipeline within your existing CI\/CD workflows. Together, they implement a two-phase release pipeline: one action handles snapshotting and publishing, the other handles attestation in response to governance decisions. ...",
         "headings": [
             "Two-Phase Release Pipeline",
@@ -40,7 +40,7 @@
     {
         "title": "Snapshot Action",
         "section": "ci-cd",
-        "url": "\/docs\/ci-cd\/snapshot-action",
+        "url": "\/ci-cd\/snapshot-action",
         "excerpt": "Snapshot Action The Snapshot Action automates the codequill snapshot and codequill publish commands within a GitHub Actions workflow. It is published as ophelios-studio\/codequill-action-publish@v1 and runs on Node 20. #Purpose This action eliminates manual CLI invocations for the snapshot-and-publis...",
         "headings": [
             "Purpose",
@@ -61,7 +61,7 @@
     {
         "title": "Authentication",
         "section": "cli-reference",
-        "url": "\/docs\/cli-reference\/authentication",
+        "url": "\/cli-reference\/authentication",
         "excerpt": "Authentication These commands manage CLI authentication and display information about the current session and workspace. #codequill login Authenticate the CLI using the approval phrase flow. This initiates a device-code authentication exchange between the CLI and the CodeQuill web application. #Synt...",
         "headings": [
             "codequill login",
@@ -86,7 +86,7 @@
     {
         "title": "Source Commands",
         "section": "cli-reference",
-        "url": "\/docs\/cli-reference\/source-commands",
+        "url": "\/cli-reference\/source-commands",
         "excerpt": "Source Commands These commands manage the core source-code lifecycle: claiming repository authorship, creating snapshots, publishing them on-chain, and inspecting history. #codequill claim Claim authorship of the current git repository. This records an on-chain evidence statement linking your worksp...",
         "headings": [
             "codequill claim",
@@ -129,7 +129,7 @@
     {
         "title": "Utility Commands",
         "section": "cli-reference",
-        "url": "\/docs\/cli-reference\/utility-commands",
+        "url": "\/cli-reference\/utility-commands",
         "excerpt": "Utility Commands These commands provide supporting functionality: waiting for on-chain transactions and accessing explanatory content about how CodeQuill works. #codequill wait Wait for a blockchain transaction to reach a specified number of confirmations. This is useful when you have submitted a tr...",
         "headings": [
             "codequill wait",
@@ -153,7 +153,7 @@
     {
         "title": "Verification Commands",
         "section": "cli-reference",
-        "url": "\/docs\/cli-reference\/verification-commands",
+        "url": "\/cli-reference\/verification-commands",
         "excerpt": "Verification Commands These commands create and verify cryptographic evidence artifacts: attestations linking builds to releases, Merkle proofs of file inclusion, proof verification, and encrypted source preservation. #codequill attest Create an attestation that links a build artifact to a published...",
         "headings": [
             "codequill attest",
@@ -189,7 +189,7 @@
     {
         "title": "Attestations",
         "section": "concepts",
-        "url": "\/docs\/concepts\/attestations",
+        "url": "\/concepts\/attestations",
         "excerpt": "Attestations An attestation is a recorded statement that a build artifact claims lineage from a specific published release. It creates a verifiable link between a compiled output and the source code it was supposedly built from. #Why Attestations Exist When you download a binary, a Docker image, or ...",
         "headings": [
             "Why Attestations Exist",
@@ -208,7 +208,7 @@
     {
         "title": "Claims",
         "section": "concepts",
-        "url": "\/docs\/concepts\/claims",
+        "url": "\/concepts\/claims",
         "excerpt": "Claims A claim is an on-chain evidence record that links a GitHub repository to a workspace authority. It establishes who is authorized to speak for a repository within the CodeQuill system. #Why Claims Exist On platforms like GitHub, repository ownership is managed by the platform itself. If the pl...",
         "headings": [
             "Why Claims Exist",
@@ -225,7 +225,7 @@
     {
         "title": "Preservations",
         "section": "concepts",
-        "url": "\/docs\/concepts\/preservations",
+        "url": "\/concepts\/preservations",
         "excerpt": "Preservations A preservation is an encrypted archive of a repository's full source code, tied to a specific published snapshot. It enables long-term source survival without requiring trust in any custodian -- not even CodeQuill. #Why Preservations Exist Snapshots record hashes of source files, not t...",
         "headings": [
             "Why Preservations Exist",
@@ -241,7 +241,7 @@
     {
         "title": "Proofs",
         "section": "concepts",
-        "url": "\/docs\/concepts\/proofs",
+        "url": "\/concepts\/proofs",
         "excerpt": "Proofs A proof is a cryptographic Merkle proof-of-inclusion that demonstrates a specific file was part of a published snapshot. Proofs enable selective disclosure: you can prove the existence and content of individual files without revealing the full file tree. #Why Proofs Exist Snapshots anchor a M...",
         "headings": [
             "Why Proofs Exist",
@@ -261,7 +261,7 @@
     {
         "title": "Releases",
         "section": "concepts",
-        "url": "\/docs\/concepts\/releases",
+        "url": "\/concepts\/releases",
         "excerpt": "Releases A release is a named, versioned unit of software that binds a single source snapshot to a governed, auditable package. Releases are the coordination layer between raw evidence (snapshots) and downstream processes (attestations, governance, deployment). #Why Releases Exist Snapshots capture ...",
         "headings": [
             "Why Releases Exist",
@@ -279,7 +279,7 @@
     {
         "title": "Snapshots",
         "section": "concepts",
-        "url": "\/docs\/concepts\/snapshots",
+        "url": "\/concepts\/snapshots",
         "excerpt": "Snapshots A snapshot is a deterministic cryptographic fingerprint of a repository's source code at a specific git commit. It is the foundational building block of CodeQuill -- releases, attestations, and preservations all reference snapshots. #Why Snapshots Exist Source code is mutable. Files change...",
         "headings": [
             "Why Snapshots Exist",
@@ -301,7 +301,7 @@
     {
         "title": "Workspaces",
         "section": "concepts",
-        "url": "\/docs\/concepts\/workspaces",
+        "url": "\/concepts\/workspaces",
         "excerpt": "Workspaces A workspace is the top-level organizational unit in CodeQuill. It maps to a GitHub organization or user account and serves as the boundary for authority, collaboration, and on-chain identity. #What a Workspace Represents Every action in CodeQuill -- claiming a repository, creating a snaps...",
         "headings": [
             "What a Workspace Represents",
@@ -316,7 +316,7 @@
     {
         "title": "Configuration",
         "section": "getting-started",
-        "url": "\/docs\/getting-started\/configuration",
+        "url": "\/getting-started\/configuration",
         "excerpt": "Configuration The CodeQuill CLI uses two types of configuration: launcher configuration (project-level settings) and authentication tokens (user credentials). #Launcher Configuration The CLI launcher reads configuration from JSON files in the following priority order: $CODEQUILL_CONFIG_DIR\/config.js...",
         "headings": [
             "Launcher Configuration",
@@ -331,7 +331,7 @@
     {
         "title": "Installation",
         "section": "getting-started",
-        "url": "\/docs\/getting-started\/installation",
+        "url": "\/getting-started\/installation",
         "excerpt": "Installation The CodeQuill CLI is a Node.js application distributed via npm. It runs on macOS, Linux, and Windows. #Requirements Node.js 18.0 or later Git installed and available in your PATH A GitHub remote configured for your repository (the CLI auto-detects the repository name from the git origin...",
         "headings": [
             "Requirements",
@@ -345,7 +345,7 @@
     {
         "title": "Introduction",
         "section": "getting-started",
-        "url": "\/docs\/getting-started\/introduction",
+        "url": "\/getting-started\/introduction",
         "excerpt": "Introduction CodeQuill is memory infrastructure for software. It preserves verifiable, immutable evidence of what source code existed at a given point in time -- and under whose authority. #Why CodeQuill Exists The software ecosystem evolved faster than its ability to preserve evidence. Code can now...",
         "headings": [
             "Why CodeQuill Exists",
@@ -358,7 +358,7 @@
     {
         "title": "Quickstart",
         "section": "getting-started",
-        "url": "\/docs\/getting-started\/quickstart",
+        "url": "\/getting-started\/quickstart",
         "excerpt": "Quickstart This guide walks you through the complete flow: from signing in to publishing your first verifiable source snapshot. By the end, you will have a claimed repository with an on-chain evidence record. #Prerequisites Before you begin, you will need: A GitHub account with at least one reposito...",
         "headings": [
             "Prerequisites",
@@ -375,7 +375,7 @@
     {
         "title": "FAQ",
         "section": "reference",
-        "url": "\/docs\/reference\/faq",
+        "url": "\/reference\/faq",
         "excerpt": "FAQ #What problem does CodeQuill solve? CodeQuill creates durable, verifiable evidence about source code. It answers questions that existing tools leave unaddressed: &quot;What source code existed at this moment?&quot;, &quot;Who claimed authority over this repository?&quot;, &quot;Was this artifact...",
         "headings": [
             "What problem does CodeQuill solve?",
@@ -393,14 +393,14 @@
     {
         "title": "Glossary",
         "section": "reference",
-        "url": "\/docs\/reference\/glossary",
+        "url": "\/reference\/glossary",
         "excerpt": "Glossary This glossary defines terms as they are used within CodeQuill. Some terms have broader meanings in other contexts; the definitions here reflect their specific usage in this system. Anchoring The act of recording a cryptographic hash or identifier on a blockchain. Anchoring establishes a tam...",
         "headings": []
     },
     {
         "title": "Interpreting Evidence",
         "section": "reference",
-        "url": "\/docs\/reference\/interpreting-evidence",
+        "url": "\/reference\/interpreting-evidence",
         "excerpt": "Interpreting Evidence CodeQuill produces several types of evidence records. Each type has specific properties that determine what conclusions can and cannot be drawn from it. This page is a reference for developers, auditors, and legal reviewers who need to evaluate CodeQuill evidence with precision...",
         "headings": [
             "Interpreting a Snapshot",
@@ -425,7 +425,7 @@
     {
         "title": "DAO Governance",
         "section": "releases",
-        "url": "\/docs\/releases\/dao-governance",
+        "url": "\/releases\/dao-governance",
         "excerpt": "DAO Governance CodeQuill supports integration with decentralized autonomous organizations (DAOs) and multisig wallets for release governance. When configured, a workspace can require that release approval decisions come from a DAO executor contract rather than an individual governance authority. Thi...",
         "headings": [
             "Configuring the DAO Executor",
@@ -446,7 +446,7 @@
     {
         "title": "Release Lifecycle",
         "section": "releases",
-        "url": "\/docs\/releases\/release-lifecycle",
+        "url": "\/releases\/release-lifecycle",
         "excerpt": "Release Lifecycle Releases are the governed coordination layer between source snapshots and downstream processes such as attestations and deployment. Every release follows a defined lifecycle, from draft creation through governance resolution. Releases are created exclusively in the CodeQuill web ap...",
         "headings": [
             "Lifecycle Overview",
@@ -465,7 +465,7 @@
     {
         "title": "Release Manifests",
         "section": "releases",
-        "url": "\/docs\/releases\/release-manifests",
+        "url": "\/releases\/release-manifests",
         "excerpt": "Release Manifests Every anchored release has a manifest -- a structured document that records the full metadata of the release at the time it was published. Manifests are the primary evidence artifact for releases: they are stored on decentralized storage, content-addressed, and independently retrie...",
         "headings": [
             "Schema",
@@ -489,7 +489,7 @@
     {
         "title": "Encryption Model",
         "section": "security",
-        "url": "\/docs\/security\/encryption-model",
+        "url": "\/security\/encryption-model",
         "excerpt": "Encryption Model CodeQuill uses a zero-custody encryption design to protect preserved source code. The system is structured so that only the workspace authority can decrypt preserved archives. CodeQuill never possesses the decryption key, and no recovery mechanism exists. #Purpose Preservations stor...",
         "headings": [
             "Purpose",
@@ -506,7 +506,7 @@
     {
         "title": "Non-Guarantees",
         "section": "security",
-        "url": "\/docs\/security\/non-guarantees",
+        "url": "\/security\/non-guarantees",
         "excerpt": "Non-Guarantees CodeQuill makes specific, verifiable claims about source code evidence. It is equally important to be explicit about what it does not claim. This page enumerates five guarantees that CodeQuill does not provide, explains why each falls outside its scope, and describes what auditors can...",
         "headings": [
             "1. No Proof of Build Causality",
@@ -523,7 +523,7 @@
     {
         "title": "Threat Model",
         "section": "security",
-        "url": "\/docs\/security\/threat-model",
+        "url": "\/security\/threat-model",
         "excerpt": "Threat Model CodeQuill is designed to produce durable evidence about source code. To be useful, that evidence must remain meaningful even when surrounding systems fail, change, or are deliberately subverted. This page describes the assumptions CodeQuill operates under, what it preserves in the face ...",
         "headings": [
             "Hostile Assumptions",
@@ -536,7 +536,7 @@
     {
         "title": "Architecture",
         "section": "smart-contracts",
-        "url": "\/docs\/smart-contracts\/architecture",
+        "url": "\/smart-contracts\/architecture",
         "excerpt": "Architecture CodeQuill's on-chain layer consists of seven Solidity contracts deployed on EVM-compatible chains. All contracts target Solidity ^0.8.24 and are compiled with 0.8.28. They are MIT-licensed. The development framework is Hardhat with Ignition for deterministic deployment. The sole externa...",
         "headings": [
             "Dependency DAG",
@@ -558,7 +558,7 @@
     {
         "title": "Contract Reference",
         "section": "smart-contracts",
-        "url": "\/docs\/smart-contracts\/contract-reference",
+        "url": "\/smart-contracts\/contract-reference",
         "excerpt": "Contract Reference This page documents each of the seven CodeQuill smart contracts: their purpose, key functions, and emitted events. All state-changing functions that accept user intent have WithSig variants. These variants accept an EIP-712 signature and recover the signer on-chain, allowing a rel...",
         "headings": [
             "CodeQuillDelegation",
@@ -587,7 +587,7 @@
     {
         "title": "Dashboard & Repositories",
         "section": "web-application",
-        "url": "\/docs\/web-application\/dashboard-repositories",
+        "url": "\/web-application\/dashboard-repositories",
         "excerpt": "Dashboard &amp; Repositories The CodeQuill web application at app.codequill.xyz provides the primary interface for managing repositories, reviewing evidence records, and configuring workspace settings. This page covers the dashboard and repository management surfaces. #Dashboard The dashboard is the...",
         "headings": [
             "Dashboard",
@@ -614,7 +614,7 @@
     {
         "title": "Settings & Wallets",
         "section": "web-application",
-        "url": "\/docs\/web-application\/settings-wallets",
+        "url": "\/web-application\/settings-wallets",
         "excerpt": "Settings &amp; Wallets Workspace settings control identity, authorization, collaboration, encryption, and network configuration. This page covers the settings surfaces available at app.codequill.xyz. #Settings Overview The settings page is organized into the following sections: Profile -- Workspace ...",
         "headings": [
             "Settings Overview",
@@ -642,7 +642,7 @@
     {
         "title": "Subscription Plans",
         "section": "web-application",
-        "url": "\/docs\/web-application\/subscription-plans",
+        "url": "\/web-application\/subscription-plans",
         "excerpt": "Subscription Plans CodeQuill subscriptions determine the quotas available to a workspace for claims, snapshots, attestations, preservations, CI\/CD integrations, and collaborators. Billing is managed through Stripe. #Plan Tiers Four plans are available. All quotas are per workspace, per billing perio...",
         "headings": [
             "Plan Tiers",
