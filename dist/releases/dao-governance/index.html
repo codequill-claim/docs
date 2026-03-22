@@ -161,6 +161,12 @@ tailwind.config = {
                         Proofs
                     </a>
                 </li>
+                <li>
+                    <a href="/concepts/trust-index"
+                       class="sidebar-link">
+                        Trust Index
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="sidebar-group">
@@ -346,7 +352,7 @@ tailwind.config = {
 <p>This enables governance pipelines where release acceptance is contingent on collective decision-making -- a DAO vote, a multisig threshold, or any on-chain governance mechanism that resolves to a single executor address.</p>
 <h2 id="configuring-the-dao-executor"><a href="#configuring-the-dao-executor" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Configuring the DAO Executor</h2>
 <p>The DAO executor address is configured at the workspace level. Navigate to <strong>Settings &gt; DAO</strong> in the web application.</p>
-<p>[Screenshot: DAO executor configuration page showing the executor address field, current on-chain value, and Save button]</p>
+<p><img src="/assets/images/screens/dao-configuration.png" alt="DAO Configuration" /></p>
 <p>Enter the Ethereum address of the DAO executor contract. This is the address that will be authorized to accept or reject DAO-only releases on behalf of the workspace.</p>
 <p>When you save the configuration, the web application calls <code>setDaoExecutor()</code> on the <code>CodeQuillReleaseRegistry</code> smart contract, recording the executor address on-chain. This is a transaction that requires confirmation.</p>
 <h3 id="what-address-to-use"><a href="#what-address-to-use" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>What Address to Use</h3>

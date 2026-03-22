@@ -299,6 +299,35 @@
         ]
     },
     {
+        "title": "Trust Index",
+        "section": "concepts",
+        "url": "\/concepts\/trust-index",
+        "excerpt": "Trust Index The CodeQuill Trust Index is a non-transferable, evidence-based reputation signal computed from verifiable, on-chain source activity. It produces a score from 0 to 100 that summarizes the breadth, depth, and consistency of a repository's evidence footprint. The Trust Index is computed at...",
+        "headings": [
+            "Why the Trust Index Exists",
+            "The Gap Between Trust and Verification",
+            "The Six Factors",
+            "Snapshot Activity (25%)",
+            "Continuity (20%)",
+            "Release Governance (20%)",
+            "Attestations (15%)",
+            "Preservation Coverage (10%)",
+            "Dependency Graph (10%)",
+            "Trust Tiers",
+            "Workspace Trust Index",
+            "Anti-Gaming Design",
+            "Logarithmic Scaling",
+            "Self-Only Ceiling",
+            "Uniqueness Enforcement",
+            "Inactivity Decay",
+            "Deterministic Computation",
+            "What the Trust Index is NOT",
+            "Embedding Trust Index Badges",
+            "Markdown",
+            "Versioning"
+        ]
+    },
+    {
         "title": "Workspaces",
         "section": "concepts",
         "url": "\/concepts\/workspaces",
