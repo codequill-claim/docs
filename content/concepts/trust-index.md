@@ -229,14 +229,3 @@ The badge updates automatically as scores are recomputed. The color matches the 
 - Purple for Proven
 
 You can find your repository's badge URL on the **Badges** tab in the repository settings within CodeQuill.
-
----
-
-## Versioning
-
-The Trust Index specification is versioned:
-
-- **v1** (deprecated): Workspace-level only, without Release governance or per-repository scoring.
-- **v2** (current): Per-repository and workspace aggregate scoring with six factors including Release governance, Attestation breakdown with external attestor detection, Preservation coverage, and inactivity decay.
-
-Future versions may adjust weights (with version pinning), add per-chain scoring, incorporate CI/CD automation signals, or introduce time-weighted external signal decay.
