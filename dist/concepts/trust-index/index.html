@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="leaf-base-url" content="">
+<link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Code Quill">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<meta name="description" content="The Trust Index is an evidence-based reputation signal computed from verifiable source activity. Learn how it works, what it measures, and how to improve your score.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Trust Index — CodeQuill">
+<meta property="og:description" content="The Trust Index is an evidence-based reputation signal computed from verifiable source activity. Learn how it works, what it measures, and how to improve your score.">
+<meta property="og:site_name" content="CodeQuill">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Trust Index — CodeQuill">
+<meta name="twitter:description" content="The Trust Index is an evidence-based reputation signal computed from verifiable source activity. Learn how it works, what it measures, and how to improve your score.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: '#08080d',
+                surface: '#11111a',
+                elevated: '#1a1a27',
+                border: '#1e1e2e',
+                'border-accent': 'rgba(139, 92, 246, 0.3)',
+                body: '#d4d4d8',
+                bright: '#fafafa',
+                muted: '#52525b',
+                accent: '#8b5cf6',
+                'accent-light': '#a78bfa',
+                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+    <title>Trust Index — CodeQuill</title>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="nav-container">
+        <div class="nav-left">
+            <button class="nav-toggle" onclick="toggleNav()" type="button" aria-label="Toggle menu">
+                <svg class="nav-toggle-open" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                <svg class="nav-toggle-close" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+            <a href="/" class="nav-logo" aria-label="CodeQuill">
+                <img src="/assets/images/logo-full.svg" alt="CodeQuill" class="nav-logo-img">
+            </a>
+        </div>
+        <nav class="nav-links">
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="https://app.codequill.xyz" class="nav-link" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.497-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"></path></svg>
+                Launch App
+            </a>
+            <a href="https://github.com/codequill-claim" class="nav-link" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                GitHub
+            </a>
+            <span class="version-badge">0.9.1</span>
+        </nav>
+    </div>
+</header>
+
+    <div class="docs-layout">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="docs-sidebar">
+    <nav class="sidebar-nav">
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Getting Started</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/getting-started/introduction"
+                       class="sidebar-link">
+                        Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/quickstart"
+                       class="sidebar-link">
+                        Quickstart
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/configuration"
+                       class="sidebar-link">
+                        Configuration
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Concepts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/concepts/workspaces"
+                       class="sidebar-link">
+                        Workspaces
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/claims"
+                       class="sidebar-link">
+                        Claims
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/snapshots"
+                       class="sidebar-link">
+                        Snapshots
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/releases"
+                       class="sidebar-link">
+                        Releases
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/attestations"
+                       class="sidebar-link">
+                        Attestations
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/preservations"
+                       class="sidebar-link">
+                        Preservations
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/proofs"
+                       class="sidebar-link">
+                        Proofs
+                    </a>
+                </li>
+                <li>
+                    <a href="/concepts/trust-index"
+                       class="sidebar-link active">
+                        Trust Index
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Releases &amp; Governance</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/releases/release-lifecycle"
+                       class="sidebar-link">
+                        Release Lifecycle
+                    </a>
+                </li>
+                <li>
+                    <a href="/releases/dao-governance"
+                       class="sidebar-link">
+                        DAO Governance
+                    </a>
+                </li>
+                <li>
+                    <a href="/releases/release-manifests"
+                       class="sidebar-link">
+                        Release Manifests
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Web Application</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/web-application/dashboard-repositories"
+                       class="sidebar-link">
+                        Dashboard &amp; Repositories
+                    </a>
+                </li>
+                <li>
+                    <a href="/web-application/settings-wallets"
+                       class="sidebar-link">
+                        Settings &amp; Wallets
+                    </a>
+                </li>
+                <li>
+                    <a href="/web-application/subscription-plans"
+                       class="sidebar-link">
+                        Subscription Plans
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CLI Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/cli-reference/authentication"
+                       class="sidebar-link">
+                        Authentication
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/source-commands"
+                       class="sidebar-link">
+                        Source Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/verification-commands"
+                       class="sidebar-link">
+                        Verification Commands
+                    </a>
+                </li>
+                <li>
+                    <a href="/cli-reference/utility-commands"
+                       class="sidebar-link">
+                        Utility Commands
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">CI/CD Integration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/ci-cd/overview"
+                       class="sidebar-link">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="/ci-cd/snapshot-action"
+                       class="sidebar-link">
+                        Snapshot Action
+                    </a>
+                </li>
+                <li>
+                    <a href="/ci-cd/attestation-action"
+                       class="sidebar-link">
+                        Attestation Action
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Smart Contracts</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/smart-contracts/architecture"
+                       class="sidebar-link">
+                        Architecture
+                    </a>
+                </li>
+                <li>
+                    <a href="/smart-contracts/contract-reference"
+                       class="sidebar-link">
+                        Contract Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Security</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/security/threat-model"
+                       class="sidebar-link">
+                        Threat Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/security/encryption-model"
+                       class="sidebar-link">
+                        Encryption Model
+                    </a>
+                </li>
+                <li>
+                    <a href="/security/non-guarantees"
+                       class="sidebar-link">
+                        Non-Guarantees
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/reference/interpreting-evidence"
+                       class="sidebar-link">
+                        Interpreting Evidence
+                    </a>
+                </li>
+                <li>
+                    <a href="/reference/glossary"
+                       class="sidebar-link">
+                        Glossary
+                    </a>
+                </li>
+                <li>
+                    <a href="/reference/faq"
+                       class="sidebar-link">
+                        FAQ
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="sidebar-mobile-links">
+            <a href="https://app.codequill.xyz" class="sidebar-footer-link" target="_blank" rel="noopener">Launch App</a>
+            <a href="https://github.com/codequill-claim" class="sidebar-footer-link" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="sidebar-copyright">
+            &copy; 2026 Ophelios. All rights reserved.
+        </div>
+        <div class="sidebar-powered">
+            Powered by <a href="https://github.com/dadajuice/zephyrus-leaf" target="_blank" rel="noopener">Zephyrus Leaf</a>
+        </div>
+    </div>
+</aside>
+        <main class="docs-main">
+<article class="docs-content">
+    <div class="prose">
+        <h1>Trust Index</h1>
+<p>The CodeQuill Trust Index is a non-transferable, evidence-based reputation signal computed from verifiable, on-chain source activity. It produces a score from 0 to 100 that summarizes the breadth, depth, and consistency of a repository's evidence footprint.</p>
+<p>The Trust Index is computed at two levels:</p>
+<ul>
+<li><strong>Per-repository</strong> -- the primary unit of computation, derived from a repository's snapshots, releases, attestations, preservations, and dependency graph.</li>
+<li><strong>Per-workspace</strong> -- a weighted aggregate of all repository scores within a workspace.</li>
+</ul>
+<p>Scores are recomputed daily and displayed across the CodeQuill platform: on repository pages, the dashboard, public workspace profiles, and certificate pages.</p>
+<hr />
+<h2 id="why-the-trust-index-exists"><a href="#why-the-trust-index-exists" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Why the Trust Index Exists</h2>
+<p>Software trust today relies on indirect, social signals: GitHub stars, download counts, brand recognition, team reputation. These signals are valuable but fundamentally <strong>disconnected from verifiable evidence</strong>. A popular project may have no on-chain evidence of its source history. A lesser-known project may have 18 months of continuous, verified snapshots with external attestors.</p>
+<p>The Trust Index is designed to complement -- not replace -- social signals by asking a more specific question:</p>
+<blockquote>
+<p><em>&quot;How much verifiable, long-lived, independently referenced source evidence exists for this repository?&quot;</em></p>
+</blockquote>
+<p>This question can be answered deterministically from on-chain records. No subjective inputs. No manual overrides. Every point in the score maps back to a specific, verifiable action.</p>
+<h3 id="the-gap-between-trust-and-verification"><a href="#the-gap-between-trust-and-verification" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>The Gap Between Trust and Verification</h3>
+<p>When a developer evaluates a dependency, they typically check:</p>
+<ol>
+<li>Is it actively maintained? <em>(GitHub commit activity)</em></li>
+<li>Is it widely used? <em>(Download counts, stars)</em></li>
+<li>Does it have a credible team? <em>(Social signals, brand)</em></li>
+</ol>
+<p>None of these answer: &quot;Can I verify what source code was used to produce the build artifact I'm about to install?&quot; or &quot;Has this project consistently published cryptographic evidence of its source state?&quot;</p>
+<p>The Trust Index fills this gap. It measures the <strong>observable evidence</strong> of a project's commitment to verifiable software practices -- and it does so using records that are immutable, timestamped, and independently verifiable.</p>
+<hr />
+<h2 id="the-six-factors"><a href="#the-six-factors" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>The Six Factors</h2>
+<p>The Trust Index is computed as a weighted sum of six independent subscores. Each factor captures a different dimension of verifiable software evidence.</p>
+<h3 id="snapshot-activity-25"><a href="#snapshot-activity-25" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Snapshot Activity (25%)</h3>
+<p>Snapshots are the foundational unit of evidence in CodeQuill. This factor measures the volume of published, on-chain snapshots for a repository.</p>
+<ul>
+<li>More snapshots indicate a higher commitment to producing verifiable evidence.</li>
+<li>The score uses <strong>logarithmic scaling</strong> to prevent gaming through volume. Publishing 1,000 snapshots scores only marginally more than publishing 100.</li>
+<li>The score saturates at approximately 100 published snapshots.</li>
+</ul>
+<p>A repository with a single snapshot will receive a small but non-zero score. The marginal value of each additional snapshot decreases, rewarding consistent publishing behavior over burst activity.</p>
+<h3 id="continuity-20"><a href="#continuity-20" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Continuity (20%)</h3>
+<p>Evidence produced once is valuable. Evidence produced consistently over months and years is substantially more valuable. The Continuity factor measures the time span and regularity of snapshot activity.</p>
+<p>The key inputs are:</p>
+<ul>
+<li><strong>Active months</strong>: The number of distinct calendar months in which at least one snapshot was published.</li>
+<li><strong>Maximum gap</strong>: The longest period of inactivity between consecutive snapshots.</li>
+</ul>
+<p>The score increases with more active months (up to 18 months of active evidence for a full score) but is reduced by a <strong>gap penalty</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Maximum gap</th>
+<th>Penalty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>90 days or less</td>
+<td>None</td>
+</tr>
+<tr>
+<td>91 -- 180 days</td>
+<td>20% reduction</td>
+</tr>
+<tr>
+<td>181 -- 365 days</td>
+<td>40% reduction</td>
+</tr>
+<tr>
+<td>Over 365 days</td>
+<td>60% reduction</td>
+</tr>
+</tbody>
+</table>
+<p>This means a repository that published snapshots for 12 months but then went silent for a year will score lower than one with 12 months of continuous activity. The Continuity factor rewards sustained commitment to evidence production.</p>
+<h3 id="release-governance-20"><a href="#release-governance-20" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Release Governance (20%)</h3>
+<p>Snapshots capture raw evidence. Releases represent <strong>intent</strong> -- a deliberate decision that a particular source state should be treated as a versioned unit. The Release Governance factor measures release maturity, cadence, and governance outcomes.</p>
+<p>Three components contribute to the score:</p>
+<ol>
+<li><strong>Release cadence</strong> (50% of this factor): The number of distinct months with at least one published release, up to 12 months for a full subscore.</li>
+<li><strong>Volume</strong> (30%): The total number of published releases, log-scaled with diminishing returns.</li>
+<li><strong>Governance ratio</strong> (20%): The proportion of published releases that have been explicitly <strong>accepted</strong> by a governance authority. A repository where most releases are accepted scores higher than one where releases remain in a pending state.</li>
+</ol>
+<p>Revoked releases are excluded from all counts. This factor rewards projects that publish releases regularly, with proper governance decisions, over sustained periods.</p>
+<h3 id="attestations-15"><a href="#attestations-15" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Attestations (15%)</h3>
+<p>Attestations bind build artifacts to source releases. This factor measures both the volume of attestation activity and, critically, whether <strong>external workspaces</strong> have independently attested artifacts for this repository's releases.</p>
+<p>Three components contribute:</p>
+<ol>
+<li><strong>Self-attestation volume</strong> (30%): Total attestations, log-scaled. This captures the project's own attestation discipline.</li>
+<li><strong>External attestors</strong> (40%): The number of unique external workspaces that have attested artifacts. This is the most valuable signal -- it represents independent verification by third parties.</li>
+<li><strong>Attestation cadence</strong> (30%): Distinct months with at least one attestation, up to 12 months.</li>
+</ol>
+<p>The external attestor component is deliberately weighted highest because it represents something the repository owner cannot fabricate: independent, third-party verification. Without any external attestors, the maximum Attestation subscore is capped at approximately 60% of its potential.</p>
+<p>Multiple attestations from the same external workspace count only once (uniqueness enforcement).</p>
+<h3 id="preservation-coverage-10"><a href="#preservation-coverage-10" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Preservation Coverage (10%)</h3>
+<p>Preservations are encrypted, zero-custody archives of source code tied to published snapshots. The Preservation factor measures what percentage of a repository's snapshots have been preserved.</p>
+<p>The formula is straightforward: if a repository has 10 published snapshots and 8 of them have at least one confirmed preservation, the score is 80%.</p>
+<p>This factor rewards operational maturity. Creating a snapshot is the minimum act of evidence production. Preserving it demonstrates a deeper commitment to long-term recoverability and custody of source records.</p>
+<h3 id="dependency-graph-10"><a href="#dependency-graph-10" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Dependency Graph (10%)</h3>
+<p>Software does not exist in isolation. When other projects declare your repository as an upstream dependency (via attestation upstream declarations), it signals real-world reliance on your code. The Dependency Graph factor measures participation in this verifiable dependency network.</p>
+<p>The key inputs are:</p>
+<ul>
+<li><strong>Valid downstreams</strong>: Unique repositories or workspaces that reference this repository as an upstream dependency.</li>
+<li><strong>Valid upstreams</strong>: Upstream dependencies this repository itself declares.</li>
+</ul>
+<p>Both are counted only when backed by anchored evidence (confirmed attestations or snapshots). The score uses logarithmic scaling with a cap at 15 total connections.</p>
+<p>Downstream dependents are more valuable than self-declared upstreams because they represent independent reliance rather than self-assertion. Future versions of the Trust Index may weight downstreams more heavily.</p>
+<hr />
+<h2 id="trust-tiers"><a href="#trust-tiers" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Trust Tiers</h2>
+<p>Scores are mapped to human-readable tiers that provide an at-a-glance reputation signal:</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Tier</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 -- 20</td>
+<td><strong>New</strong></td>
+<td>Recently started publishing evidence. Limited history.</td>
+</tr>
+<tr>
+<td>21 -- 40</td>
+<td><strong>Emerging</strong></td>
+<td>Building a track record. Some verifiable activity over time.</td>
+</tr>
+<tr>
+<td>41 -- 60</td>
+<td><strong>Established</strong></td>
+<td>Consistent evidence production with governance and preservation.</td>
+</tr>
+<tr>
+<td>61 -- 80</td>
+<td><strong>Trusted</strong></td>
+<td>Strong, long-lived evidence footprint with external verification.</td>
+</tr>
+<tr>
+<td>81 -- 100</td>
+<td><strong>Proven</strong></td>
+<td>Exceptional evidence record with sustained external reliance.</td>
+</tr>
+</tbody>
+</table>
+<p>These labels are displayed on repository pages, certificates, public profiles, and badges.</p>
+<hr />
+<h2 id="workspace-trust-index"><a href="#workspace-trust-index" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Workspace Trust Index</h2>
+<p>The workspace Trust Index is a weighted aggregate of all repository scores within the workspace. Repositories with zero snapshots contribute nothing and do not dilute the score.</p>
+<p>The weighting formula uses the logarithm of each repository's snapshot count:</p>
+<pre><code>workspace_weight(repo) = log(1 + repo.snapshot_count)
+</code></pre>
+<p>This ensures that repositories with more evidence contribute proportionally more to the workspace score, while preventing a single highly-active repository from completely dominating.</p>
+<p>A workspace with five repositories where two are actively maintained (high scores) and three are empty (zero scores) will have a workspace Trust Index reflecting only the two active repositories.</p>
+<hr />
+<h2 id="anti-gaming-design"><a href="#anti-gaming-design" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Anti-Gaming Design</h2>
+<p>The Trust Index is designed to be resistant to manipulation. Several mechanisms work together to ensure that scores reflect genuine evidence rather than synthetic activity.</p>
+<h3 id="logarithmic-scaling"><a href="#logarithmic-scaling" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Logarithmic Scaling</h3>
+<p>All volume-based metrics (snapshot count, release count, attestation count) use logarithmic scaling. This means:</p>
+<ul>
+<li>Publishing 10 snapshots scores significantly more than 1.</li>
+<li>Publishing 100 scores moderately more than 10.</li>
+<li>Publishing 1,000 scores only slightly more than 100.</li>
+</ul>
+<p>Volume alone cannot push a score to the top. Sustained activity over time, governance decisions, and external verification are required.</p>
+<h3 id="self-only-ceiling"><a href="#self-only-ceiling" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Self-Only Ceiling</h3>
+<p>A repository that only produces evidence about itself -- snapshots, releases, self-attestations, preservations -- without any external attestors or downstream dependents can achieve a maximum Trust Index of approximately <strong>70 out of 100</strong>.</p>
+<p>Reaching the highest tiers (Trusted and Proven) requires independent external signals: other workspaces attesting your artifacts or declaring your repository as an upstream dependency. This ceiling ensures that the Trust Index reflects real-world reliance, not just self-assertion.</p>
+<h3 id="uniqueness-enforcement"><a href="#uniqueness-enforcement" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Uniqueness Enforcement</h3>
+<p>External signals are counted once per workspace. If the same external workspace attests 100 artifacts from your repository, it counts as one external attestor. This prevents collusion between two parties from inflating scores.</p>
+<h3 id="inactivity-decay"><a href="#inactivity-decay" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Inactivity Decay</h3>
+<p>The Trust Index accounts for projects that were once active but have become dormant. If no new snapshots, releases, or attestations are published for 6 months:</p>
+<ul>
+<li>The score begins decaying at 5% per quarter (every 3 months).</li>
+<li>The minimum decay floor is 50% of the computed score -- historical evidence retains baseline value even if the project becomes inactive.</li>
+<li>Any new evidence activity (a single snapshot, release, or attestation) immediately resets the decay clock.</li>
+</ul>
+<p>This ensures that the Trust Index reflects <strong>current</strong> evidence production, not just historical activity. A project that was highly active two years ago but has published nothing since will see its score gradually decrease, while still retaining credit for its historical evidence.</p>
+<h3 id="deterministic-computation"><a href="#deterministic-computation" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Deterministic Computation</h3>
+<p>Scores are computed entirely from on-chain evidence records. There are no manual overrides, no appeals process, and no subjective inputs. The same on-chain data will always produce the same score.</p>
+<hr />
+<h2 id="what-the-trust-index-is-not"><a href="#what-the-trust-index-is-not" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>What the Trust Index is NOT</h2>
+<p>The Trust Index is an informational signal. It is important to understand its boundaries:</p>
+<ul>
+<li><strong>It is not a security guarantee.</strong> A high Trust Index does not mean the code is free of vulnerabilities or that build artifacts are safe to use.</li>
+<li><strong>It is not proof of build correctness.</strong> The Trust Index measures evidence production, not the relationship between source code and compiled artifacts.</li>
+<li><strong>It is not a popularity metric.</strong> Download counts, GitHub stars, and social following have no effect on the score.</li>
+<li><strong>It is not a competitive ranking.</strong> There are no leaderboards or comparisons between workspaces. Each score is independent.</li>
+<li><strong>It is not a substitute for code review.</strong> Always review dependencies regardless of their Trust Index score.</li>
+</ul>
+<p>The Trust Index answers one question: &quot;How much verifiable, long-lived, independently referenced source evidence exists?&quot; It is one signal among many that informed developers and auditors should consider.</p>
+<hr />
+<h2 id="embedding-trust-index-badges"><a href="#embedding-trust-index-badges" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Embedding Trust Index Badges</h2>
+<p>You can embed a Trust Index badge in your repository README to display the current score:</p>
+<h3 id="markdown"><a href="#markdown" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Markdown</h3>
+<pre><code class="language-markdown">[![CodeQuill Trust Index](https://app.codequill.xyz/badges/trust/YOUR_REPO_ID)](https://app.codequill.xyz/repositories/YOUR_REPO_ID)
+</code></pre>
+<p>The badge updates automatically as scores are recomputed. The color matches the current tier:</p>
+<ul>
+<li>Grey for New</li>
+<li>Amber for Emerging</li>
+<li>Blue for Established</li>
+<li>Green for Trusted</li>
+<li>Purple for Proven</li>
+</ul>
+<p>You can find your repository's badge URL on the <strong>Badges</strong> tab in the repository settings within CodeQuill.</p>
+
+    </div>
+
+    <nav class="docs-pagination">
+        <a href="/concepts/proofs" class="pagination-link pagination-prev">
+            <span class="pagination-label">&larr; Previous</span>
+            <span class="pagination-title">Proofs</span>
+        </a>
+
+        <a href="/releases/release-lifecycle" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Release Lifecycle</span>
+        </a>
+    </nav>
+</article>
+        </main>
+<aside class="docs-toc">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            <li class="toc-item">
+                <a href="#why-the-trust-index-exists" class="toc-link">Why the Trust Index Exists</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#the-gap-between-trust-and-verification" class="toc-link">The Gap Between Trust and Verification</a>
+            </li>
+            <li class="toc-item">
+                <a href="#the-six-factors" class="toc-link">The Six Factors</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#snapshot-activity-25" class="toc-link">Snapshot Activity (25%)</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#continuity-20" class="toc-link">Continuity (20%)</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#release-governance-20" class="toc-link">Release Governance (20%)</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#attestations-15" class="toc-link">Attestations (15%)</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#preservation-coverage-10" class="toc-link">Preservation Coverage (10%)</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#dependency-graph-10" class="toc-link">Dependency Graph (10%)</a>
+            </li>
+            <li class="toc-item">
+                <a href="#trust-tiers" class="toc-link">Trust Tiers</a>
+            </li>
+            <li class="toc-item">
+                <a href="#workspace-trust-index" class="toc-link">Workspace Trust Index</a>
+            </li>
+            <li class="toc-item">
+                <a href="#anti-gaming-design" class="toc-link">Anti-Gaming Design</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#logarithmic-scaling" class="toc-link">Logarithmic Scaling</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#self-only-ceiling" class="toc-link">Self-Only Ceiling</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#uniqueness-enforcement" class="toc-link">Uniqueness Enforcement</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#inactivity-decay" class="toc-link">Inactivity Decay</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#deterministic-computation" class="toc-link">Deterministic Computation</a>
+            </li>
+            <li class="toc-item">
+                <a href="#what-the-trust-index-is-not" class="toc-link">What the Trust Index is NOT</a>
+            </li>
+            <li class="toc-item">
+                <a href="#embedding-trust-index-badges" class="toc-link">Embedding Trust Index Badges</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#markdown" class="toc-link">Markdown</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+    </div>
+
+<div class="search-overlay" id="search-overlay">
+    <div class="search-dialog" role="dialog" aria-label="Search documentation">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off" autofocus>
+            <kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--text-muted); font-family: var(--font-mono); cursor: pointer;" onclick="closeSearch()">Esc</kbd>
+        </div>
+        <div class="search-results" id="search-results">
+            <div class="search-empty">Type to search the documentation...</div>
+        </div>
+        <div class="search-footer">
+            <span>Navigate with <kbd>&uarr;</kbd> <kbd>&darr;</kbd> keys</span>
+            <span>Press <kbd>Enter</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="/assets/js/copy-code.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/search.js"></script>
+</body>
+</html>
