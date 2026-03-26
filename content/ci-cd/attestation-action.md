@@ -6,11 +6,19 @@ order: 3
 
 # Attestation Action
 
-The Attestation Action handles attestation for release events triggered by GitHub Issues. It is published as `codequill-claim/actions-attest@v1` and runs on Node 20. It requires the `GITHUB_TOKEN` environment variable for issue management (commenting, closing).
+The Attestation Action handles release events triggered by GitHub Issues. It is published as `codequill-claim/actions-attest@v1` and runs on Node 20. It requires the `GITHUB_TOKEN` environment variable for issue management (commenting, closing).
 
 ## Purpose
 
-This action is the second phase of the CI/CD pipeline. It listens for GitHub Issues created by the CodeQuill bot, verifies their authenticity, and -- when a release is approved -- runs `codequill attest` to record that a build artifact claims lineage from a specific published release.
+This action enables a **two-phase conformity pipeline** for software releases. When you anchor or approve a release in CodeQuill, the platform creates a GitHub Issue on your repository. This action listens for those issues, verifies their authenticity, and provides outputs so your workflow can react to each phase of the release lifecycle.
+
+The two phases are:
+
+1. **Release Anchored** — The release has been submitted to the blockchain. Use this event to build your project and deploy to a **staging** environment. This gives you the opportunity to validate the release before governance accepts it.
+
+2. **Release Approved** — Governance has accepted the release. This is when you deploy to **production** and run `codequill attest` to create a verifiable, on-chain link between your build artifacts and the approved source release.
+
+Attestation only runs during the approval phase. The anchoring phase is informational -- it signals that a release exists and is pending governance, giving your CI pipeline a head start on building and validating.
 
 ## Inputs
 
@@ -34,13 +42,15 @@ This action is the second phase of the CI/CD pipeline. It listens for GitHub Iss
 | `event_type` | Detected event type (`release_anchored` or `release_approved`). |
 | `release_id` | Extracted release ID. |
 
+Use these outputs in subsequent workflow steps to conditionally run build, deploy, or attestation logic based on the release phase.
+
 ## Execution Flow
 
 ### 1. Issue Verification
 
-When the triggering GitHub event is `issues`, the action performs three verification checks:
+When the triggering GitHub event is `issues`, the action performs verification checks:
 
-1. **Bot identity** — Verifies that the issue was created by `codequill-authorship[bot]` (exact login match). If the issue author is any other user or bot, the action exits.
+1. **Bot identity** — Verifies that the issue was created by `codequill-authorship[bot]` (exact login match). If the issue author is any other user or bot, the action exits silently.
 
 2. **Label verification** — Verifies that the issue carries the `codequill:release` label.
 
@@ -55,7 +65,7 @@ The action sets two outputs from the parsed payload:
 - `event_type` — either `release_anchored` or `release_approved`.
 - `release_id` — the unique identifier of the release.
 
-These outputs are available to subsequent workflow steps for conditional logic.
+These outputs are available to subsequent workflow steps for conditional logic. This is how you differentiate between the two phases in your pipeline.
 
 ### 3. Handle `release_anchored`
 
@@ -64,9 +74,9 @@ If the event type is `release_anchored`, the action:
 1. Logs the event details.
 2. Comments on the issue with a success message.
 3. Closes the issue.
-4. Returns early. No attestation is performed.
+4. Returns early. **No attestation is performed.**
 
-This event is informational -- it confirms that a release was created and anchored on-chain. Downstream steps can read the `event_type` output to trigger notifications or other non-attestation workflows.
+This is the staging phase. The action itself does not build or deploy anything -- it simply sets the `event_type` output so your downstream workflow steps can react. Use this event to build your project, run tests, and deploy to a staging environment for validation.
 
 ### 4. Handle `release_approved`
 
@@ -74,10 +84,12 @@ If the event type is `release_approved`, the action:
 
 1. Validates that `build_path` is provided and points to an existing file or directory.
 2. Validates that `release_id` is available (from the issue body or the input).
-3. Installs the `codequill` CLI (same logic as the Snapshot Action).
+3. Installs the `codequill` CLI.
 4. Runs `codequill attest <build_path> <release_id> --no-confirm --json --no-wait`.
 5. Parses the JSON output to extract `tx_hash`.
-6. Runs `codequill wait <tx_hash>` to block until confirmation.
+6. Runs `codequill wait <tx_hash>` to block until on-chain confirmation.
+
+This is the production phase. Attestation creates an on-chain record linking your build artifact to the governance-approved source release. Only run production deployments on this event.
 
 ### 5. Issue Lifecycle
 
@@ -86,65 +98,26 @@ If the event type is `release_approved`, the action:
 
 ## Workflow Example
 
-A complete workflow that responds to CodeQuill bot issues:
+The recommended workflow implements the two-phase conformity pipeline. Your CI reacts differently depending on whether the release was just anchored (pending governance) or approved (governance accepted):
 
 ```yaml
-name: CodeQuill Attestation
+name: CodeQuill Release Pipeline
 
 on:
   issues:
     types: [labeled]
 
 jobs:
-  handle_release:
+  release-pipeline:
     if: github.event.issue.user.login == 'codequill-authorship[bot]' && github.event.label.name == 'codequill:release'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Step 1: Verify the issue and detect the event type
       - name: CodeQuill Attestation
-        id: codequill # Required to access outputs
-        uses: codequill-claim/actions-attest@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }} # Required to automatically close issues (optional)
-        with:
-          token: ${{ secrets.CODEQUILL_TOKEN }}
-          hmac_secret: ${{ secrets.CODEQUILL_HMAC_SECRET }}
-          github_id: ${{ github.repository_id }}
-          build_path: "./dist/output.tar.gz"
-
-      - name: Build and Deploy
-        if: steps.codequill.outputs.event_type == 'release_anchored'
-        run: |
-          npm install
-          npm run build
-          # ... deploy your app ...
-```
-
-The `if` condition on the job is critical. It ensures the workflow only runs for issues created by the CodeQuill bot with the correct label. Without this condition, every issue event on the repository would trigger the workflow.
-
-## Advanced Example: Attestation with Deployment
-
-This workflow demonstrates how to combine attestation with conditional deployment based on the `event_type` output. The attestation step handles both event types internally, and deployment only proceeds when the release is anchored:
-
-```yaml
-name: CodeQuill Attest and Deploy
-
-on:
-  issues:
-    types: [labeled]
-
-jobs:
-  attest-and-deploy:
-    if: github.event.issue.user.login == 'codequill-authorship[bot]' && github.event.label.name == 'codequill:release'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: CodeQuill Attestation
-        id: codequill # Required to access outputs
+        id: codequill
         uses: codequill-claim/actions-attest@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -152,27 +125,35 @@ jobs:
           token: ${{ secrets.CODEQUILL_TOKEN }}
           hmac_secret: ${{ secrets.CODEQUILL_HMAC_SECRET }}
           github_id: ${{ github.repository_id }}
-          build_path: "./dist/output.tar.gz"
+          build_path: "./dist"
 
-      - name: Build and Deploy
+      # Step 2: Build and deploy to STAGING when the release is anchored
+      - name: Build and deploy to staging
         if: steps.codequill.outputs.event_type == 'release_anchored'
         run: |
-          npm install
+          npm ci
           npm run build
-          # ... deploy your app ...
+          npm run deploy:staging
 
+      # Step 3: Deploy to PRODUCTION when governance approves
       - name: Deploy to production
         if: steps.codequill.outputs.event_type == 'release_approved'
         run: |
-          echo "Deploying release ${{ steps.codequill.outputs.release_id }}"
-          # Replace with your deployment commands
-          ./scripts/deploy.sh --artifact ./dist/output.tar.gz
+          npm ci
+          npm run build
+          npm run deploy:production
 ```
 
-In this workflow:
+The `if` condition on the job ensures the workflow only runs for issues created by the CodeQuill bot with the correct label. Without this condition, every issue event on the repository would trigger the workflow.
 
-1. The **attestation step** handles both event types internally. For `release_anchored`, it closes the issue and sets the outputs without performing attestation. For `release_approved`, it attests the build artifact.
-2. The **build step** uses a conditional (`if: steps.codequill.outputs.event_type == 'release_anchored'`) to run only on anchored events, allowing you to validate your build early.
-3. The **deploy step** uses a conditional (`if: steps.codequill.outputs.event_type == 'release_approved'`) to run only when the release was approved by governance.
+### How It Works
 
-This pattern ensures that your CI pipeline can react differently to each event type while restricting production deployment to explicitly approved releases.
+1. **On `release_anchored`** — The attestation step verifies the issue, sets the outputs, closes the issue, and returns without performing attestation. The "Build and deploy to staging" step runs, giving you the chance to validate the release in a staging environment before governance decides.
+
+2. **On `release_approved`** — The attestation step verifies the issue, runs `codequill attest` to create the on-chain attestation, and closes the issue. The "Deploy to production" step runs, deploying the governance-approved release to production.
+
+This two-phase pattern ensures that:
+
+- You can **validate builds before governance approval** by deploying to staging on `release_anchored`.
+- **Production deployments only happen after explicit governance approval** on `release_approved`.
+- **Attestation only runs for approved releases**, creating a verifiable on-chain link between your build artifacts and the accepted source state.
