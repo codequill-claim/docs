@@ -348,7 +348,7 @@ tailwind.config = {
 <article class="docs-content">
     <div class="prose">
         <h1>Snapshot Action</h1>
-<p>The Snapshot Action automates the <code>codequill snapshot</code> and <code>codequill publish</code> commands within a GitHub Actions workflow. It is published as <code>ophelios-studio/codequill-action-publish@v1</code> and runs on Node 20.</p>
+<p>The Snapshot Action automates the <code>codequill snapshot</code> and <code>codequill publish</code> commands within a GitHub Actions workflow. It is published as <code>codequill-claim/actions-snapshot@v1</code> and runs on Node 20.</p>
 <h2 id="purpose"><a href="#purpose" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Purpose</h2>
 <p>This action eliminates manual CLI invocations for the snapshot-and-publish phase of the pipeline. On every push to your target branch, it computes a deterministic Merkle root of the repository, publishes the manifest to IPFS, anchors the snapshot on-chain, and optionally creates an encrypted preservation archive.</p>
 <h2 id="inputs"><a href="#inputs" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Inputs</h2>
@@ -452,7 +452,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Snapshot and publish
-        uses: ophelios-studio/codequill-action-publish@v1
+        uses: codequill-claim/actions-snapshot@v1
         with:
           token: ${{ secrets.CODEQUILL_TOKEN }}
           github_id: ${{ github.repository_id }}
@@ -461,7 +461,7 @@ jobs:
 <h3 id="without-preservation"><a href="#without-preservation" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Without Preservation</h3>
 <p>If you do not need encrypted source archives, omit the <code>preserve</code> input (it defaults to <code>&quot;false&quot;</code>):</p>
 <pre><code class="language-yaml">      - name: Snapshot and publish
-        uses: ophelios-studio/codequill-action-publish@v1
+        uses: codequill-claim/actions-snapshot@v1
         with:
           token: ${{ secrets.CODEQUILL_TOKEN }}
           github_id: ${{ github.repository_id }}
@@ -469,7 +469,7 @@ jobs:
 <h3 id="with-custom-cli-version"><a href="#with-custom-cli-version" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>With Custom CLI Version</h3>
 <p>To pin a specific CLI version for reproducibility:</p>
 <pre><code class="language-yaml">      - name: Snapshot and publish
-        uses: ophelios-studio/codequill-action-publish@v1
+        uses: codequill-claim/actions-snapshot@v1
         with:
           token: ${{ secrets.CODEQUILL_TOKEN }}
           github_id: ${{ github.repository_id }}

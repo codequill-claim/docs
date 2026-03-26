@@ -352,7 +352,7 @@ tailwind.config = {
 <h2 id="two-phase-release-pipeline"><a href="#two-phase-release-pipeline" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Two-Phase Release Pipeline</h2>
 <p>The pipeline is split into two distinct phases, each triggered by a different GitHub event.</p>
 <h3 id="phase-1-snapshot--publish"><a href="#phase-1-snapshot--publish" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Phase 1: Snapshot &amp; Publish</h3>
-<p>Triggered on push to <code>main</code> (or any branch you configure). This phase uses the <strong>Snapshot Action</strong> (<code>ophelios-studio/codequill-action-publish@v1</code>) to:</p>
+<p>Triggered on push to <code>main</code> (or any branch you configure). This phase uses the <strong>Snapshot Action</strong> (<code>codequill-claim/actions-snapshot@v1</code>) to:</p>
 <ol>
 <li>Run <code>codequill snapshot</code> -- compute a deterministic Merkle root of the repository at the current commit.</li>
 <li>Run <code>codequill publish</code> -- upload the manifest to IPFS and anchor the Merkle root on-chain.</li>

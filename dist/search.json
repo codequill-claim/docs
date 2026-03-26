@@ -41,7 +41,7 @@
         "title": "Snapshot Action",
         "section": "ci-cd",
         "url": "\/ci-cd\/snapshot-action",
-        "excerpt": "Snapshot Action The Snapshot Action automates the codequill snapshot and codequill publish commands within a GitHub Actions workflow. It is published as ophelios-studio\/codequill-action-publish@v1 and runs on Node 20. #Purpose This action eliminates manual CLI invocations for the snapshot-and-publis...",
+        "excerpt": "Snapshot Action The Snapshot Action automates the codequill snapshot and codequill publish commands within a GitHub Actions workflow. It is published as codequill-claim\/actions-snapshot@v1 and runs on Node 20. #Purpose This action eliminates manual CLI invocations for the snapshot-and-publish phase ...",
         "headings": [
             "Purpose",
             "Inputs",

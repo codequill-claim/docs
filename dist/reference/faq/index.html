@@ -386,7 +386,7 @@ tailwind.config = {
 <p><strong>The CLI</strong> handles evidence: computing file hashes, building Merkle trees, creating snapshots, publishing to IPFS and the blockchain, generating proofs, encrypting preservations, and creating attestations. These are computational functions that run against your local source code.</p>
 <p>This separation has a security property. The CLI produces evidence locally and submits it to the blockchain. Even if the web application were compromised, previously anchored evidence would remain valid and verifiable. An attacker who controls the web application cannot forge Merkle roots, alter on-chain records, or decrypt preservations. The worst case is disruption of future operations, not corruption of past evidence.</p>
 <h2 id="can-i-use-codequill-in-ci"><a href="#can-i-use-codequill-in-ci" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Can I use CodeQuill in CI?</h2>
-<p>Yes. CodeQuill provides a GitHub Action (<code>codequill/snapshot-action</code>) for automated snapshot and attestation workflows.</p>
+<p>Yes. CodeQuill provides a GitHub Action (<code>codequill-claim/actions-snapshot</code>) for automated snapshot and attestation workflows.</p>
 <p>A typical CI integration:</p>
 <ol>
 <li>On push to <code>main</code>, the GitHub Action creates a snapshot and publishes it on-chain.</li>
