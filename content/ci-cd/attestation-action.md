@@ -19,7 +19,7 @@ This action is the second phase of the CI/CD pipeline. It listens for GitHub Iss
 | `token` | Yes | — | CodeQuill repo-scoped bearer token. |
 | `github_id` | Yes | — | GitHub repository numeric ID. |
 | `hmac_secret` | No | `""` | Shared secret for HMAC-SHA256 verification. Strongly recommended. |
-| `build_path` | No | `""` | Path to build artifact to attest. |
+| `build_path` | No | `""` | Path to build artifact or directory to attest. |
 | `release_id` | No | `""` | Release ID. Extracted from the issue body if not provided. |
 | `event_type` | No | `""` | Override event type (`release_anchored` or `release_approved`). |
 | `api_base_url` | No | `""` | Override API base URL. |
@@ -72,7 +72,7 @@ This event is informational -- it confirms that a release was created and anchor
 
 If the event type is `release_approved`, the action:
 
-1. Validates that `build_path` is provided and points to an existing file.
+1. Validates that `build_path` is provided and points to an existing file or directory.
 2. Validates that `release_id` is available (from the issue body or the input).
 3. Installs the `codequill` CLI (same logic as the Snapshot Action).
 4. Runs `codequill attest <build_path> <release_id> --no-confirm --json --no-wait`.

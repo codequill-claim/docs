@@ -55,7 +55,7 @@ codequill attest <build-artifact> <release-id>
 
 | Argument | Required | Description |
 |---|---|---|
-| `<build-artifact>` | Yes | Path to the build artifact file |
+| `<build-artifact>` | Yes | Path to the build artifact file or directory |
 | `<release-id>` | Yes | The CodeQuill release ID to attest against |
 
 **Options:**
@@ -89,6 +89,16 @@ codequill attest dist/my-app.tar.gz rel_abc123 \
   --upstream "pkg:npm/express@4.18.2"
 ```
 
+### Example: Attest a Directory
+
+When the artifact is a directory (e.g. a `dist/` folder), the CLI automatically creates a deterministic `.tar.gz` archive and attests the resulting file:
+
+```bash
+codequill attest ./dist rel_abc123
+```
+
+The archive uses sorted entries, zeroed timestamps, and normalized ownership so the same directory contents always produce the same hash. The temporary archive is deleted after attestation.
+
 ### Example: CI-Friendly Attestation
 
 In CI pipelines, use `--no-confirm` and `--json`:
@@ -97,7 +107,7 @@ In CI pipelines, use `--no-confirm` and `--json`:
 codequill attest dist/my-app.tar.gz rel_abc123 --no-confirm --json
 ```
 
-When running non-interactively (no TTY), the CLI auto-derives the subject name from the artifact filename and the subject version from the commit hash.
+When running non-interactively (no TTY), the CLI auto-derives the subject name from the artifact filename and the subject version from the release name.
 
 ## The Supply-Chain Graph
 

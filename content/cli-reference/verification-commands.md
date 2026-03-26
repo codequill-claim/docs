@@ -24,7 +24,7 @@ codequill attest <build> <releaseId> [options]
 
 | Argument | Required | Description |
 |---|---|---|
-| `build` | yes | Path to the build artifact (e.g. a binary, archive, or container image tarball) |
+| `build` | yes | Path to the build artifact or directory. If a directory is provided, it is automatically archived into a deterministic `.tar.gz` before attestation. |
 | `releaseId` | yes | The release ID to associate the artifact with |
 
 ### Options
@@ -64,6 +64,18 @@ Attestation created successfully.
   Explorer: https://sepolia.etherscan.io/tx/0xaaa111...
 ```
 
+#### Attest a directory
+
+When the build artifact is a directory (e.g. a `dist/` folder with multiple output files), the CLI automatically creates a deterministic `.tar.gz` archive and attests the resulting file:
+
+```bash
+codequill attest ./dist rel_abc123 \
+  --subject-name my-docs \
+  --subject-version 2.1.0
+```
+
+The archive is created with sorted entries, zeroed timestamps, and normalized ownership to ensure the same directory contents always produce the same hash. The temporary archive is deleted after attestation.
+
 #### Attest with upstream dependencies in CI
 
 ```bash
@@ -78,6 +90,8 @@ codequill attest ./dist/myapp-linux-amd64 rel_abc123 \
 ### Notes
 
 - The build artifact is hashed locally. The artifact itself is **not** uploaded to CodeQuill or any remote storage.
+- When `build` is a directory, the CLI creates a deterministic `.tar.gz` archive automatically. The archive is deleted after attestation completes.
+- When `--subject-version` is not provided, it defaults to the release name. In interactive mode, the release name is shown as the prompt default.
 - The `--upstream` flag is repeatable. Each invocation adds one Package URL to the attestation's dependency list, creating a supply-chain lineage graph.
 - Attestations are anchored on-chain and reference the release's snapshot Merkle root, forming an unbroken chain from source to artifact.
 - Use `--no-confirm` and `--json` for non-interactive CI/CD workflows.
