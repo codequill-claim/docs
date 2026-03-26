@@ -396,7 +396,7 @@ tailwind.config = {
 <tr>
 <td><code>&lt;build-artifact&gt;</code></td>
 <td>Yes</td>
-<td>Path to the build artifact file</td>
+<td>Path to the build artifact file or directory</td>
 </tr>
 <tr>
 <td><code>&lt;release-id&gt;</code></td>
@@ -477,11 +477,16 @@ tailwind.config = {
   --upstream &quot;pkg:npm/lodash@4.17.21&quot; \
   --upstream &quot;pkg:npm/express@4.18.2&quot;
 </code></pre>
+<h3 id="example-attest-a-directory"><a href="#example-attest-a-directory" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example: Attest a Directory</h3>
+<p>When the artifact is a directory (e.g. a <code>dist/</code> folder), the CLI automatically creates a deterministic <code>.tar.gz</code> archive and attests the resulting file:</p>
+<pre><code class="language-bash">codequill attest ./dist rel_abc123
+</code></pre>
+<p>The archive uses sorted entries, zeroed timestamps, and normalized ownership so the same directory contents always produce the same hash. The temporary archive is deleted after attestation.</p>
 <h3 id="example-ci-friendly-attestation"><a href="#example-ci-friendly-attestation" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example: CI-Friendly Attestation</h3>
 <p>In CI pipelines, use <code>--no-confirm</code> and <code>--json</code>:</p>
 <pre><code class="language-bash">codequill attest dist/my-app.tar.gz rel_abc123 --no-confirm --json
 </code></pre>
-<p>When running non-interactively (no TTY), the CLI auto-derives the subject name from the artifact filename and the subject version from the commit hash.</p>
+<p>When running non-interactively (no TTY), the CLI auto-derives the subject name from the artifact filename and the subject version from the release name.</p>
 <h2 id="the-supply-chain-graph"><a href="#the-supply-chain-graph" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>The Supply-Chain Graph</h2>
 <p>Attestations support upstream and downstream dependency references. When you specify <code>--upstream</code> purls, the CLI resolves them against existing CodeQuill attestations, creating a verifiable dependency graph.</p>
 <p>This graph enables questions like:</p>
@@ -534,6 +539,9 @@ tailwind.config = {
             </li>
             <li class="toc-item toc-item-sub">
                 <a href="#example-attest-with-upstream-dependencies" class="toc-link">Example: Attest with Upstream Dependencies</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#example-attest-a-directory" class="toc-link">Example: Attest a Directory</a>
             </li>
             <li class="toc-item toc-item-sub">
                 <a href="#example-ci-friendly-attestation" class="toc-link">Example: CI-Friendly Attestation</a>

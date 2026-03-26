@@ -384,7 +384,7 @@ tailwind.config = {
 <td><code>build_path</code></td>
 <td>No</td>
 <td><code>&quot;&quot;</code></td>
-<td>Path to build artifact to attest.</td>
+<td>Path to build artifact or directory to attest.</td>
 </tr>
 <tr>
 <td><code>release_id</code></td>
@@ -479,7 +479,7 @@ tailwind.config = {
 <h3 id="4-handle-releaseapproved"><a href="#4-handle-releaseapproved" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>4. Handle <code>release_approved</code></h3>
 <p>If the event type is <code>release_approved</code>, the action:</p>
 <ol>
-<li>Validates that <code>build_path</code> is provided and points to an existing file.</li>
+<li>Validates that <code>build_path</code> is provided and points to an existing file or directory.</li>
 <li>Validates that <code>release_id</code> is available (from the issue body or the input).</li>
 <li>Installs the <code>codequill</code> CLI (same logic as the Snapshot Action).</li>
 <li>Runs <code>codequill attest &lt;build_path&gt; &lt;release_id&gt; --no-confirm --json --no-wait</code>.</li>
@@ -497,88 +497,83 @@ tailwind.config = {
 
 on:
   issues:
-    types:
-      - labeled
-
-permissions:
-  issues: write
-  contents: read
+    types: [labeled]
 
 jobs:
-  attest:
+  handle_release:
+    if: github.event.issue.user.login == 'codequill-authorship[bot]' &amp;&amp; github.event.label.name == 'codequill:release'
     runs-on: ubuntu-latest
-    if: &gt;-
-      github.event.issue.user.login == 'codequill-authorship[bot]'
-      &amp;&amp; github.event.label.name == 'codequill:release'
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build project
-        run: npm ci &amp;&amp; npm run build
-
-      - name: Attest build artifact
+      - name: CodeQuill Attestation
+        id: codequill # Required to access outputs
         uses: codequill-claim/actions-attest@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }} # Required to automatically close issues (optional)
         with:
           token: ${{ secrets.CODEQUILL_TOKEN }}
-          github_id: ${{ github.repository_id }}
           hmac_secret: ${{ secrets.CODEQUILL_HMAC_SECRET }}
+          github_id: ${{ github.repository_id }}
           build_path: &quot;./dist/output.tar.gz&quot;
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Deploy
+        if: steps.codequill.outputs.event_type == 'release_anchored'
+        run: |
+          npm install
+          npm run build
+          # ... deploy your app ...
 </code></pre>
 <p>The <code>if</code> condition on the job is critical. It ensures the workflow only runs for issues created by the CodeQuill bot with the correct label. Without this condition, every issue event on the repository would trigger the workflow.</p>
 <h2 id="advanced-example-attestation-with-deployment"><a href="#advanced-example-attestation-with-deployment" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Advanced Example: Attestation with Deployment</h2>
-<p>This workflow demonstrates how to combine attestation with conditional deployment based on the <code>event_type</code> output. The build runs for all events, but deployment only proceeds when the release is approved:</p>
+<p>This workflow demonstrates how to combine attestation with conditional deployment based on the <code>event_type</code> output. The attestation step handles both event types internally, and deployment only proceeds when the release is anchored:</p>
 <pre><code class="language-yaml">name: CodeQuill Attest and Deploy
 
 on:
   issues:
-    types:
-      - labeled
-
-permissions:
-  issues: write
-  contents: read
+    types: [labeled]
 
 jobs:
   attest-and-deploy:
+    if: github.event.issue.user.login == 'codequill-authorship[bot]' &amp;&amp; github.event.label.name == 'codequill:release'
     runs-on: ubuntu-latest
-    if: &gt;-
-      github.event.issue.user.login == 'codequill-authorship[bot]'
-      &amp;&amp; github.event.label.name == 'codequill:release'
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build project
-        run: npm ci &amp;&amp; npm run build
-
-      - name: Attest build artifact
-        id: attest
+      - name: CodeQuill Attestation
+        id: codequill # Required to access outputs
         uses: codequill-claim/actions-attest@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           token: ${{ secrets.CODEQUILL_TOKEN }}
-          github_id: ${{ github.repository_id }}
           hmac_secret: ${{ secrets.CODEQUILL_HMAC_SECRET }}
+          github_id: ${{ github.repository_id }}
           build_path: &quot;./dist/output.tar.gz&quot;
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Deploy
+        if: steps.codequill.outputs.event_type == 'release_anchored'
+        run: |
+          npm install
+          npm run build
+          # ... deploy your app ...
 
       - name: Deploy to production
-        if: steps.attest.outputs.event_type == 'release_approved'
+        if: steps.codequill.outputs.event_type == 'release_approved'
         run: |
-          echo &quot;Deploying release ${{ steps.attest.outputs.release_id }}&quot;
+          echo &quot;Deploying release ${{ steps.codequill.outputs.release_id }}&quot;
           # Replace with your deployment commands
           ./scripts/deploy.sh --artifact ./dist/output.tar.gz
 </code></pre>
 <p>In this workflow:</p>
 <ol>
-<li>The <strong>build step</strong> runs unconditionally. Both <code>release_anchored</code> and <code>release_approved</code> events trigger a build.</li>
-<li>The <strong>attest step</strong> handles both event types internally. For <code>release_anchored</code>, it closes the issue and sets the outputs without performing attestation. For <code>release_approved</code>, it attests the build artifact.</li>
-<li>The <strong>deploy step</strong> uses a conditional (<code>if: steps.attest.outputs.event_type == 'release_approved'</code>) to run only when the release was approved by governance. Anchored events produce no deployment.</li>
+<li>The <strong>attestation step</strong> handles both event types internally. For <code>release_anchored</code>, it closes the issue and sets the outputs without performing attestation. For <code>release_approved</code>, it attests the build artifact.</li>
+<li>The <strong>build step</strong> uses a conditional (<code>if: steps.codequill.outputs.event_type == 'release_anchored'</code>) to run only on anchored events, allowing you to validate your build early.</li>
+<li>The <strong>deploy step</strong> uses a conditional (<code>if: steps.codequill.outputs.event_type == 'release_approved'</code>) to run only when the release was approved by governance.</li>
 </ol>
-<p>This pattern ensures that your CI pipeline validates the build for every release event (catching build failures early) while restricting production deployment to explicitly approved releases.</p>
+<p>This pattern ensures that your CI pipeline can react differently to each event type while restricting production deployment to explicitly approved releases.</p>
 
     </div>
 

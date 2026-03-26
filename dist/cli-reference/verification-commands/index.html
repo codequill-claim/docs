@@ -368,7 +368,7 @@ tailwind.config = {
 <tr>
 <td><code>build</code></td>
 <td>yes</td>
-<td>Path to the build artifact (e.g. a binary, archive, or container image tarball)</td>
+<td>Path to the build artifact or directory. If a directory is provided, it is automatically archived into a deterministic <code>.tar.gz</code> before attestation.</td>
 </tr>
 <tr>
 <td><code>releaseId</code></td>
@@ -457,6 +457,13 @@ Attestation created successfully.
   Artifact hash: sha256:e3b0c44298fc...
   Explorer: https://sepolia.etherscan.io/tx/0xaaa111...
 </code></pre>
+<h4 id="attest-a-directory"><a href="#attest-a-directory" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Attest a directory</h4>
+<p>When the build artifact is a directory (e.g. a <code>dist/</code> folder with multiple output files), the CLI automatically creates a deterministic <code>.tar.gz</code> archive and attests the resulting file:</p>
+<pre><code class="language-bash">codequill attest ./dist rel_abc123 \
+  --subject-name my-docs \
+  --subject-version 2.1.0
+</code></pre>
+<p>The archive is created with sorted entries, zeroed timestamps, and normalized ownership to ensure the same directory contents always produce the same hash. The temporary archive is deleted after attestation.</p>
 <h4 id="attest-with-upstream-dependencies-in-ci"><a href="#attest-with-upstream-dependencies-in-ci" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Attest with upstream dependencies in CI</h4>
 <pre><code class="language-bash">codequill attest ./dist/myapp-linux-amd64 rel_abc123 \
   --subject-name myapp \
@@ -468,6 +475,8 @@ Attestation created successfully.
 <h3 id="notes"><a href="#notes" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Notes</h3>
 <ul>
 <li>The build artifact is hashed locally. The artifact itself is <strong>not</strong> uploaded to CodeQuill or any remote storage.</li>
+<li>When <code>build</code> is a directory, the CLI creates a deterministic <code>.tar.gz</code> archive automatically. The archive is deleted after attestation completes.</li>
+<li>When <code>--subject-version</code> is not provided, it defaults to the release name. In interactive mode, the release name is shown as the prompt default.</li>
 <li>The <code>--upstream</code> flag is repeatable. Each invocation adds one Package URL to the attestation's dependency list, creating a supply-chain lineage graph.</li>
 <li>Attestations are anchored on-chain and reference the release's snapshot Merkle root, forming an unbroken chain from source to artifact.</li>
 <li>Use <code>--no-confirm</code> and <code>--json</code> for non-interactive CI/CD workflows.</li>
@@ -723,6 +732,9 @@ Preservation created successfully.
             </li>
             <li class="toc-item toc-item-sub">
                 <a href="#example" class="toc-link">Example</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#attest-a-directory" class="toc-link">Attest a directory</a>
             </li>
             <li class="toc-item toc-item-sub">
                 <a href="#attest-with-upstream-dependencies-in-ci" class="toc-link">Attest with upstream dependencies in CI</a>
