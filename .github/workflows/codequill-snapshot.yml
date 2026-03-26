@@ -1,0 +1,23 @@
+name: CodeQuill Snapshot & Publish
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Snapshot and publish
+        uses: codequill-claim/actions-snapshot@v1
+        with:
+          token: ${{ secrets.CODEQUILL_TOKEN }}
+          github_id: ${{ github.repository_id }}
+          preserve: "true"
