@@ -82,7 +82,7 @@ This separation has a security property. The CLI produces evidence locally and s
 
 ## Can I use CodeQuill in CI?
 
-Yes. CodeQuill provides a GitHub Action (`codequill/snapshot-action`) for automated snapshot and attestation workflows.
+Yes. CodeQuill provides a GitHub Action (`codequill-claim/actions-snapshot`) for automated snapshot and attestation workflows.
 
 A typical CI integration:
 

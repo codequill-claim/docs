@@ -14,7 +14,7 @@ The pipeline is split into two distinct phases, each triggered by a different Gi
 
 ### Phase 1: Snapshot & Publish
 
-Triggered on push to `main` (or any branch you configure). This phase uses the **Snapshot Action** (`ophelios-studio/codequill-action-publish@v1`) to:
+Triggered on push to `main` (or any branch you configure). This phase uses the **Snapshot Action** (`codequill-claim/actions-snapshot@v1`) to:
 
 1. Run `codequill snapshot` -- compute a deterministic Merkle root of the repository at the current commit.
 2. Run `codequill publish` -- upload the manifest to IPFS and anchor the Merkle root on-chain.

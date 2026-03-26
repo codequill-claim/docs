@@ -6,7 +6,7 @@ order: 2
 
 # Snapshot Action
 
-The Snapshot Action automates the `codequill snapshot` and `codequill publish` commands within a GitHub Actions workflow. It is published as `ophelios-studio/codequill-action-publish@v1` and runs on Node 20.
+The Snapshot Action automates the `codequill snapshot` and `codequill publish` commands within a GitHub Actions workflow. It is published as `codequill-claim/actions-snapshot@v1` and runs on Node 20.
 
 ## Purpose
 
@@ -87,7 +87,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Snapshot and publish
-        uses: ophelios-studio/codequill-action-publish@v1
+        uses: codequill-claim/actions-snapshot@v1
         with:
           token: ${{ secrets.CODEQUILL_TOKEN }}
           github_id: ${{ github.repository_id }}
@@ -100,7 +100,7 @@ If you do not need encrypted source archives, omit the `preserve` input (it defa
 
 ```yaml
       - name: Snapshot and publish
-        uses: ophelios-studio/codequill-action-publish@v1
+        uses: codequill-claim/actions-snapshot@v1
         with:
           token: ${{ secrets.CODEQUILL_TOKEN }}
           github_id: ${{ github.repository_id }}
@@ -112,7 +112,7 @@ To pin a specific CLI version for reproducibility:
 
 ```yaml
       - name: Snapshot and publish
-        uses: ophelios-studio/codequill-action-publish@v1
+        uses: codequill-claim/actions-snapshot@v1
         with:
           token: ${{ secrets.CODEQUILL_TOKEN }}
           github_id: ${{ github.repository_id }}
