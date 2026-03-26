@@ -17,7 +17,7 @@ render:
 
 leaf:
   name: "CodeQuill"
-  version: "0.9.1"
+  version: "0.9.0"
   description: "Memory infrastructure for software. Preserve verifiable, immutable evidence of what source code existed at a given point in time."
   github_url: "https://github.com/codequill-claim"
   content_path: "content"
@@ -33,6 +33,6 @@ leaf:
     reference: "Reference"
   output_path: "dist"
   base_url: "/"
-  author: "Ophelios"
-  author_url: "https://ophelios.com"
+  author: "CodeQuill"
+  author_url: "https://codequill.xyz"
   license: "MIT"
