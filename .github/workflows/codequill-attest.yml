@@ -1,0 +1,30 @@
+name: CodeQuill Attestation
+
+on:
+  issues:
+    types:
+      - labeled
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  attest:
+    runs-on: ubuntu-latest
+    if: >-
+      github.event.issue.user.login == 'codequill-authorship[bot]'
+      && github.event.label.name == 'codequill:release'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Attest build artifact
+        uses: codequill-claim/actions-attest@v1
+        with:
+          token: ${{ secrets.CODEQUILL_TOKEN }}
+          github_id: ${{ github.repository_id }}
+          hmac_secret: ${{ secrets.CODEQUILL_HMAC_SECRET }}
+          build_path: "./dist"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
