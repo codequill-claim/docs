@@ -107,6 +107,9 @@ on:
   issues:
     types: [labeled]
 
+permissions:
+  issues: write
+
 jobs:
   release-pipeline:
     if: github.event.issue.user.login == 'codequill-authorship[bot]' && github.event.label.name == 'codequill:release'
@@ -143,6 +146,8 @@ jobs:
           npm run build
           npm run deploy:production
 ```
+
+The `permissions: issues: write` grant is required for the action to comment on and close issues via the `GITHUB_TOKEN`. Without it, the action will process the event correctly but fail when attempting to update the issue, producing a `Resource not accessible by integration` error.
 
 The `if` condition on the job ensures the workflow only runs for issues created by the CodeQuill bot with the correct label. Without this condition, every issue event on the repository would trigger the workflow.
 
