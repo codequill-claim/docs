@@ -3,7 +3,7 @@
         "title": "Attestation Action",
         "section": "ci-cd",
         "url": "\/ci-cd\/attestation-action",
-        "excerpt": "Attestation Action The Attestation Action handles attestation for release events triggered by GitHub Issues. It is published as codequill-claim\/actions-attest@v1 and runs on Node 20. It requires the GITHUB_TOKEN environment variable for issue management (commenting, closing). #Purpose This action is...",
+        "excerpt": "Attestation Action The Attestation Action handles release events triggered by GitHub Issues. It is published as codequill-claim\/actions-attest@v1 and runs on Node 20. It requires the GITHUB_TOKEN environment variable for issue management (commenting, closing). #Purpose This action enables a two-phas...",
         "headings": [
             "Purpose",
             "Inputs",
@@ -15,7 +15,7 @@
             "4. Handle release_approved",
             "5. Issue Lifecycle",
             "Workflow Example",
-            "Advanced Example: Attestation with Deployment"
+            "How It Works"
         ]
     },
     {
