@@ -4,6 +4,9 @@ on:
   issues:
     types: [labeled]
 
+permissions:
+  issues: write
+
 jobs:
   handle_release:
     if: github.event.issue.user.login == 'codequill-authorship[bot]' && github.event.label.name == 'codequill:release'
